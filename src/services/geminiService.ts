@@ -1,14 +1,21 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from "../types";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const MODEL = 'gemini-3-flash-preview';
 
-if (!apiKey) {
-  console.warn('Warning: VITE_GEMINI_API_KEY environment variable is not set. AI features will not work.');
-}
+let _ai: GoogleGenAI | null = null;
+const getAI = (): GoogleGenAI => {
+  if (_ai) return _ai;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error('VITE_GEMINI_API_KEY não está configurada. Configure a variável de ambiente para usar os recursos de IA.');
+  }
+  _ai = new GoogleGenAI({ apiKey });
+  return _ai;
+};
 
-const ai = new GoogleGenAI({ apiKey: apiKey || '' });
+const getLocaleLabel = (locale: string) =>
+  locale === 'en' ? 'English' : locale === 'es' ? 'Español' : 'Português (Brasil)';
 
 const RECIPE_SCHEMA = {
   type: Type.OBJECT,
@@ -83,8 +90,7 @@ const normalizeSteps = (steps: string[]) => {
 };
 
 export const parseRecipe = async (input: string | { data: string; mimeType: string }, locale: string): Promise<Recipe> => {
-  const model = 'gemini-3-flash-preview';
-  const localeLabel = locale === 'en' ? 'English' : locale === 'es' ? 'Español' : 'Português (Brasil)';
+  const localeLabel = getLocaleLabel(locale);
   const invalidTitle = locale === 'en' ? 'INVALID DATA' : locale === 'es' ? 'DATOS INVÁLIDOS' : 'DADOS INVÁLIDOS';
 
   const prompt = `VOCÊ É UM TÉCNICO EM FORMULAÇÃO DE ALIMENTOS E PROCESSOS INDUSTRIAIS.
@@ -123,55 +129,34 @@ export const parseRecipe = async (input: string | { data: string; mimeType: stri
     ? { parts: [{ text: `${prompt}\n\n${safeInput}` }] }
     : { parts: [{ text: prompt }, { inlineData: input }] };
 
-  try {
-    const response = await ai.models.generateContent({
-      model,
-      contents,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: RECIPE_SCHEMA,
-        temperature: 0.1,
-      }
-    });
-    const raw = response.text;
-    if (!raw) {
-      throw new Error('Empty response from AI');
+  const response = await getAI().models.generateContent({
+    model: MODEL,
+    contents,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: RECIPE_SCHEMA,
+      temperature: 0.1,
     }
-    const parsed = JSON.parse(raw) as Recipe;
+  });
 
-    const ingredientsWithIds = (parsed.ingredientes || []).map((ing) => ({
-      ...ing,
-      id: crypto.randomUUID()
-    }));
+  const raw = response.text;
+  if (!raw) throw new Error('Empty response from AI');
 
-    const parsedSteps = Array.isArray(parsed.modo_preparo) ? parsed.modo_preparo : [];
-    const cleanedSteps = normalizeSteps(parsedSteps);
-    const allowSteps = typeof input === 'string' ? hasExplicitPreparation(input) : true;
-    const finalSteps = allowSteps ? cleanedSteps : [];
-    const stepsWithIds = finalSteps.map((step: string) => ({
-      id: crypto.randomUUID(),
-      text: step
-    }));
+  const parsed = JSON.parse(raw) as Recipe;
+  const allowSteps = typeof input === 'string' ? hasExplicitPreparation(input) : true;
 
-    return {
-      ...parsed,
-      ingredientes: ingredientsWithIds,
-      modo_preparo: stepsWithIds,
-      id: crypto.randomUUID(),
-      data: new Date().toISOString().slice(0, 10),
-    } as Recipe;
-  } catch (error) {
-    throw error;
-  }
+  return {
+    ...parsed,
+    ingredientes: (parsed.ingredientes || []).map((ing) => ({ ...ing, id: crypto.randomUUID() })),
+    modo_preparo: (allowSteps ? normalizeSteps(Array.isArray(parsed.modo_preparo) ? (parsed.modo_preparo as unknown as string[]) : []) : [])
+      .map((step: string) => ({ id: crypto.randomUUID(), text: step })),
+    id: crypto.randomUUID(),
+    data: new Date().toISOString().slice(0, 10),
+  } as Recipe;
 };
 
 export const generateIllustrationSvg = async (payload: { title: string; ingredients: string[]; locale: string }) => {
-  const apiKey = import.meta.env.VITE_API_KEY || '';
-  if (!apiKey) {
-    throw new Error('Missing API key');
-  }
-  const model = 'gemini-3-flash-preview';
-  const localeLabel = payload.locale === 'en' ? 'English' : payload.locale === 'es' ? 'Español' : 'Português (Brasil)';
+  const localeLabel = getLocaleLabel(payload.locale);
   const ingredientList = payload.ingredients.filter(Boolean).slice(0, 10).join(', ');
   const subject = ingredientList || payload.title || 'ingredientes culinários';
 
@@ -190,8 +175,8 @@ export const generateIllustrationSvg = async (payload: { title: string; ingredie
   - Mantenha o desenho simples (no máximo 6 elementos).
   - O alt deve estar em ${localeLabel} e ter no máximo 6 palavras.`;
 
-  const response = await ai.models.generateContent({
-    model,
+  const response = await getAI().models.generateContent({
+    model: MODEL,
     contents: { parts: [{ text: prompt }] },
     config: {
       responseMimeType: "application/json",

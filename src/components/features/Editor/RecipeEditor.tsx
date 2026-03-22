@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { DragEndEvent } from '@dnd-kit/core';
-import { Save, FileText, Eye, EyeOff, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { Save, FileText, Eye, EyeOff, ZoomIn, ZoomOut, RotateCcw, Calculator, Settings2 } from 'lucide-react';
 
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
 import { RecipePrintable } from '../../RecipePrintable';

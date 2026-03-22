@@ -47,7 +47,7 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
           value={nomeEmpresa || ''}
           onChange={(value) => manager.handleFieldChange('nome_empresa', value)}
           placeholder={t('placeholders.company')}
-          icon={Building2}
+          icon={<Building2 size={16} />}
           disabled={false}
         />
 
