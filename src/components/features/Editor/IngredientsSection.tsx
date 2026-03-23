@@ -1,224 +1,378 @@
 import React, { useMemo } from 'react';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import {
+    DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent,
+} from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { Plus, Trash2, AlertTriangle } from 'lucide-react';
+import { Trash2, AlertTriangle } from 'lucide-react';
 
 import { SortableItem } from '../../common/SortableItem';
-import { SelectField } from '../../ui/form/SelectField';
+import { HintButton } from '../../ui/HintButton';
 import { useI18n } from '../../../i18n/i18n.tsx';
-import type { Ingredient } from '../../../types';
+import { useAdvancedMode } from '../../../hooks/useAdvancedMode';
+import type { Ingredient, IngredientPhase } from '../../../types';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
 
 interface IngredientsSectionProps {
-  ingredientes: Ingredient[];
-  manager: ReturnType<typeof useRecipeManager>;
-  newlyAddedId: string | null;
-  onDragEnd: (event: DragEndEvent) => void;
+    ingredientes: Ingredient[];
+    manager: ReturnType<typeof useRecipeManager>;
+    newlyAddedId: string | null;
+    onDragEnd: (event: DragEndEvent) => void;
+    batchSize?: number;
 }
 
-export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
-  ingredientes,
-  manager,
-  newlyAddedId,
-  onDragEnd
-}) => {
-  const { t } = useI18n();
+const UNITS = ['GR', 'KG', 'ML', 'LT', 'UN', 'MG', '%'];
 
-  const totalWeight = useMemo(
-    () => ingredientes.reduce((acc, curr) => acc + (curr.quantidade || 0), 0),
-    [ingredientes]
-  );
+// ─── Phase config ──────────────────────────────────────────────
+const PHASES: { value: IngredientPhase; color: string; label: string }[] = [
+    { value: 'A', color: '#3b82f6', label: 'A — Aquosa' },
+    { value: 'B', color: '#f59e0b', label: 'B — Oleosa' },
+    { value: 'C', color: '#8b5cf6', label: 'C — Emulsificante' },
+    { value: 'D', color: '#10b981', label: 'D — Ativa' },
+    { value: 'E', color: '#f43f5e', label: 'E — Aroma' },
+];
+const PHASE_MAP = Object.fromEntries(PHASES.map(p => [p.value, p]));
 
-  const totalCost = useMemo(
-    () => ingredientes.reduce((acc, curr) => acc + ((curr.custo_unitario || 0) * (curr.quantidade || 0)), 0),
-    [ingredientes]
-  );
+const nextPhase = (current?: IngredientPhase): IngredientPhase | undefined => {
+    if (!current) return 'A';
+    const idx = PHASES.findIndex(p => p.value === current);
+    return idx === PHASES.length - 1 ? undefined : PHASES[idx + 1].value;
+};
 
-  const hasFilledIngredients = ingredientes.some((ing) => ing.nome.trim() || ing.quantidade > 0);
-
-  const unitSuggestion = (nome: string, unidade: string) => {
-    const lower = nome.toLowerCase();
-    const solidKeywords = ['sal', 'açúcar', 'acucar', 'farinha', 'amido', 'pó', 'po', 'pimenta', 'alho', 'cebola', 'temper', 'salsa', 'ervas'];
-    const liquidKeywords = ['óleo', 'oleo', 'agua', 'água', 'leite', 'vinagre', 'suco'];
-    if ((unidade === 'ML' || unidade === 'LT') && solidKeywords.some((k) => lower.includes(k))) {
-      return t('validation.unitSolid');
-    }
-    if ((unidade === 'KG' || unidade === 'GR') && liquidKeywords.some((k) => lower.includes(k))) {
-      return t('validation.unitLiquid');
-    }
-    return '';
-  };
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  return (
-    <div className="ds-card overflow-hidden">
-      {/* Header */}
-      <div className="p-4 bg-slate-50 dark:bg-neutral-900/50 border-b border-slate-200 dark:border-neutral-800 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300">
-            {t('editor.ingredients')}
-          </h3>
-        </div>
+const PhaseBadge: React.FC<{ phase?: IngredientPhase; onClick: () => void }> = ({ phase, onClick }) => {
+    const cfg = phase ? PHASE_MAP[phase] : null;
+    return (
         <button
-          onClick={manager.addIngredient}
-          className="ds-button text-[var(--primary)] bg-[var(--primary)]/10 hover:bg-[var(--primary)] hover:text-white transition-colors"
+            type="button"
+            onClick={onClick}
+            title={cfg ? cfg.label : 'Definir fase (A/B/C/D/E)'}
+            className="flex-shrink-0 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black transition-all"
+            style={{
+                background: cfg ? `${cfg.color}22` : 'var(--surface-2)',
+                border: `1.5px solid ${cfg ? cfg.color : 'var(--border)'}`,
+                color: cfg ? cfg.color : 'var(--ink-2)',
+            }}
         >
-          <Plus size={14} /> {t('buttons.addItem')}
+            {phase ?? '·'}
         </button>
-      </div>
+    );
+};
 
-      {/* Content */}
-      <div className="p-2">
-        {hasFilledIngredients && totalWeight === 0 && (
-          <div className="mx-2 mb-2 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
-            <AlertTriangle size={14} />
-            {t('validation.totalWeightZero')}
-          </div>
-        )}
+// ─── Phase stats panel ─────────────────────────────────────────
+const PhaseStats: React.FC<{
+    ingredientes: Ingredient[];
+    totalWeight: number;
+    totalCost: number;
+    batchSize?: number;
+}> = ({ ingredientes, totalWeight, totalCost, batchSize }) => {
+    const { t } = useI18n();
 
-        {/* Header Row */}
-        <div className="grid grid-cols-12 gap-2 pl-10 pr-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-          <div className="col-span-1 hidden sm:block">#</div>
-          <div className="col-span-1 block sm:hidden"></div>
-          <div className="col-span-5 text-left">{t('editor.itemHeader')}</div>
-          <div className="col-span-2 text-right">{t('common.qty')}</div>
-          <div className="col-span-2 text-center">{t('common.unit')}</div>
-          <div className="col-span-2 text-right">{t('editor.unitPrice')}</div>
-        </div>
+    const phaseStats = useMemo(() => {
+        return PHASES.map(p => {
+            const items = ingredientes.filter(i => i.phase === p.value);
+            const weight = items.reduce((s, i) => s + (i.quantidade || 0), 0);
+            const pct = totalWeight > 0 ? (weight / totalWeight) * 100 : 0;
+            return { ...p, weight, pct, count: items.length };
+        }).filter(p => p.count > 0);
+    }, [ingredientes, totalWeight]);
 
-        {/* Sortable Items */}
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} modifiers={[restrictToVerticalAxis]}>
-          <SortableContext items={ingredientes} strategy={verticalListSortingStrategy}>
-            <div className="space-y-2">
-              {ingredientes.map((ing, idx) => {
-                const totalWeightCalc = totalWeight || 1;
-                const pct = ((ing.quantidade || 0) / totalWeightCalc) * 100;
+    const withPhase = ingredientes.filter(i => i.phase).length;
+    const waterPct = useMemo(() => {
+        const phaseA = ingredientes.filter(i => i.phase === 'A').reduce((s, i) => s + (i.quantidade || 0), 0);
+        return totalWeight > 0 ? (phaseA / totalWeight) * 100 : 0;
+    }, [ingredientes, totalWeight]);
 
-                return (
-                  <SortableItem key={ing.id} id={ing.id} newlyAddedId={newlyAddedId} animationsEnabled={false}>
-                    <div className="flex-1 grid grid-cols-12 gap-2 items-center pr-3 py-1">
-                      {/* Index */}
-                      <div className="col-span-1 hidden sm:flex justify-center text-xs font-bold text-slate-400 dark:text-slate-500">
-                        {idx + 1}
-                      </div>
-                      <div className="col-span-1 flex sm:hidden justify-center text-xs font-bold text-slate-400 dark:text-slate-500">
-                        {idx + 1}
-                      </div>
+    const costPerKg = totalWeight > 0 ? (totalCost / totalWeight) * 1000 : 0;
+    const batchGrams = batchSize && batchSize > 0 ? batchSize : null;
 
-                      {/* Name + Percentage */}
-                      <div className="col-span-5 min-h-[44px] flex flex-col gap-1 justify-center">
-                        <input
-                          className="w-full h-9 ds-input text-sm font-medium focus:border-[var(--primary)] transition-colors rounded-lg"
-                          value={ing.nome}
-                          onChange={(e) => manager.updateIngredient(ing.id, 'nome', e.target.value)}
-                          placeholder={t('placeholders.ingredientName')}
-                        />
-                        <div className="min-h-[16px] text-[10px] text-slate-400 dark:text-slate-500 font-mono ml-1 px-1">
-                          {pct.toFixed(1)}%
-                        </div>
-                      </div>
+    if (withPhase === 0 && !batchGrams) return null;
 
-                      {/* Quantity */}
-                      <div className="col-span-2 min-h-[44px] flex flex-col gap-1 justify-center">
-                        <input
-                          type="number"
-                          step="0.1"
-                          className={`w-full h-9 ds-input text-right text-sm font-mono focus:border-[var(--primary)] transition-colors rounded-lg ${
-                            ing.quantidade === 0 ? 'border-amber-300 dark:border-amber-600' : ''
-                          }`}
-                          value={ing.quantidade}
-                          onChange={(e) => {
-                            const val = parseFloat(e.target.value) || 0;
-                            manager.updateIngredient(ing.id, 'quantidade', val);
-                          }}
-                        />
-                        <div className="min-h-[16px] text-[10px] text-amber-600 dark:text-amber-500 flex items-center gap-1 px-1">
-                          {ing.quantidade === 0 && (
-                            <>
-                              <AlertTriangle size={12} /> {t('validation.qtyZero')}
-                            </>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Unit */}
-                      <div className="col-span-2 min-h-[44px] flex flex-col gap-1 justify-center">
-                        <select
-                          className="w-full h-9 ds-select text-xs font-bold uppercase text-center cursor-pointer rounded-lg transition-colors focus:border-[var(--primary)]"
-                          value={ing.unidade}
-                          onChange={(e) => manager.updateIngredient(ing.id, 'unidade', e.target.value)}
-                        >
-                          {['GR', 'KG', 'ML', 'LT', 'UN'].map((u) => (
-                            <option key={u} value={u}>
-                              {u}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="min-h-[16px] text-[10px] text-amber-600 dark:text-amber-500 flex items-center gap-1 px-1">
-                          {ing.nome && unitSuggestion(ing.nome, ing.unidade) ? (
-                            <>
-                              <AlertTriangle size={12} /> {unitSuggestion(ing.nome, ing.unidade)}
-                            </>
-                          ) : null}
-                        </div>
-                      </div>
-
-                      {/* Price */}
-                      <div className="col-span-2 min-h-[44px] flex items-center gap-1.5">
-                        <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">{t('common.currency')}</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          className="w-full h-9 ds-input text-right text-sm font-mono focus:border-[var(--primary)] transition-colors rounded-lg"
-                          placeholder="0"
-                          value={ing.custo_unitario || ''}
-                          onChange={(e) =>
-                            manager.updateIngredient(ing.id, 'custo_unitario', parseFloat(e.target.value) || 0)
-                          }
-                        />
-                        <button
-                          onClick={() => manager.removeIngredient(ing.id)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg text-red-600 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/40 transition-colors flex-shrink-0"
-                          title="Remover ingrediente"
-                        >
-                          <Trash2 size={16} strokeWidth={2} />
-                        </button>
-                      </div>
-                    </div>
-                  </SortableItem>
-                );
-              })}
+    return (
+        <div className="mt-3 rounded-xl p-4 space-y-3" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+            <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
+                    Distribuição por Fases
+                </span>
+                {batchGrams && (
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md" style={{ background: 'var(--surface-0)', color: 'var(--primary)' }}>
+                        Lote: {batchGrams}g
+                    </span>
+                )}
             </div>
-          </SortableContext>
-        </DndContext>
-      </div>
 
-      {/* Footer - Totals */}
-      <div className="bg-slate-100 dark:bg-neutral-900/50 p-4 border-t border-slate-200 dark:border-neutral-800 flex justify-between items-center">
-        <div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-            {t('editor.totalWeight')}
-          </p>
-          <p className="text-xl font-mono font-bold text-slate-700 dark:text-slate-200">
-            {totalWeight.toFixed(3)} <span className="text-sm text-slate-400">{t('common.unit')}</span>
-          </p>
+            {/* Phase bars */}
+            {phaseStats.length > 0 && (
+                <div className="space-y-2">
+                    {phaseStats.map(p => (
+                        <div key={p.value} className="flex items-center gap-2">
+                            <div
+                                className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-black flex-shrink-0"
+                                style={{ background: `${p.color}22`, border: `1.5px solid ${p.color}`, color: p.color }}
+                            >
+                                {p.value}
+                            </div>
+                            <div className="flex-1">
+                                <div className="flex justify-between text-[10px] mb-0.5">
+                                    <span style={{ color: 'var(--ink-1)' }}>{p.label.split(' — ')[1]}</span>
+                                    <span className="font-mono font-bold" style={{ color: 'var(--ink-0)' }}>
+                                        {p.pct.toFixed(1)}%
+                                        {batchGrams && <span style={{ color: 'var(--ink-2)' }}> · {((p.pct / 100) * batchGrams).toFixed(1)}g</span>}
+                                    </span>
+                                </div>
+                                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--surface-3)' }}>
+                                    <div className="h-full rounded-full transition-all" style={{ width: `${p.pct}%`, background: p.color }} />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Quick metrics */}
+            <div className="grid grid-cols-3 gap-2 pt-1">
+                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-0)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>Aquosa</p>
+                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: '#3b82f6' }}>{waterPct.toFixed(1)}%</p>
+                </div>
+                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-0)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>Custo/kg</p>
+                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: '#059669' }}>{costPerKg.toFixed(2)}</p>
+                </div>
+                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-0)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>Ingredientes</p>
+                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: 'var(--ink-0)' }}>{ingredientes.length}</p>
+                </div>
+            </div>
         </div>
-        <div className="text-right">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-            {t('editor.estimatedCost')}
-          </p>
-          <p className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
-            {t('common.currency')} {totalCost.toFixed(2)}
-          </p>
+    );
+};
+
+// ─── Main component ────────────────────────────────────────────
+export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
+    ingredientes,
+    manager,
+    newlyAddedId,
+    onDragEnd,
+    batchSize,
+}) => {
+    const { t } = useI18n();
+    const { advancedMode } = useAdvancedMode();
+
+    const totalWeight = useMemo(
+        () => ingredientes.reduce((acc, curr) => acc + (curr.quantidade || 0), 0),
+        [ingredientes]
+    );
+    const totalCost = useMemo(
+        () => ingredientes.reduce((acc, curr) => acc + ((curr.custo_unitario || 0) * (curr.quantidade || 0)), 0),
+        [ingredientes]
+    );
+    const hasFilledIngredients = ingredientes.some(ing => ing.nome.trim() || ing.quantidade > 0);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    );
+
+    return (
+        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
+
+            {/* Header */}
+            <div
+                className="flex items-center justify-between px-5 py-3.5"
+                style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}
+            >
+                <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
+                        {t('editor.ingredients')}
+                    </span>
+                    <HintButton hint={t('hints.ingredients')} />
+                    {advancedMode && (
+                        <span
+                            className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-md"
+                            style={{ background: 'rgba(var(--primary-rgb,59,130,246),0.1)', color: 'var(--primary)' }}
+                        >
+                            ADV
+                        </span>
+                    )}
+                </div>
+                <button
+                    onClick={manager.addIngredient}
+                    className="ds-button"
+                    style={{ color: 'var(--primary)' }}
+                >
+                    {t('buttons.addItem')}
+                </button>
+            </div>
+
+            {/* Warning: total weight zero */}
+            {hasFilledIngredients && totalWeight === 0 && (
+                <div className="mx-3 mt-3 flex items-center gap-2 rounded-lg px-3 py-2 text-xs"
+                    style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', color: '#b45309' }}
+                >
+                    <AlertTriangle size={13} />
+                    {t('validation.totalWeightZero')}
+                </div>
+            )}
+
+            {/* Rows */}
+            <div className="p-3">
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} modifiers={[restrictToVerticalAxis]}>
+                    <SortableContext items={ingredientes} strategy={verticalListSortingStrategy}>
+                        <div className="space-y-1.5">
+                            {ingredientes.map((ing) => {
+                                const pct = totalWeight > 0 ? ((ing.quantidade || 0) / totalWeight) * 100 : 0;
+                                const batchGrams = batchSize && batchSize > 0 && totalWeight > 0
+                                    ? ((ing.quantidade || 0) / totalWeight) * batchSize
+                                    : null;
+
+                                return (
+                                    <SortableItem
+                                        key={ing.id}
+                                        id={ing.id}
+                                        newlyAddedId={newlyAddedId}
+                                        align={advancedMode ? 'start' : 'center'}
+                                    >
+                                        {/* Phase badge (advanced only) */}
+                                        {advancedMode && (
+                                            <div className="flex-shrink-0 mt-1">
+                                                <PhaseBadge
+                                                    phase={ing.phase}
+                                                    onClick={() => manager.updateIngredient(ing.id, 'phase', nextPhase(ing.phase))}
+                                                />
+                                            </div>
+                                        )}
+
+                                        {/* Name + INCI area */}
+                                        <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                                            <input
+                                                className="w-full text-sm bg-transparent outline-none font-medium"
+                                                style={{ color: 'var(--ink-0)' }}
+                                                value={ing.nome}
+                                                onChange={e => manager.updateIngredient(ing.id, 'nome', e.target.value)}
+                                                placeholder={t('placeholders.ingredientName')}
+                                            />
+                                            {advancedMode && (
+                                                <input
+                                                    className="w-full text-[10px] bg-transparent outline-none italic"
+                                                    style={{ color: 'var(--ink-2)' }}
+                                                    value={ing.inci || ''}
+                                                    onChange={e => manager.updateIngredient(ing.id, 'inci', e.target.value)}
+                                                    placeholder="INCI name..."
+                                                />
+                                            )}
+                                        </div>
+
+                                        {/* % badge */}
+                                        <div
+                                            className="flex-shrink-0 text-[10px] font-mono tabular-nums px-1.5 rounded-md flex flex-col items-end"
+                                            style={{
+                                                background: 'var(--surface-2)',
+                                                color: 'var(--ink-2)',
+                                                minWidth: 42,
+                                            }}
+                                        >
+                                            <span style={{ lineHeight: '20px' }}>{pct.toFixed(1)}%</span>
+                                            {advancedMode && batchGrams !== null && (
+                                                <span style={{ color: 'var(--primary)', lineHeight: '14px', fontSize: 9 }}>
+                                                    {batchGrams.toFixed(2)}g
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Qty */}
+                                        <input
+                                            type="number"
+                                            step="0.001"
+                                            min="0"
+                                            className="ds-input flex-shrink-0 text-right font-mono"
+                                            style={{
+                                                width: 76,
+                                                borderColor: ing.quantidade === 0 ? 'rgba(245,158,11,0.6)' : undefined,
+                                                background: ing.quantidade === 0 ? 'rgba(245,158,11,0.06)' : undefined,
+                                            }}
+                                            value={ing.quantidade}
+                                            onChange={e => manager.updateIngredient(ing.id, 'quantidade', parseFloat(e.target.value) || 0)}
+                                            onFocus={e => e.currentTarget.select()}
+                                        />
+
+                                        {/* Unit */}
+                                        <select
+                                            className="ds-select flex-shrink-0 text-xs font-bold uppercase text-center"
+                                            style={{ width: 64 }}
+                                            value={ing.unidade}
+                                            onChange={e => manager.updateIngredient(ing.id, 'unidade', e.target.value)}
+                                        >
+                                            {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+                                        </select>
+
+                                        {/* Unit price */}
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            className="ds-input flex-shrink-0 text-right font-mono"
+                                            style={{ width: 84 }}
+                                            placeholder="0.00"
+                                            value={ing.custo_unitario || ''}
+                                            onChange={e => manager.updateIngredient(ing.id, 'custo_unitario', parseFloat(e.target.value) || 0)}
+                                            onFocus={e => e.currentTarget.select()}
+                                        />
+
+                                        {/* Delete */}
+                                        <button
+                                            onClick={() => manager.removeIngredient(ing.id)}
+                                            className="flex-shrink-0 ds-icon-button opacity-50 hover:opacity-100 hover:text-red-500"
+                                            title={t('common.remove')}
+                                        >
+                                            <Trash2 size={13} />
+                                        </button>
+
+                                    </SortableItem>
+                                );
+                            })}
+                        </div>
+                    </SortableContext>
+                </DndContext>
+
+                {ingredientes.length === 0 && (
+                    <p className="text-xs italic py-6 text-center" style={{ color: 'var(--ink-2)' }}>
+                        {t('editor.emptyHint')}
+                    </p>
+                )}
+
+                {/* Advanced: phase statistics */}
+                {advancedMode && ingredientes.length > 0 && (
+                    <PhaseStats
+                        ingredientes={ingredientes}
+                        totalWeight={totalWeight}
+                        totalCost={totalCost}
+                        batchSize={batchSize}
+                    />
+                )}
+            </div>
+
+            {/* Footer totals */}
+            <div
+                className="flex items-center justify-between px-5 py-3"
+                style={{ background: 'var(--surface-1)', borderTop: '1px solid var(--border)' }}
+            >
+                <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
+                        {t('editor.totalWeight')}
+                    </p>
+                    <p className="text-base font-mono font-bold" style={{ color: 'var(--ink-0)' }}>
+                        {totalWeight.toFixed(3)} <span className="text-xs" style={{ color: 'var(--ink-2)' }}>{t('common.unit')}</span>
+                    </p>
+                </div>
+                <div className="text-right">
+                    <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
+                        {t('editor.estimatedCost')}
+                    </p>
+                    <p className="text-base font-mono font-bold" style={{ color: '#059669' }}>
+                        {t('common.currency')} {totalCost.toFixed(2)}
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };

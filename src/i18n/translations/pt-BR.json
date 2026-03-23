@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "FormulaPro",
+    "appName": "Kerus",
     "systemTitle": "SISTEMA DE PADRONIZAÇÃO INDUSTRIAL",
     "version": "v1.0.0-stable",
     "systemReady": "SYSTEM: READY",
@@ -16,7 +16,9 @@
     "edit": "Editar",
     "loading": "Processando...",
     "preview": "Preview",
-    "file": "Arquivo"
+    "file": "Arquivo",
+    "add": "Adicionar",
+    "remove": "Remover"
   },
   "buttons": {
     "newSheet": "Nova Ficha",
@@ -40,7 +42,16 @@
   },
   "nav": {
     "backToHub": "Voltar ao Hub",
-    "settings": "Configurações"
+    "settings": "Configurações",
+    "dashboard": "Dashboard",
+    "formulas": "Fórmulas",
+    "quotations": "Orçamentos",
+    "stock": "Estoque",
+    "soon": "Em breve",
+    "modules": "Módulos",
+    "collapse": "Recolher",
+    "darkMode": "Modo Escuro",
+    "lightMode": "Modo Claro"
   },
   "hub": {
     "recent": "Recentes",
@@ -55,7 +66,8 @@
     "access": "Acessar",
     "upload": "Upload",
     "paste": "Colar",
-    "choose": "Escolher"
+    "choose": "Escolher",
+    "noRecipes": "Nenhuma fórmula criada ainda."
   },
   "wizard": {
     "title": "Assistente IA",
@@ -103,7 +115,10 @@
     "previewSize": "210mm x 297mm",
     "statusLabel": "Status da ficha",
     "statusDraft": "RASCUNHO",
-    "statusFinal": "FINAL"
+    "statusFinal": "FINAL",
+    "editTitle": "Editar Fórmula",
+    "newTitle": "Nova Fórmula",
+    "options": "Opções"
   },
   "placeholders": {
     "productName": "Ex: Pão de Leite Especial",
@@ -115,7 +130,8 @@
     "jsonImportSample": "{\\n  \"nome_formula\": \"Tempero Lemon Pepper\",\\n  \"empresa_responsavel\": \"\",\\n  \"ingredientes\": [\\n    { \"nome\": \"Sal refinado\", \"quantidade\": 12.5, \"unidade\": \"KG\" }\\n  ],\\n  \"modo_preparo\": [],\\n  \"observacoes\": \"\"\\n}"
   },
   "preview": {
-    "draftBadge": "Pré-visualização em rascunho",
+    "draftBadge": "Pré-visualização em rascunho. Marque como FINAL para exportar.",
+    "noRecipe": "Nenhuma fórmula carregada.",
     "zoomIn": "Zoom +",
     "zoomOut": "Zoom -",
     "zoomReset": "Reset 100%"
@@ -128,7 +144,10 @@
     "totalWeightZero": "Peso total está zerado com ingredientes preenchidos.",
     "qtyZero": "Quantidade zerada",
     "unitSolid": "Unidade pode estar em KG/GR para sólidos.",
-    "unitLiquid": "Unidade pode estar em LT/ML para líquidos."
+    "unitLiquid": "Unidade pode estar em LT/ML para líquidos.",
+    "recipeNameRequired": "Nome da fórmula é obrigatório.",
+    "ingredientNameRequired": "Ingrediente {index}: nome é obrigatório.",
+    "ingredientQtyRequired": "Ingrediente {index}: quantidade deve ser maior que zero."
   },
   "messages": {
     "draftExportBlock": "A ficha está como RASCUNHO. Marque como FINAL para exportar.",
@@ -154,6 +173,41 @@
     "title": "Histórico",
     "count": "FICHAS"
   },
+  "dashboard": {
+    "totalFormulas": "Total de Fórmulas",
+    "finalFormulas": "Finalizadas",
+    "drafts": "Rascunhos",
+    "quotations": "Orçamentos",
+    "recentActivity": "Atividade Recente",
+    "noActivity": "Nenhuma atividade ainda.",
+    "modules": "Módulos",
+    "formulasModuleDesc": "Criar e gerenciar fichas técnicas",
+    "quotationsModuleDesc": "Gerar e controlar orçamentos",
+    "stockModuleDesc": "Controle de estoque e insumos"
+  },
+  "formulas": {
+    "searchPlaceholder": "Buscar fórmula...",
+    "filterAll": "Todas",
+    "filterFinal": "Final",
+    "filterDraft": "Rascunho",
+    "emptyTitle": "Nenhuma fórmula criada",
+    "emptyDesc": "Comece criando sua primeira ficha técnica.",
+    "noResults": "Nenhum resultado encontrado.",
+    "clearFilter": "Limpar filtros"
+  },
+  "import": {
+    "button": "Importar",
+    "dropOrClick": "Arraste o arquivo ou clique para selecionar",
+    "jsonAccept": "Aceita arquivos .json",
+    "xmlAccept": "Aceita arquivos .xml",
+    "templateTitle": "Estrutura de referência",
+    "pasteCode": "Cole ou edite o código",
+    "confirm": "Importar",
+    "parseError": "Não foi possível processar o arquivo. Verifique a estrutura e tente novamente.",
+    "emptyError": "O campo de código está vazio.",
+    "advancedHint": "Modo avançado ativo — edite o código diretamente.",
+    "basicHint": "Selecione um arquivo para importar."
+  },
   "printable": {
     "title": "FORMULAÇÃO TÉCNICA",
     "subtitle": "Controle de Produção Padronizado",
@@ -170,12 +224,100 @@
   "settings": {
     "title": "Configurações",
     "primaryColor": "Cor Principal",
-    "language": "Idioma"
+    "language": "Idioma",
+    "company": "Empresa",
+    "companyName": "Nome da Empresa",
+    "responsibleName": "Responsável",
+    "phone": "Telefone",
+    "appearance": "Aparência",
+    "theme": "Tema",
+    "saved": "Configurações salvas!",
+    "advanced": "Opções Avançadas",
+    "advancedDesc": "Ativa recursos adicionais de controle para usuários experientes.",
+    "advancedToggle": "Ativar Modo Avançado",
+    "advancedActive": "Modo avançado ativo. O editor de código aparecerá nos modais de importação."
+  },
+  "quotations": {
+    "comingSoonDesc": "O módulo de orçamentos está em desenvolvimento e será lançado em breve.",
+    "pageTitle": "Orçamentos",
+    "newQuotation": "Novo Orçamento",
+    "emptyTitle": "Nenhum orçamento criado",
+    "emptyDesc": "Crie seu primeiro orçamento para serviços prestados.",
+    "searchPlaceholder": "Buscar orçamento...",
+    "filterAll": "Todos",
+    "filterDraft": "Rascunho",
+    "filterSent": "Enviado",
+    "filterApproved": "Aprovado",
+    "noResults": "Nenhum resultado encontrado.",
+    "clearFilter": "Limpar filtros",
+    "serviceTitle": "Título / Serviço",
+    "clientName": "Nome do Cliente",
+    "deliveryMethod": "Modo de Entrega",
+    "deliveryFormat": "Formato de Entrega",
+    "deliveryOnline": "Online",
+    "deliveryPresencial": "Presencial",
+    "deliveryOther": "Outro",
+    "linkedFormulas": "Fórmulas Vinculadas",
+    "linkFormula": "Vincular Fórmula",
+    "noFormulasLinked": "Nenhuma fórmula vinculada",
+    "payment": "Pagamento",
+    "totalValue": "Valor Total",
+    "entryValue": "Entrada",
+    "installments": "Parcelas",
+    "installmentValue": "Valor por Parcela",
+    "paymentTerms": "Condições (ex: 30/60/90 dias)",
+    "startDate": "Data de Início",
+    "notes": "Observações",
+    "statusDraft": "Rascunho",
+    "statusSent": "Enviado",
+    "statusApproved": "Aprovado",
+    "statusRejected": "Recusado",
+    "markSent": "Marcar como Enviado",
+    "markApproved": "Marcar como Aprovado",
+    "saveQuotation": "Salvar Orçamento",
+    "deleteQuotation": "Excluir",
+    "editQuotation": "Editar",
+    "exportPdf": "Exportar PDF",
+    "exportJson": "Exportar JSON",
+    "validationTitle": "Título do orçamento é obrigatório.",
+    "validationValue": "Informe o valor total do serviço.",
+    "saved": "Orçamento salvo!",
+    "deleted": "Orçamento excluído.",
+    "wizardPlaceholder": "Descreva o serviço, fórmulas e condições de pagamento em texto livre...",
+    "items": "Itens",
+    "pickFormula": "Vincular Fórmula",
+    "searchFormula": "Buscar fórmula por nome...",
+    "noFormulasFound": "Nenhuma fórmula encontrada.",
+    "unlinkFormula": "Desvincular fórmula",
+    "itemPlaceholder": "Descrição do item ou serviço...",
+    "changeFormula": "Alterar fórmula vinculada"
   },
   "languages": {
     "pt-BR": "Português (Brasil)",
     "en": "Inglês",
     "es": "Espanhol"
+  },
+  "hints": {
+    "newFormula": "Cria uma nova ficha técnica em branco. Todos os campos ficam disponíveis para preenchimento.",
+    "wizard": "O Assistente IA gera uma ficha técnica completa automaticamente a partir de uma foto de receita, caderno ou descrição em texto.",
+    "import": "Importe fichas salvas em formato XML (backup de exportação) ou JSON (estrutura de dados).",
+    "presets": "Modelos pré-configurados com estrutura base. Útil para iniciar fichas de categorias comuns mais rapidamente.",
+    "filterStatus": "Filtre as fichas por status. 'Todas' exibe tudo, 'Final' mostra apenas as aprovadas para produção, 'Rascunho' mostra as que ainda estão em edição.",
+    "finalize": "Valida a ficha e marca como Final, habilitando exportação em PDF e XML. Fichas em rascunho não podem ser exportadas.",
+    "focusMode": "Oculta a barra de ferramentas para maximizar o espaço de edição e minimizar distrações.",
+    "exportPdf": "Abre o diálogo de impressão para salvar como PDF. Disponível apenas para fichas com status Final.",
+    "exportXml": "Exporta a ficha em formato XML para backup ou reimportação futura no sistema.",
+    "statusBadge": "Indica a situação da ficha. Rascunho: ficha em edição, exportação bloqueada. Final: aprovada para produção, exportação disponível em PDF e XML.",
+    "recentActivity": "Lista as últimas fichas técnicas criadas ou editadas. Clique em uma ficha para abrir o preview completo.",
+    "advancedMode": "Ativa controles extras de importação: um editor de código aparece nos modais de importação para colar ou editar JSON/XML diretamente.",
+    "primaryColor": "A cor de destaque aplicada em botões, ícones e elementos interativos em todo o sistema.",
+    "template": "Estrutura de referência do formato aceito pelo sistema. Use como guia ao criar seu arquivo de importação manualmente.",
+    "metrics": "Resumo das fichas técnicas cadastradas. Clique em qualquer card para acessar o módulo correspondente.",
+    "company": "Dados da empresa exibidos nas fichas técnicas exportadas. Deixe em branco para omitir.",
+    "newQuotation": "Cria um novo orçamento. Informe os serviços, fórmulas vinculadas, valores e condições de pagamento.",
+    "quotationAI": "O Assistente IA interpreta uma descrição em texto ou imagem e gera automaticamente um orçamento estruturado.",
+    "quotationLink": "Vincule fórmulas do sistema a este orçamento. Ao finalizar, elas poderão ser exportadas junto ao documento.",
+    "ingredients": "Adicione os ingredientes da fórmula. Use % para concentrações, GR/KG para sólidos, ML/LT para líquidos. O custo unitário é opcional e calcula o custo estimado total automaticamente."
   },
   "themes": {
     "safetyOrange": "Laranja Segurança",

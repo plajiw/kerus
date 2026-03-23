@@ -73,6 +73,7 @@ export const useRecipeManager = () => {
 
     const handleFieldChange = (field: keyof Recipe, value: any) => {
         setCurrentRecipe(prev => ({ ...prev, [field]: value }));
+        if (validationErrors.length > 0) setValidationErrors([]);
     };
 
     // Ingredients Logic
@@ -95,6 +96,7 @@ export const useRecipeManager = () => {
     };
 
     const updateIngredient = (id: string, field: keyof Ingredient, value: any) => {
+        if (validationErrors.length > 0) setValidationErrors([]);
         setCurrentRecipe(prev => {
             const updatedIngs = prev.ingredientes.map(ing => {
                 if (ing.id === id) {
@@ -176,12 +178,12 @@ export const useRecipeManager = () => {
         });
     };
 
-    const validateRecipe = () => {
+    const validateRecipe = (t: (key: string, params?: Record<string, string | number>) => string) => {
         const errors: string[] = [];
-        if (!currentRecipe.nome_formula.trim()) errors.push('Nome da receita é obrigatório');
+        if (!currentRecipe.nome_formula.trim()) errors.push(t('validation.recipeNameRequired'));
         currentRecipe.ingredientes.forEach((ing, index) => {
-            if (!ing.nome.trim()) errors.push(`Ingrediente ${index + 1}: Nome é obrigatório`);
-            if (ing.quantidade <= 0) errors.push(`Ingrediente ${index + 1}: Quantidade deve ser maior que zero`);
+            if (!ing.nome.trim()) errors.push(t('validation.ingredientNameRequired', { index: index + 1 }));
+            if (ing.quantidade <= 0) errors.push(t('validation.ingredientQtyRequired', { index: index + 1 }));
         });
         setValidationErrors(errors);
         return errors.length === 0;

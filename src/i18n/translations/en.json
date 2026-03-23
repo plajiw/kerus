@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "FormulaPro",
+    "appName": "Kerus",
     "systemTitle": "INDUSTRIAL STANDARDIZATION SYSTEM",
     "version": "v1.0.0-stable",
     "systemReady": "SYSTEM: READY",
@@ -16,7 +16,9 @@
     "edit": "Edit",
     "loading": "Processing...",
     "preview": "Preview",
-    "file": "File"
+    "file": "File",
+    "add": "Add",
+    "remove": "Remove"
   },
   "buttons": {
     "newSheet": "New Sheet",
@@ -40,7 +42,16 @@
   },
   "nav": {
     "backToHub": "Back to Hub",
-    "settings": "Settings"
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "formulas": "Formulas",
+    "quotations": "Quotations",
+    "stock": "Stock",
+    "soon": "Coming soon",
+    "modules": "Modules",
+    "collapse": "Collapse",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode"
   },
   "hub": {
     "recent": "Recent",
@@ -55,7 +66,8 @@
     "access": "Access",
     "upload": "Upload",
     "paste": "Paste",
-    "choose": "Choose"
+    "choose": "Choose",
+    "noRecipes": "No formulas created yet."
   },
   "wizard": {
     "title": "AI Assistant",
@@ -103,7 +115,10 @@
     "previewSize": "210mm x 297mm",
     "statusLabel": "Sheet status",
     "statusDraft": "DRAFT",
-    "statusFinal": "FINAL"
+    "statusFinal": "FINAL",
+    "editTitle": "Edit Formula",
+    "newTitle": "New Formula",
+    "options": "Options"
   },
   "placeholders": {
     "productName": "Ex: Special Milk Bread",
@@ -115,7 +130,8 @@
     "jsonImportSample": "{\\n  \"nome_formula\": \"Lemon Pepper Seasoning\",\\n  \"empresa_responsavel\": \"\",\\n  \"ingredientes\": [\\n    { \"nome\": \"Refined salt\", \"quantidade\": 12.5, \"unidade\": \"KG\" }\\n  ],\\n  \"modo_preparo\": [],\\n  \"observacoes\": \"\"\\n}"
   },
   "preview": {
-    "draftBadge": "Draft preview",
+    "draftBadge": "Draft preview. Mark as FINAL to export.",
+    "noRecipe": "No formula loaded.",
     "zoomIn": "Zoom +",
     "zoomOut": "Zoom -",
     "zoomReset": "Reset 100%"
@@ -128,7 +144,10 @@
     "totalWeightZero": "Total weight is zero with filled ingredients.",
     "qtyZero": "Quantity is zero",
     "unitSolid": "Unit may be KG/GR for solids.",
-    "unitLiquid": "Unit may be LT/ML for liquids."
+    "unitLiquid": "Unit may be LT/ML for liquids.",
+    "recipeNameRequired": "Formula name is required.",
+    "ingredientNameRequired": "Ingredient {index}: name is required.",
+    "ingredientQtyRequired": "Ingredient {index}: quantity must be greater than zero."
   },
   "messages": {
     "draftExportBlock": "This sheet is DRAFT. Mark as FINAL to export.",
@@ -154,6 +173,41 @@
     "title": "History",
     "count": "SHEETS"
   },
+  "dashboard": {
+    "totalFormulas": "Total Formulas",
+    "finalFormulas": "Finalized",
+    "drafts": "Drafts",
+    "quotations": "Quotations",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No activity yet.",
+    "modules": "Modules",
+    "formulasModuleDesc": "Create and manage technical sheets",
+    "quotationsModuleDesc": "Generate and track quotations",
+    "stockModuleDesc": "Stock and ingredient control"
+  },
+  "formulas": {
+    "searchPlaceholder": "Search formula...",
+    "filterAll": "All",
+    "filterFinal": "Final",
+    "filterDraft": "Draft",
+    "emptyTitle": "No formulas yet",
+    "emptyDesc": "Start by creating your first technical sheet.",
+    "noResults": "No results found.",
+    "clearFilter": "Clear filters"
+  },
+  "import": {
+    "button": "Import",
+    "dropOrClick": "Drop file here or click to select",
+    "jsonAccept": "Accepts .json files",
+    "xmlAccept": "Accepts .xml files",
+    "templateTitle": "Reference structure",
+    "pasteCode": "Paste or edit code",
+    "confirm": "Import",
+    "parseError": "Could not parse the file. Check the structure and try again.",
+    "emptyError": "The code field is empty.",
+    "advancedHint": "Advanced mode active — edit code directly.",
+    "basicHint": "Select a file to import."
+  },
   "printable": {
     "title": "TECHNICAL FORMULATION",
     "subtitle": "Standardized Production Control",
@@ -170,12 +224,100 @@
   "settings": {
     "title": "Settings",
     "primaryColor": "Primary Color",
-    "language": "Language"
+    "language": "Language",
+    "company": "Company",
+    "companyName": "Company Name",
+    "responsibleName": "Responsible",
+    "phone": "Phone",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "saved": "Settings saved!",
+    "advanced": "Advanced Options",
+    "advancedDesc": "Enables additional control features for experienced users.",
+    "advancedToggle": "Enable Advanced Mode",
+    "advancedActive": "Advanced mode active. The code editor will appear in import modals."
+  },
+  "quotations": {
+    "comingSoonDesc": "The quotations module is under development and will be launched soon.",
+    "pageTitle": "Quotations",
+    "newQuotation": "New Quotation",
+    "emptyTitle": "No quotations yet",
+    "emptyDesc": "Create your first quotation for rendered services.",
+    "searchPlaceholder": "Search quotation...",
+    "filterAll": "All",
+    "filterDraft": "Draft",
+    "filterSent": "Sent",
+    "filterApproved": "Approved",
+    "noResults": "No results found.",
+    "clearFilter": "Clear filters",
+    "serviceTitle": "Title / Service",
+    "clientName": "Client Name",
+    "deliveryMethod": "Delivery Method",
+    "deliveryFormat": "Delivery Format",
+    "deliveryOnline": "Online",
+    "deliveryPresencial": "In Person",
+    "deliveryOther": "Other",
+    "linkedFormulas": "Linked Formulas",
+    "linkFormula": "Link Formula",
+    "noFormulasLinked": "No formulas linked",
+    "payment": "Payment",
+    "totalValue": "Total Value",
+    "entryValue": "Down Payment",
+    "installments": "Installments",
+    "installmentValue": "Installment Value",
+    "paymentTerms": "Terms (e.g. 30/60/90 days)",
+    "startDate": "Start Date",
+    "notes": "Notes",
+    "statusDraft": "Draft",
+    "statusSent": "Sent",
+    "statusApproved": "Approved",
+    "statusRejected": "Rejected",
+    "markSent": "Mark as Sent",
+    "markApproved": "Mark as Approved",
+    "saveQuotation": "Save Quotation",
+    "deleteQuotation": "Delete",
+    "editQuotation": "Edit",
+    "exportPdf": "Export PDF",
+    "exportJson": "Export JSON",
+    "validationTitle": "Quotation title is required.",
+    "validationValue": "Enter the total service value.",
+    "saved": "Quotation saved!",
+    "deleted": "Quotation deleted.",
+    "wizardPlaceholder": "Describe the service, formulas and payment conditions in free text...",
+    "items": "Items",
+    "pickFormula": "Link Formula",
+    "searchFormula": "Search formula by name...",
+    "noFormulasFound": "No formulas found.",
+    "unlinkFormula": "Unlink formula",
+    "itemPlaceholder": "Item or service description...",
+    "changeFormula": "Change linked formula"
   },
   "languages": {
     "pt-BR": "Portuguese (Brazil)",
     "en": "English",
     "es": "Spanish"
+  },
+  "hints": {
+    "newFormula": "Creates a new blank technical sheet. All fields will be available to fill in.",
+    "wizard": "The AI Assistant automatically generates a complete technical sheet from a recipe photo, notebook, or text description.",
+    "import": "Import saved sheets in XML format (export backup) or JSON (data structure).",
+    "presets": "Pre-configured templates with base structure. Useful for starting common category sheets faster.",
+    "filterStatus": "Filter sheets by status. 'All' shows everything, 'Final' shows only approved sheets, 'Draft' shows those still being edited.",
+    "finalize": "Validates the sheet and marks it as Final, enabling PDF and XML export. Draft sheets cannot be exported.",
+    "focusMode": "Hides the toolbar to maximize editing space and minimize distractions.",
+    "exportPdf": "Opens the print dialog to save as PDF. Only available for sheets with Final status.",
+    "exportXml": "Exports the sheet in XML format for backup or future reimport.",
+    "statusBadge": "Indicates the sheet's current state. Draft: sheet in editing, export blocked. Final: approved for production, export available as PDF and XML.",
+    "recentActivity": "Lists the latest technical sheets created or edited. Click any item to open the full preview.",
+    "advancedMode": "Enables extra import controls: a code editor appears in import modals to paste or edit JSON/XML directly.",
+    "primaryColor": "The accent color applied to buttons, icons and interactive elements throughout the system.",
+    "template": "Reference structure of the format accepted by the system. Use as a guide when creating your import file manually.",
+    "metrics": "Summary of registered technical sheets. Click any card to access the corresponding module.",
+    "company": "Company data displayed in exported technical sheets. Leave blank to omit.",
+    "newQuotation": "Creates a new quotation. Enter services, linked formulas, amounts and payment terms.",
+    "quotationAI": "The AI Assistant interprets a text or image description and automatically generates a structured quotation.",
+    "quotationLink": "Link formulas from the system to this quotation. When finalized, they can be exported together.",
+    "ingredients": "Add the formula ingredients. Use % for concentrations, GR/KG for solids, ML/LT for liquids. Unit cost is optional and automatically calculates the total estimated cost."
   },
   "themes": {
     "safetyOrange": "Safety Orange",

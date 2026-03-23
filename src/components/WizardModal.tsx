@@ -9,7 +9,6 @@ interface WizardModalProps {
 }
 
 export const WizardModal: React.FC<WizardModalProps> = ({ wizard, animationsEnabled }) => {
-    if (!wizard.isOpen) return null;
     const { t } = useI18n();
     const previewUrl = useMemo(() => {
         return wizard.selectedFile ? URL.createObjectURL(wizard.selectedFile) : '';
@@ -20,6 +19,8 @@ export const WizardModal: React.FC<WizardModalProps> = ({ wizard, animationsEnab
             if (previewUrl) URL.revokeObjectURL(previewUrl);
         };
     }, [previewUrl]);
+
+    if (!wizard.isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha Técnica Pro</title>
+    <title>Kerus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script>
         (function () {
             try {
@@ -72,6 +73,25 @@
             --ink-0: #1a1a1a;
             --ink-1: #4a4a4a;
             --ink-2: #757575;
+
+            /* ── Control height tokens ─────────────────────────────
+               All interactive controls (button, input, select,
+               icon-button) share a single height so rows stay
+               optically aligned without manual adjustments.
+               sm  = 32px  compact lists / inline filters
+               md  = 36px  standard (default)
+               lg  = 44px  hero / title inputs                      */
+            --h-control-sm: 32px;
+            --h-control:    36px;
+            --h-control-lg: 44px;
+
+            /* Horizontal padding tokens */
+            --px-control:   12px;
+            --px-btn:       16px;
+
+            /* Font size tokens */
+            --text-control: 13px;
+            --text-label:   11px;   /* uppercase tracking labels    */
         }
 
         html.dark {
@@ -134,9 +154,11 @@
             box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 59, 130, 246), 0.1);
         }
 
+        /* ── Input ────────────────────────────────────────────── */
         .ds-input {
-            height: 36px;
-            padding: 0 12px;
+            height: var(--h-control);
+            padding: 0 var(--px-control);
+            font-size: var(--text-control);
         }
 
         .ds-input::-webkit-outer-spin-button,
@@ -159,28 +181,38 @@
         }
 
         .ds-input-lg {
-            height: 44px;
+            height: var(--h-control-lg);
             padding: 0 14px;
         }
 
+        /* ── Select ───────────────────────────────────────────── */
+        .ds-select {
+            height: var(--h-control);
+            padding: 0 var(--px-control);
+            font-size: var(--text-control);
+            cursor: pointer;
+        }
+
+        /* ── Textarea ─────────────────────────────────────────── */
         .ds-textarea {
             padding: 12px;
             min-height: 120px;
+            font-size: var(--text-control);
         }
 
+        /* ── Button (ghost / secondary) ───────────────────────── */
         .ds-button {
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: transparent;
             color: var(--ink-1);
-            height: 38px;
-            padding: 0 16px !important;
-            font-size: 13px !important;
+            height: var(--h-control);
+            padding: 0 var(--px-btn) !important;
+            font-size: var(--text-control) !important;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             white-space: nowrap;
             line-height: 1;
             transition: all 0.2s ease;
@@ -195,19 +227,19 @@
             transform: scale(0.98);
         }
 
+        /* ── Button primary ───────────────────────────────────── */
         .ds-button-primary {
             border-radius: var(--radius-sm);
             border: 1px solid var(--primary);
             background: var(--primary);
             color: #ffffff;
-            height: 38px;
-            padding: 0 16px !important;
-            font-size: 13px !important;
+            height: var(--h-control);
+            padding: 0 var(--px-btn) !important;
+            font-size: var(--text-control) !important;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             white-space: nowrap;
             line-height: 1;
             transition: all 0.2s ease;
@@ -224,9 +256,10 @@
             transform: scale(0.98);
         }
 
+        /* ── Icon button (square, icon only) ──────────────────── */
         .ds-icon-button {
-            width: 36px;
-            height: 36px;
+            width: var(--h-control);
+            height: var(--h-control);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -236,10 +269,73 @@
             color: var(--ink-1);
             transition: all 0.2s ease;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .ds-icon-button:hover {
             background-color: var(--surface-2);
+        }
+
+        /* ── Skeleton / shimmer ────────────────────────────────── */
+        @keyframes kerus-shimmer {
+            to { background-position: -200% center; }
+        }
+
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                var(--surface-2) 25%,
+                var(--surface-3) 50%,
+                var(--surface-2) 75%
+            );
+            background-size: 200% auto;
+            animation: kerus-shimmer 1.4s linear infinite;
+            border-radius: var(--radius-sm);
+        }
+
+        /* ── Loading overlay ───────────────────────────────────── */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            animation: kerus-fade-in 0.15s ease;
+        }
+
+        .loading-card {
+            background: var(--surface-0);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes kerus-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid var(--surface-3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: kerus-spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes kerus-fade-in {
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
 
         .ds-drop {
