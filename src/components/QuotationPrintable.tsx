@@ -1,6 +1,7 @@
 import React from 'react';
 import { Quotation } from '../types';
 import { useCompanySettings } from '../hooks/useCompanySettings';
+import { isRichTextEmpty, toRenderableRichTextHtml } from '../utils/richTextUtils';
 
 interface Props {
     quotation: Quotation;
@@ -30,6 +31,7 @@ const DELIVERY_LABELS: Record<string, string> = {
 export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'print' }) => {
     const { settings } = useCompanySettings();
     const isDraft = q.status === 'RASCUNHO';
+    const notesHtml = toRenderableRichTextHtml(q.notes);
 
     const companyName = settings.nomeEmpresa || '';
     const responsible = settings.nomeResponsavel || '';
@@ -49,7 +51,6 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                 fontSize: 11,
             }}
         >
-            {/* Draft watermark */}
             {isDraft && (
                 <div
                     className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -72,8 +73,6 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
             )}
 
             <div className="relative" style={{ zIndex: 1, padding: '14mm 16mm' }}>
-
-                {/* ── Header ────────────────────────────────── */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, paddingBottom: 16, borderBottom: `2px solid ${accent}` }}>
                     <div>
                         {companyName && (
@@ -119,13 +118,12 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                     </div>
                 </div>
 
-                {/* ── Service title ─────────────────────────── */}
                 <div style={{ marginBottom: 20 }}>
                     <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888', marginBottom: 6 }}>
                         Serviço Prestado
                     </div>
                     <div style={{ fontSize: 18, fontWeight: 900, letterSpacing: '-0.01em', lineHeight: 1.2 }}>
-                        {q.title || '—'}
+                        {q.title || '-'}
                     </div>
                     {q.clientName && (
                         <div style={{ marginTop: 6, fontSize: 11, color: '#444' }}>
@@ -134,7 +132,6 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                     )}
                 </div>
 
-                {/* ── Items ─────────────────────────────────── */}
                 {q.items.length > 0 && (
                     <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888', marginBottom: 8 }}>
@@ -152,7 +149,7 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                                 {q.items.map((item, idx) => (
                                     <tr key={item.id} style={{ background: idx % 2 === 0 ? '#fff' : '#fafafa' }}>
                                         <td style={{ padding: '7px 10px', fontSize: 10, color: '#888', borderBottom: '1px solid #f0f0f0', verticalAlign: 'middle', width: 28 }}>{idx + 1}</td>
-                                        <td style={{ padding: '7px 10px', fontSize: 11, fontWeight: 600, borderBottom: '1px solid #f0f0f0', verticalAlign: 'middle' }}>{item.name || '—'}</td>
+                                        <td style={{ padding: '7px 10px', fontSize: 11, fontWeight: 600, borderBottom: '1px solid #f0f0f0', verticalAlign: 'middle' }}>{item.name || '-'}</td>
                                         <td style={{ padding: '7px 10px', fontSize: 9, textAlign: 'center', borderBottom: '1px solid #f0f0f0', verticalAlign: 'middle' }}>
                                             <span style={{
                                                 padding: '2px 8px',
@@ -173,7 +170,6 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                     </div>
                 )}
 
-                {/* ── Payment ───────────────────────────────── */}
                 {q.payment.total > 0 && (
                     <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888', marginBottom: 10 }}>
@@ -184,20 +180,34 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                                 <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#888' }}>Valor Total do Serviço</span>
                                 <span style={{ fontSize: 20, fontWeight: 900, color: '#1a1a1a' }}>{fmt(q.payment.total)}</span>
                             </div>
+                            {q.payment.method && (
+                                <div style={{ padding: '10px 16px', background: '#f5f5f5', borderBottom: '1px solid #e8e8e8', fontSize: 10,  color: '#555', display: 'flex', gap: 16 }}>
+                                    <span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Método: {q.payment.method}</span>
+                                    {(!!q.payment.interestRate || !!q.payment.penaltyFee) && (
+                                        <span style={{ color: '#b45309', fontWeight: 600 }}>
+                                            Encargos (Atraso): Juros {q.payment.interestRate || 0}% a.m. | Multa {q.payment.penaltyFee || 0}%
+                                        </span>
+                                    )}
+                                </div>
+                            )}
                             <div style={{ padding: '12px 16px' }}>
                                 {q.payment.entry > 0 && (
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontSize: 11 }}>
-                                        <span style={{ color: '#555' }}>Entrada</span>
+                                        <span style={{ color: '#555' }}>Sinal / Entrada</span>
                                         <span style={{ fontWeight: 700 }}>{fmt(q.payment.entry)}</span>
                                     </div>
                                 )}
                                 {q.payment.installments > 0 && (
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontSize: 11 }}>
                                         <span style={{ color: '#555' }}>
-                                            {q.payment.installments}x de {fmt(q.payment.installmentValue)}
-                                            {q.payment.paymentTerms ? ` — ${q.payment.paymentTerms}` : ''}
+                                            Saldo Parcelado ({q.payment.installments}x de {fmt(q.payment.installmentValue)})
                                         </span>
                                         <span style={{ fontWeight: 700 }}>{fmt(q.payment.total - q.payment.entry)}</span>
+                                    </div>
+                                )}
+                                {q.payment.paymentTerms && (
+                                    <div style={{ marginTop: 10, fontSize: 10, color: '#666', fontStyle: 'italic', borderTop: '1px solid #f0f0f0', paddingTop: 8 }}>
+                                        {q.payment.paymentTerms}
                                     </div>
                                 )}
                                 {q.payment.startDate && (
@@ -210,7 +220,6 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                     </div>
                 )}
 
-                {/* ── Delivery ──────────────────────────────── */}
                 <div style={{ marginBottom: 24 }}>
                     <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888', marginBottom: 8 }}>
                         Entrega do Serviço
@@ -229,30 +238,38 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                     </div>
                 </div>
 
-                {/* ── Notes ─────────────────────────────────── */}
-                {q.notes && (
+                {!isRichTextEmpty(notesHtml) && (
                     <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888', marginBottom: 8 }}>
                             Observações
                         </div>
-                        <div style={{ padding: '12px 14px', background: '#f9fafb', borderRadius: 8, border: '1px solid #eee', fontSize: 11, color: '#444', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
-                            {q.notes}
-                        </div>
+                        <div
+                            className="rte-output"
+                            style={{ padding: '12px 14px', background: '#f9fafb', borderRadius: 8, border: '1px solid #eee', fontSize: 11, color: '#444', lineHeight: 1.6 }}
+                            dangerouslySetInnerHTML={{ __html: notesHtml }}
+                        />
                     </div>
                 )}
 
-                {/* ── Signature area ────────────────────────── */}
-                <div style={{ marginTop: 40, paddingTop: 20, borderTop: '1px solid #e8e8e8', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
-                    {[companyName || 'Prestador de Serviço', q.clientName || 'Cliente'].map((name, i) => (
-                        <div key={i} style={{ textAlign: 'center' }}>
-                            <div style={{ borderBottom: '1px solid #ccc', marginBottom: 8, height: 40 }} />
-                            <div style={{ fontSize: 10, fontWeight: 700, color: '#444' }}>{name}</div>
-                            <div style={{ fontSize: 9, color: '#aaa' }}>{i === 0 ? 'Prestador' : 'Contratante'}</div>
-                        </div>
-                    ))}
-                </div>
+                {(q.showProviderSignature !== false || q.showClientSignature !== false) && (
+                    <div style={{ marginTop: 40, paddingTop: 20, borderTop: '1px solid #e8e8e8', display: 'flex', justifyContent: 'space-around', gap: 40 }}>
+                        {(q.showProviderSignature !== false) && (
+                            <div style={{ textAlign: 'center', flex: 1, maxWidth: 300 }}>
+                                <div style={{ borderBottom: '1px solid #ccc', marginBottom: 8, height: 40 }} />
+                                <div style={{ fontSize: 10, fontWeight: 700, color: '#444' }}>{companyName || 'Prestador de Serviço'}</div>
+                                <div style={{ fontSize: 9, color: '#aaa' }}>Prestador</div>
+                            </div>
+                        )}
+                        {(q.showClientSignature !== false) && (
+                            <div style={{ textAlign: 'center', flex: 1, maxWidth: 300 }}>
+                                <div style={{ borderBottom: '1px solid #ccc', marginBottom: 8, height: 40 }} />
+                                <div style={{ fontSize: 10, fontWeight: 700, color: '#444' }}>{q.clientName || 'Cliente'}</div>
+                                <div style={{ fontSize: 9, color: '#aaa' }}>Contratante</div>
+                            </div>
+                        )}
+                    </div>
+                )}
 
-                {/* ── Footer ────────────────────────────────── */}
                 <div style={{ marginTop: 24, paddingTop: 12, borderTop: '1px dashed #e8e8e8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: 9, color: '#bbb' }}>Documento gerado pelo sistema Kerus</span>
                     <span style={{ fontSize: 9, color: '#bbb' }}>{fmtDate(q.date)}</span>

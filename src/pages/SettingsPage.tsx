@@ -3,8 +3,9 @@ import { useI18n } from '../i18n/i18n.tsx';
 import { useTheme } from '../hooks/useTheme';
 import { useCompanySettings } from '../hooks/useCompanySettings';
 import { useAdvancedMode } from '../hooks/useAdvancedMode';
+import { useHelpMode } from '../hooks/useHelpMode';
 import { useApp } from '../context/AppContext';
-import { Building2, User, Phone, Palette, Globe, Sun, Moon, Zap } from 'lucide-react';
+import { Building2, User, Phone, Palette, Globe, Sun, Moon, Zap, HelpCircle } from 'lucide-react';
 import { HintButton } from '../components/ui/HintButton';
 
 export const SettingsPage: React.FC = () => {
@@ -14,6 +15,7 @@ export const SettingsPage: React.FC = () => {
     const { addToast } = useApp();
 
     const { advancedMode, setAdvancedMode } = useAdvancedMode();
+    const { helpMode, setHelpMode } = useHelpMode();
     const [form, setForm] = useState(settings);
 
     const handleSave = () => {
@@ -132,6 +134,30 @@ export const SettingsPage: React.FC = () => {
                         <option value="en">{t('languages.en')}</option>
                         <option value="es">{t('languages.es')}</option>
                     </select>
+                </section>
+
+                {/* Help Mode */}
+                <section className="ds-card p-6">
+                    <h2 className="text-sm font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-widest mb-1 flex items-center gap-2">
+                        <HelpCircle size={14} />
+                        {t('settings.helpMode')}
+                    </h2>
+                    <p className="text-xs mb-5" style={{ color: 'var(--ink-2)' }}>{t('settings.helpModeDesc')}</p>
+                    <label className="flex items-center gap-3 cursor-pointer select-none w-fit">
+                        <div
+                            onClick={() => setHelpMode(!helpMode)}
+                            className="relative w-11 h-6 rounded-full transition-colors flex-shrink-0"
+                            style={{ background: helpMode ? 'var(--primary)' : 'var(--surface-3)' }}
+                        >
+                            <span
+                                className="absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all"
+                                style={{ left: helpMode ? '26px' : '4px' }}
+                            />
+                        </div>
+                        <span className="text-sm font-semibold" style={{ color: 'var(--ink-0)' }}>
+                            {t('settings.helpModeToggle')}
+                        </span>
+                    </label>
                 </section>
 
                 {/* Advanced */}

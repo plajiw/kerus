@@ -5,6 +5,19 @@ export interface QuotationItem {
   linkedFormulaId?: string;
 }
 
+export type PaymentMethod = 'pix' | 'credit' | 'debit' | 'boleto' | 'transfer' | 'cash' | 'other';
+
+export interface PaymentModel {
+  id: string;
+  name: string;
+  entryPercentage: number;
+  installments: number;
+  paymentTerms: string;
+  method?: PaymentMethod;
+  interestRate?: number;
+  penaltyFee?: number;
+}
+
 export interface QuotationPayment {
   total: number;
   entry: number;
@@ -12,6 +25,9 @@ export interface QuotationPayment {
   installmentValue: number;
   paymentTerms: string;
   startDate: string;
+  method?: PaymentMethod;
+  interestRate?: number;
+  penaltyFee?: number;
 }
 
 export type QuotationStatus = 'RASCUNHO' | 'ENVIADO' | 'APROVADO' | 'RECUSADO';
@@ -30,4 +46,6 @@ export interface Quotation {
   notes: string;
   accentColor?: string;
   fontFamily?: string;
+  showProviderSignature?: boolean;
+  showClientSignature?: boolean;
 }

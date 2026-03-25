@@ -127,6 +127,7 @@
     "unitPrice": "0,00",
     "step": "Descreva este passo...",
     "observations": "Notas de qualidade, validade, temperatura de forno...",
+    "quotationNotes": "Escopo, prazos, entregáveis, exclusões e condições comerciais...",
     "jsonImportSample": "{\\n  \"nome_formula\": \"Tempero Lemon Pepper\",\\n  \"empresa_responsavel\": \"\",\\n  \"ingredientes\": [\\n    { \"nome\": \"Sal refinado\", \"quantidade\": 12.5, \"unidade\": \"KG\" }\\n  ],\\n  \"modo_preparo\": [],\\n  \"observacoes\": \"\"\\n}"
   },
   "preview": {
@@ -232,10 +233,13 @@
     "appearance": "Aparência",
     "theme": "Tema",
     "saved": "Configurações salvas!",
+    "helpMode": "Modo Ajuda",
+    "helpModeDesc": "Exibe ou oculta os botões de dica (?) em todo o sistema. Desative para uma interface mais limpa.",
+    "helpModeToggle": "Ativar Modo Ajuda",
     "advanced": "Opções Avançadas",
-    "advancedDesc": "Ativa recursos adicionais de controle para usuários experientes.",
+    "advancedDesc": "Exibe campos técnicos e estatísticas voltados para formuladores experientes: fases de formulação (A–E), nomenclatura INCI, tamanho do lote, faixa de pH, perfil de viscosidade e versão da fórmula.",
     "advancedToggle": "Ativar Modo Avançado",
-    "advancedActive": "Modo avançado ativo. O editor de código aparecerá nos modais de importação."
+    "advancedActive": "Modo avançado ativo — campos técnicos e fases de formulação visíveis no editor."
   },
   "quotations": {
     "comingSoonDesc": "O módulo de orçamentos está em desenvolvimento e será lançado em breve.",
@@ -309,7 +313,7 @@
     "exportXml": "Exporta a ficha em formato XML para backup ou reimportação futura no sistema.",
     "statusBadge": "Indica a situação da ficha. Rascunho: ficha em edição, exportação bloqueada. Final: aprovada para produção, exportação disponível em PDF e XML.",
     "recentActivity": "Lista as últimas fichas técnicas criadas ou editadas. Clique em uma ficha para abrir o preview completo.",
-    "advancedMode": "Ativa controles extras de importação: um editor de código aparece nos modais de importação para colar ou editar JSON/XML diretamente.",
+    "advancedMode": "Desbloqueia campos técnicos no editor de fórmulas: fases (A=Aquosa, B=Oleosa, C=Emulsificante, D=Ativa, E=Aroma), nome INCI por ingrediente, tamanho do lote com escala automática, faixa de pH com indicador visual, perfil de viscosidade e versão da fórmula. Também exibe um editor de código nos modais de importação.",
     "primaryColor": "A cor de destaque aplicada em botões, ícones e elementos interativos em todo o sistema.",
     "template": "Estrutura de referência do formato aceito pelo sistema. Use como guia ao criar seu arquivo de importação manualmente.",
     "metrics": "Resumo das fichas técnicas cadastradas. Clique em qualquer card para acessar o módulo correspondente.",

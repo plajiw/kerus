@@ -3,7 +3,8 @@ import { useToast, Toast, ToastType } from '../hooks/useToast';
 import { useHistory } from '../hooks/useHistory';
 import { useRecipeManager } from '../hooks/useRecipeManager';
 import { useQuotations } from '../hooks/useQuotations';
-import { Recipe, Quotation, QuotationStatus } from '../types';
+import { usePaymentModels } from '../hooks/usePaymentModels';
+import { Recipe, Quotation, QuotationStatus, PaymentModel } from '../types';
 
 interface AppContextValue {
     toasts: Toast[];
@@ -22,6 +23,9 @@ interface AppContextValue {
     saveQuotation: (q: Quotation) => void;
     deleteQuotation: (id: string) => void;
     updateQuotationStatus: (id: string, status: QuotationStatus) => void;
+    paymentModels: PaymentModel[];
+    savePaymentModel: (model: PaymentModel) => void;
+    deletePaymentModel: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -41,6 +45,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } = useHistory();
     const recipeManager = useRecipeManager();
     const { quotations, saveQuotation, deleteQuotation, updateStatus: updateQuotationStatus } = useQuotations();
+    const { paymentModels, savePaymentModel, deletePaymentModel } = usePaymentModels();
 
     return (
         <AppContext.Provider value={{
@@ -50,6 +55,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             historyFilterEnd, setHistoryFilterEnd,
             recipeManager,
             quotations, saveQuotation, deleteQuotation, updateQuotationStatus,
+            paymentModels, savePaymentModel, deletePaymentModel,
         }}>
             {children}
         </AppContext.Provider>

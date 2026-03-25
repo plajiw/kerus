@@ -453,6 +453,36 @@
             text-transform: uppercase;
         }
 
+        /* ── Rich text editor — list styles ───────────────────── */
+        .rte-editor ul, .rte-output ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin: 0.25rem 0;
+        }
+
+        .rte-editor ol, .rte-output ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin: 0.25rem 0;
+        }
+
+        .rte-editor li, .rte-output li {
+            margin: 0.15rem 0;
+        }
+
+        .rte-editor b, .rte-output b,
+        .rte-editor strong, .rte-output strong {
+            font-weight: 700;
+        }
+
+        .rte-editor i, .rte-output i,
+        .rte-editor em, .rte-output em {
+            font-style: italic;
+        }
+
+        .rte-output p { margin: 0.25rem 0; }
+
+        /* ── Illustration ──────────────────────────────────────── */
         .recipe-illustration svg {
             display: block;
             width: 100%;

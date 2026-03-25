@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { HelpCircle } from 'lucide-react';
+import { useHelpMode } from '../../hooks/useHelpMode';
 
 interface HintButtonProps {
     hint: string;
@@ -8,6 +9,8 @@ interface HintButtonProps {
 }
 
 export const HintButton: React.FC<HintButtonProps> = ({ hint, className = '' }) => {
+    const { helpMode } = useHelpMode();
+    if (!helpMode) return null;
     const [open, setOpen] = useState(false);
     const [pos, setPos] = useState({ top: 0, left: 0, placement: 'below' as 'below' | 'above' });
     const btnRef = useRef<HTMLButtonElement>(null);

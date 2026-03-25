@@ -2,6 +2,7 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Recipe } from '../types';
 import { useI18n } from '../i18n/i18n.tsx';
+import { isRichTextEmpty, toRenderableRichTextHtml } from '../utils/richTextUtils';
 
 interface Props {
   recipe: Recipe;
@@ -37,7 +38,8 @@ export const RecipePrintable: React.FC<Props> = ({ recipe, mode = 'preview' }) =
     [recipe.modo_preparo]
   );
   const showModoPreparo = (recipe.exibir_modo_preparo ?? true) && filteredSteps.length > 0;
-  const showObservacoes = (recipe.exibir_observacoes ?? true) && !!recipe.observacoes?.trim();
+  const observacoesHtml = toRenderableRichTextHtml(recipe.observacoes);
+  const showObservacoes = (recipe.exibir_observacoes ?? true) && !isRichTextEmpty(observacoesHtml);
   const showIllustration = (recipe.exibir_ilustracao ?? false) && !!recipe.ilustracao_svg?.trim();
   const isDraft = (recipe.status || 'RASCUNHO') === 'RASCUNHO';
   const totalIngredients = recipe.ingredientes.length;
@@ -285,7 +287,10 @@ export const RecipePrintable: React.FC<Props> = ({ recipe, mode = 'preview' }) =
       className="mt-auto pt-8 border-t border-gray-100 break-inside-avoid print-section print-observations"
     >
       <h3 className="text-[0.75em] font-bold text-gray-400 mb-2 uppercase tracking-widest">{t('printable.observationsTitle')}</h3>
-      <p className="print-observations-text text-[0.75em] text-gray-500 italic leading-relaxed">{recipe.observacoes}</p>
+      <div
+        className="rte-output print-observations-text text-[0.75em] text-gray-500 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: observacoesHtml }}
+      />
     </div>
   );
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Receipt, Plus, Wand2, Search, X, Eye, Edit3 } from 'lucide-react';
+import { Receipt, Plus, Wand2, Search, X, Eye, Edit3, Settings2 } from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
 import { useApp } from '../context/AppContext';
 import { HintButton } from '../components/ui/HintButton';
 import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../components/ui/StatusToggle';
 import { AppOutletContext } from '../components/layout/AppLayout';
+import { PaymentModelsModal } from '../components/modals/PaymentModelsModal';
 import { Quotation, QuotationStatus } from '../types';
 
 type FilterStatus = 'all' | QuotationStatus;
@@ -18,6 +19,7 @@ export const QuotationsPage: React.FC = () => {
 
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
+    const [isModelsOpen, setIsModelsOpen] = useState(false);
 
     const filters: { value: FilterStatus; label: string }[] = [
         { value: 'all', label: t('quotations.filterAll') },
@@ -73,13 +75,24 @@ export const QuotationsPage: React.FC = () => {
 
             {/* Toolbar */}
             <div className="flex flex-wrap items-center gap-2 mb-5">
-                <div className="flex items-center gap-1">
-                    <button onClick={openWizard} className="ds-button flex items-center gap-1.5 text-xs">
-                        <Wand2 size={13} style={{ color: '#6366f1' }} />
-                        {t('buttons.openWizard')}
-                    </button>
-                    <HintButton hint={t('hints.quotationAI')} />
-                </div>
+                <button 
+                    onClick={() => setIsModelsOpen(true)}
+                    className="ds-button flex items-center gap-1.5 text-xs"
+                >
+                    <Settings2 size={13} />
+                    Modelos de Pagamento
+                </button>
+
+                <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+
+                <button 
+                    onClick={() => addToast('Geração de orçamentos por IA em breve!', 'info')}
+                    className="ds-button flex items-center gap-1.5 text-xs"
+                    style={{ background: 'rgba(168,85,247,0.1)', color: 'rgb(168,85,247)', borderColor: 'rgba(168,85,247,0.2)' }}
+                >
+                    <Wand2 size={13} />
+                    Assistente de IA
+                </button>
             </div>
 
             {/* Search + filter */}
@@ -211,6 +224,11 @@ export const QuotationsPage: React.FC = () => {
                     </button>
                 </div>
             )}
+
+            <PaymentModelsModal
+                isOpen={isModelsOpen}
+                onClose={() => setIsModelsOpen(false)}
+            />
         </div>
     );
 };

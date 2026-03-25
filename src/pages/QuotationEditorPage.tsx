@@ -15,22 +15,22 @@ import { CSS } from '@dnd-kit/utilities';
 import { useI18n } from '../i18n/i18n.tsx';
 import { useApp } from '../context/AppContext';
 import { useQuotationManager } from '../hooks/useQuotationManager';
+import { RichTextSection } from '../components/common/RichTextSection';
 import { SectionCard } from '../components/ui/SectionCard';
 import { EditorShell } from '../components/ui/EditorShell';
 import { FormulaPickerDialog } from '../components/modals/FormulaPickerDialog';
+import { QuotationPaymentModal } from '../components/modals/QuotationPaymentModal';
 import { QuotationPrintable } from '../components/QuotationPrintable';
 import { FORMULA_THEMES, FORMULA_FONTS } from '../constants/themes';
 import { QuotationItem, QuotationStatus } from '../types';
 
-// ─── Status styles ─────────────────────────────────────────────
 const STATUS_STYLE: Record<string, { bg: string; color: string; border: string }> = {
     RASCUNHO: { bg: 'rgba(245,158,11,0.12)', color: '#b45309', border: 'rgba(245,158,11,0.4)' },
-    ENVIADO:  { bg: 'rgba(99,102,241,0.12)', color: '#4338ca', border: 'rgba(99,102,241,0.4)' },
+    ENVIADO: { bg: 'rgba(99,102,241,0.12)', color: '#4338ca', border: 'rgba(99,102,241,0.4)' },
     APROVADO: { bg: 'rgba(16,185,129,0.12)', color: '#047857', border: 'rgba(16,185,129,0.4)' },
-    RECUSADO: { bg: 'rgba(239,68,68,0.12)',  color: '#b91c1c', border: 'rgba(239,68,68,0.4)' },
+    RECUSADO: { bg: 'rgba(239,68,68,0.12)', color: '#b91c1c', border: 'rgba(239,68,68,0.4)' },
 };
 
-// ─── Sortable item row ─────────────────────────────────────────
 interface SortableItemRowProps {
     item: QuotationItem;
     isNew: boolean;
@@ -117,7 +117,6 @@ const SortableItemRow: React.FC<SortableItemRowProps> = ({
     );
 };
 
-// ─── Field group helper ────────────────────────────────────────
 const FieldGroup: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div>
         <label className="block text-xs font-bold uppercase tracking-widest mb-1.5" style={{ color: 'var(--ink-2)' }}>
@@ -127,12 +126,11 @@ const FieldGroup: React.FC<{ label: string; children: React.ReactNode }> = ({ la
     </div>
 );
 
-// ─── Page ──────────────────────────────────────────────────────
 export const QuotationEditorPage: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const navigate = useNavigate();
     const { t } = useI18n();
-    const { quotations, saveQuotation, addToast, history } = useApp();
+    const { quotations, saveQuotation, addToast, history, paymentModels } = useApp();
 
     const manager = useQuotationManager();
     const {
@@ -145,6 +143,7 @@ export const QuotationEditorPage: React.FC = () => {
 
     const [pickerItemId, setPickerItemId] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'content' | 'style'>('content');
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -174,20 +173,59 @@ export const QuotationEditorPage: React.FC = () => {
         navigate('/orcamentos');
     };
 
+    const handleApplyModel = (modelId: string) => {
+        const model = paymentModels.find(m => m.id === modelId);
+        if (!model) return;
+        
+        const total = q.payment.total || 0;
+        const entry = total * (model.entryPercentage / 100);
+        const installments = model.installments;
+        const installmentValue = installments > 0 ? (total - entry) / installments : 0;
+
+        handleFieldChange('payment', {
+            ...q.payment,
+            entry,
+            installments,
+            installmentValue,
+            paymentTerms: model.paymentTerms,
+            method: model.method,
+            interestRate: model.interestRate,
+            penaltyFee: model.penaltyFee
+        });
+        addToast(`Modelo "${model.name}" aplicado!`, 'success');
+    };
+
+    const handlePaymentConfigSave = (data: any) => {
+        const total = q.payment.total || 0;
+        const entry = total * (data.entryPercentage / 100);
+        const installments = data.installments;
+        const installmentValue = installments > 0 ? (total - entry) / installments : 0;
+        
+        handleFieldChange('payment', {
+            ...q.payment,
+            entry,
+            installments,
+            installmentValue,
+            paymentTerms: data.paymentTerms,
+            method: data.method,
+            interestRate: data.interestRate,
+            penaltyFee: data.penaltyFee
+        });
+        addToast('Condições de pagamento atualizadas.', 'success');
+    };
+
     const statusStyle = STATUS_STYLE[q.status] ?? STATUS_STYLE.RASCUNHO;
     const pickerItem = pickerItemId ? q.items.find(i => i.id === pickerItemId) : undefined;
 
     const STATUS_OPTIONS: { value: QuotationStatus; label: string }[] = [
         { value: 'RASCUNHO', label: t('quotations.statusDraft') },
-        { value: 'ENVIADO',  label: t('quotations.statusSent') },
+        { value: 'ENVIADO', label: t('quotations.statusSent') },
         { value: 'APROVADO', label: t('quotations.statusApproved') },
         { value: 'RECUSADO', label: t('quotations.statusRejected') },
     ];
 
     const formContent = (
         <div className="w-full px-6 py-6 space-y-5">
-
-            {/* ── Page header ──────────────────────────────────── */}
             <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-3">
                     <button onClick={() => navigate('/orcamentos')} className="ds-icon-button flex-shrink-0" title={t('common.back')}>
@@ -217,7 +255,6 @@ export const QuotationEditorPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* ── Validation errors ─────────────────────────────── */}
             {validationErrors.length > 0 && (
                 <div
                     className="flex items-start gap-2 px-4 py-3 rounded-xl"
@@ -232,7 +269,6 @@ export const QuotationEditorPage: React.FC = () => {
                 </div>
             )}
 
-            {/* ── Metadata card ─────────────────────────────────── */}
             <SectionCard title={t('quotations.serviceTitle')} icon={<ClipboardList size={14} />}>
                 <div className="p-5 space-y-4">
                     <FieldGroup label={`${t('quotations.serviceTitle')} *`}>
@@ -288,11 +324,10 @@ export const QuotationEditorPage: React.FC = () => {
                 </div>
             </SectionCard>
 
-            {/* ── Tab switcher ──────────────────────────────────── */}
             <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'var(--surface-2)' }}>
                 {[
                     { key: 'content', icon: <ClipboardList size={13} />, label: t('editor.composition') },
-                    { key: 'style',   icon: <Settings2     size={13} />, label: t('editor.appearance') },
+                    { key: 'style', icon: <Settings2 size={13} />, label: t('editor.appearance') },
                 ].map(tab => (
                     <button
                         key={tab.key}
@@ -300,8 +335,8 @@ export const QuotationEditorPage: React.FC = () => {
                         className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all"
                         style={{
                             background: activeTab === tab.key ? 'var(--surface-0)' : 'transparent',
-                            color:      activeTab === tab.key ? 'var(--primary)'   : 'var(--ink-2)',
-                            boxShadow:  activeTab === tab.key ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                            color: activeTab === tab.key ? 'var(--primary)' : 'var(--ink-2)',
+                            boxShadow: activeTab === tab.key ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
                         }}
                     >
                         {tab.icon} {tab.label}
@@ -309,20 +344,17 @@ export const QuotationEditorPage: React.FC = () => {
                 ))}
             </div>
 
-            {/* ── Composition tab ───────────────────────────────── */}
             {activeTab === 'content' && (
                 <div className="space-y-5">
-
-                    {/* Items */}
                     <SectionCard
                         title={t('quotations.linkedFormulas')}
                         icon={<FlaskConical size={14} />}
                         hint={t('hints.quotationLink')}
-                        actions={
+                        actions={(
                             <button onClick={addItem} className="ds-button" style={{ color: 'var(--primary)' }}>
                                 {t('common.add')}
                             </button>
-                        }
+                        )}
                     >
                         <div className="p-4 space-y-2">
                             {q.items.length === 0 ? (
@@ -350,51 +382,62 @@ export const QuotationEditorPage: React.FC = () => {
                         </div>
                     </SectionCard>
 
-                    {/* Payment */}
-                    <SectionCard title={t('quotations.payment')} icon={<DollarSign size={14} />}>
+                    <SectionCard 
+                        title={t('quotations.payment')} 
+                        icon={<DollarSign size={14} />}
+                        actions={(
+                            <div className="flex gap-2">
+                                {paymentModels.length > 0 && (
+                                    <select 
+                                        className="ds-select text-xs py-1 px-2 h-7"
+                                        onChange={(e) => {
+                                            if (e.target.value) handleApplyModel(e.target.value);
+                                            e.target.value = '';
+                                        }}
+                                    >
+                                        <option value="">Carregar Modelo...</option>
+                                        {paymentModels.map(m => (
+                                            <option key={m.id} value={m.id}>{m.name}</option>
+                                        ))}
+                                    </select>
+                                )}
+                                <button type="button" className="ds-button text-xs py-1 px-2 h-7" onClick={() => setIsPaymentModalOpen(true)}>
+                                    Configurar
+                                </button>
+                            </div>
+                        )}
+                    >
                         <div className="p-5 space-y-4">
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                <div className="col-span-2 sm:col-span-1">
-                                    <FieldGroup label={`${t('quotations.totalValue')} (R$)`}>
-                                        <input
-                                            type="number" min="0" step="0.01"
-                                            className="ds-input w-full text-right font-bold"
-                                            placeholder="0,00"
-                                            value={q.payment.total || ''}
-                                            onChange={e => handlePaymentChange('total', parseFloat(e.target.value) || 0)}
-                                        />
-                                    </FieldGroup>
-                                </div>
-                                <FieldGroup label={`${t('quotations.entryValue')} (R$)`}>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <FieldGroup label={`${t('quotations.totalValue')} (R$)`}>
                                     <input
-                                        type="number" min="0" step="0.01"
-                                        className="ds-input w-full text-right"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        className="ds-input ds-input-lg w-full font-bold text-[var(--primary)]"
                                         placeholder="0,00"
-                                        value={q.payment.entry || ''}
-                                        onChange={e => handlePaymentChange('entry', parseFloat(e.target.value) || 0)}
-                                    />
-                                </FieldGroup>
-                                <FieldGroup label={`${t('quotations.installments')} (nº)`}>
-                                    <input
-                                        type="number" min="0" step="1"
-                                        className="ds-input w-full text-right"
-                                        placeholder="0"
-                                        value={q.payment.installments || ''}
-                                        onChange={e => handlePaymentChange('installments', parseInt(e.target.value) || 0)}
-                                    />
-                                </FieldGroup>
-                                <FieldGroup label={t('quotations.paymentTerms')}>
-                                    <input
-                                        className="ds-input w-full"
-                                        placeholder="Ex: 30/60/90 dias"
-                                        value={q.payment.paymentTerms}
-                                        onChange={e => handlePaymentChange('paymentTerms', e.target.value)}
+                                        value={q.payment.total || ''}
+                                        onChange={e => {
+                                            const newTotal = parseFloat(e.target.value) || 0;
+                                            const oldTotal = q.payment.total || 1;
+                                            const ratio = newTotal / oldTotal;
+                                            const entry = q.payment.entry * ratio;
+                                            const installmentValue = q.payment.installments > 0 ? (newTotal - entry) / q.payment.installments : 0;
+
+                                            handleFieldChange('payment', {
+                                                ...q.payment,
+                                                total: newTotal,
+                                                entry,
+                                                installmentValue
+                                            });
+                                        }}
                                     />
                                 </FieldGroup>
                                 <FieldGroup label={t('quotations.startDate')}>
                                     <input
                                         type="date"
-                                        className="ds-input w-full"
+                                        className="ds-input ds-input-lg w-full"
+                                        style={{ height: 'var(--h-control-lg)' }}
                                         value={q.payment.startDate}
                                         onChange={e => handlePaymentChange('startDate', e.target.value)}
                                     />
@@ -402,24 +445,35 @@ export const QuotationEditorPage: React.FC = () => {
                             </div>
 
                             {q.payment.total > 0 && (
-                                <div className="rounded-xl p-3 space-y-1.5" style={{ background: 'var(--surface-2)' }}>
-                                    <div className="flex justify-between text-sm font-bold" style={{ color: 'var(--ink-0)' }}>
-                                        <span>Total</span>
-                                        <span>R$ {q.payment.total.toFixed(2).replace('.', ',')}</span>
+                                <div className="rounded-xl p-4 mt-2 border border-[var(--border)] bg-[var(--surface-0)] space-y-3">
+                                    <div className="flex justify-between items-center pb-2 border-b border-[var(--border)]">
+                                        <div className="text-xs font-bold uppercase tracking-widest text-[var(--ink-2)]">Resumo da Condição</div>
+                                        {q.payment.method && (
+                                            <div className="text-[10px] font-bold uppercase tracking-widest bg-[var(--surface-2)] text-[var(--ink-1)] px-2 py-1 rounded-md">
+                                                Método: {q.payment.method}
+                                            </div>
+                                        )}
                                     </div>
-                                    {q.payment.entry > 0 && (
-                                        <div className="flex justify-between text-xs" style={{ color: 'var(--ink-1)' }}>
-                                            <span>Entrada</span>
-                                            <span>R$ {q.payment.entry.toFixed(2).replace('.', ',')}</span>
+                                    <div className="grid grid-cols-2 gap-4 text-sm pt-1">
+                                        <div>
+                                            <div className="text-[var(--ink-2)] text-xs mb-0.5">Sinal / Entrada</div>
+                                            <div className="font-bold">R$ {q.payment.entry.toFixed(2).replace('.', ',')}</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-[var(--ink-2)] text-xs mb-0.5">Saldo Parcelado</div>
+                                            <div className="font-bold">
+                                                {q.payment.installments}x de R$ {q.payment.installmentValue.toFixed(2).replace('.', ',')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {(!!q.payment.interestRate || !!q.payment.penaltyFee) && (
+                                        <div className="text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/20 px-2 flex py-1.5 rounded items-center font-semibold">
+                                            Acréscimos (Atraso): Juros {q.payment.interestRate || 0}% a.m. | Multa {q.payment.penaltyFee || 0}%
                                         </div>
                                     )}
-                                    {q.payment.installments > 0 && (
-                                        <div className="flex justify-between text-xs" style={{ color: 'var(--ink-1)' }}>
-                                            <span>
-                                                {q.payment.installments}× R$ {q.payment.installmentValue.toFixed(2).replace('.', ',')}
-                                                {q.payment.paymentTerms ? ` — ${q.payment.paymentTerms}` : ''}
-                                            </span>
-                                            <span>R$ {(q.payment.total - q.payment.entry).toFixed(2).replace('.', ',')}</span>
+                                    {q.payment.paymentTerms && (
+                                        <div className="text-xs text-[var(--ink-1)] italic pt-1 border-t border-[var(--border)] mt-2">
+                                            "{q.payment.paymentTerms}"
                                         </div>
                                     )}
                                 </div>
@@ -427,25 +481,18 @@ export const QuotationEditorPage: React.FC = () => {
                         </div>
                     </SectionCard>
 
-                    {/* Notes */}
-                    <SectionCard title={t('quotations.notes')} collapsible defaultOpen={false}>
-                        <div className="p-5">
-                            <textarea
-                                className="ds-textarea w-full text-sm"
-                                rows={4}
-                                placeholder="Condições adicionais, prazos, observações..."
-                                value={q.notes}
-                                onChange={e => handleFieldChange('notes', e.target.value)}
-                            />
-                        </div>
-                    </SectionCard>
+                    <RichTextSection
+                        title={t('quotations.notes')}
+                        value={q.notes}
+                        onChange={html => handleFieldChange('notes', html)}
+                        placeholder={t('placeholders.quotationNotes')}
+                        helperText={t('editor.optionalHint')}
+                    />
                 </div>
             )}
 
-            {/* ── Appearance tab ────────────────────────────────── */}
             {activeTab === 'style' && (
                 <div className="space-y-5">
-                    {/* Color themes */}
                     <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
                         <div className="px-5 py-3.5" style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}>
                             <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
@@ -473,7 +520,6 @@ export const QuotationEditorPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Typography */}
                     <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
                         <div className="px-5 py-3.5" style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}>
                             <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
@@ -490,6 +536,40 @@ export const QuotationEditorPage: React.FC = () => {
                                     <option key={f.value} value={f.value}>{f.name}</option>
                                 ))}
                             </select>
+                    </div>
+                    </div>
+
+                    <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
+                        <div className="px-5 py-3.5" style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}>
+                            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
+                                Assinaturas
+                            </span>
+                        </div>
+                        <div className="p-5 flex flex-col gap-3">
+                            <label className="flex items-center gap-2 cursor-pointer touch-none">
+                                <input
+                                    type="checkbox"
+                                    checked={q.showProviderSignature !== false}
+                                    onChange={(e) => handleFieldChange('showProviderSignature', e.target.checked)}
+                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    style={{ accentColor: 'var(--primary)' }}
+                                />
+                                <span className="text-sm font-medium" style={{ color: 'var(--ink-0)' }}>
+                                    Incluir campo de assinatura do <strong>Prestador</strong>
+                                </span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer touch-none">
+                                <input
+                                    type="checkbox"
+                                    checked={q.showClientSignature !== false}
+                                    onChange={(e) => handleFieldChange('showClientSignature', e.target.checked)}
+                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    style={{ accentColor: 'var(--primary)' }}
+                                />
+                                <span className="text-sm font-medium" style={{ color: 'var(--ink-0)' }}>
+                                    Incluir campo de assinatura do <strong>Cliente</strong>
+                                </span>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -519,6 +599,20 @@ export const QuotationEditorPage: React.FC = () => {
                 onUnlink={() => {
                     if (pickerItemId) unlinkFormula(pickerItemId);
                 }}
+            />
+
+            <QuotationPaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+                value={{
+                    method: q.payment.method,
+                    entryPercentage: q.payment.total > 0 ? (q.payment.entry / q.payment.total) * 100 : 50,
+                    installments: q.payment.installments || 1,
+                    interestRate: q.payment.interestRate || 0,
+                    penaltyFee: q.payment.penaltyFee || 0,
+                    paymentTerms: q.payment.paymentTerms
+                }}
+                onSave={handlePaymentConfigSave}
             />
         </>
     );

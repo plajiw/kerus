@@ -1,6 +1,7 @@
 import React from 'react';
 import { useI18n } from '../../../i18n/i18n.tsx';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
+import { RichTextSection } from '../../common/RichTextSection';
 
 interface ObservationsSectionProps {
   observacoes: string | undefined;
@@ -16,16 +17,17 @@ export const ObservationsSection: React.FC<ObservationsSectionProps> = ({
   const { t } = useI18n();
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
-      {/* Header */}
-      <div
-        className="flex items-center justify-between px-5 py-3.5"
-        style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}
-      >
-        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
-          {t('editor.observations')}
-        </span>
-        <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest cursor-pointer" style={{ color: 'var(--ink-2)' }}>
+    <RichTextSection
+      title={t('editor.observations')}
+      value={observacoes || ''}
+      onChange={html => manager.handleFieldChange('observacoes', html)}
+      placeholder={t('placeholders.observations')}
+      helperText={t('editor.optionalHint')}
+      actions={(
+        <label
+          className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest cursor-pointer"
+          style={{ color: 'var(--ink-2)' }}
+        >
           <input
             type="checkbox"
             checked={exibir_observacoes ?? true}
@@ -35,18 +37,7 @@ export const ObservationsSection: React.FC<ObservationsSectionProps> = ({
           />
           {t('editor.showInFile')}
         </label>
-      </div>
-
-      <div className="p-5 space-y-2">
-        <textarea
-          className="ds-textarea w-full text-sm"
-          placeholder={t('placeholders.observations')}
-          value={observacoes || ''}
-          onChange={e => manager.handleFieldChange('observacoes', e.target.value)}
-          rows={5}
-        />
-        <p className="text-[10px] italic" style={{ color: 'var(--ink-2)' }}>{t('editor.optionalHint')}</p>
-      </div>
-    </div>
+      )}
+    />
   );
 };

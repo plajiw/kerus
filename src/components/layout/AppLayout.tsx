@@ -1,5 +1,6 @@
-import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, FlaskConical } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { WizardModal } from '../WizardModal';
 import { ToastContainer } from '../ui/ToastContainer';
@@ -16,8 +17,15 @@ export type AppOutletContext = {
 export const AppLayout: React.FC = () => {
     const { toasts, removeToast, recipeManager } = useApp();
     const { locale } = useI18n();
-    const { animationsEnabled } = useTheme();
+    const { animationsEnabled, primaryColor } = useTheme();
     const navigate = useNavigate();
+    const location = useLocation();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Close sidebar on route change (mobile)
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [location.pathname]);
 
     const handleAiGenerated = (recipe: Recipe) => {
         recipeManager.loadRecipe(recipeManager.sanitizeRecipe(recipe));
@@ -28,13 +36,39 @@ export const AppLayout: React.FC = () => {
 
     return (
         <div
-            className="flex h-screen overflow-hidden font-sans"
+            className="flex flex-col lg:flex-row h-screen overflow-hidden font-sans"
             style={{
                 backgroundColor: 'var(--surface-1)',
                 color: 'var(--ink-0)',
             }}
         >
-            <Sidebar />
+            {/* Mobile top bar */}
+            <div
+                className="lg:hidden flex items-center h-14 px-4 gap-3 flex-shrink-0"
+                style={{ backgroundColor: 'var(--surface-0)', borderBottom: '1px solid var(--border)' }}
+            >
+                <button
+                    onClick={() => setSidebarOpen(true)}
+                    className="ds-icon-button flex-shrink-0"
+                    aria-label="Abrir menu"
+                >
+                    <Menu size={18} />
+                </button>
+                <div className="flex items-center gap-2">
+                    <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                        style={{ backgroundColor: primaryColor }}
+                    >
+                        <FlaskConical size={13} />
+                    </div>
+                    <span className="font-black text-sm uppercase tracking-tight" style={{ color: 'var(--ink-0)' }}>
+                        Kerus
+                    </span>
+                </div>
+            </div>
+
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
             <main
                 className="flex-1 min-w-0 overflow-y-auto"
                 style={{ backgroundColor: 'var(--surface-1)' }}

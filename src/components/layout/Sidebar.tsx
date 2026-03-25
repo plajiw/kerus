@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-    FlaskConical, LayoutDashboard, FileText, Receipt,
-    Package, Settings, ChevronLeft, ChevronRight, Moon, Sun
+    FlaskConical, LayoutDashboard, Receipt,
+    Package, Settings, ChevronLeft, ChevronRight, Moon, Sun, X,
 } from 'lucide-react';
 import { useI18n } from '../../i18n/i18n.tsx';
 import { useTheme } from '../../hooks/useTheme';
@@ -15,7 +15,12 @@ interface NavItem {
     disabled?: boolean;
 }
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+    isOpen?: boolean;
+    onClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
     const { t } = useI18n();
     const { isDark, toggleDark, primaryColor } = useTheme();
     const [collapsed, setCollapsed] = useState(false);
@@ -32,7 +37,7 @@ export const Sidebar: React.FC = () => {
         { to: '/configuracoes', icon: <Settings size={18} />, label: t('nav.settings') },
     ];
 
-    const NavItem = ({ item }: { item: NavItem }) => {
+    const NavItemComponent = ({ item }: { item: NavItem }) => {
         const isActive = item.to === '/'
             ? location.pathname === '/'
             : location.pathname.startsWith(item.to);
@@ -47,22 +52,23 @@ export const Sidebar: React.FC = () => {
                             ? 'opacity-40 cursor-not-allowed'
                             : 'text-[var(--ink-1)] hover:text-[var(--ink-0)] hover:bg-[var(--surface-2)]'
                     }
+                    ${collapsed ? 'lg:justify-center' : ''}
                 `}
                 style={isActive ? { backgroundColor: primaryColor } : undefined}
             >
                 <span className="flex-shrink-0">{item.icon}</span>
-                {!collapsed && (
-                    <>
-                        <span className="text-sm font-semibold flex-1 truncate">{item.label}</span>
-                        {item.badge && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[var(--surface-2)] text-[var(--ink-2)] uppercase tracking-wider">
-                                {item.badge}
-                            </span>
-                        )}
-                    </>
+                {/* Labels: always visible on mobile drawer, hide on desktop when collapsed */}
+                <span className={`text-sm font-semibold flex-1 truncate ${collapsed ? 'lg:hidden' : ''}`}>
+                    {item.label}
+                </span>
+                {item.badge && (
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-[var(--surface-2)] text-[var(--ink-2)] uppercase tracking-wider ${collapsed ? 'lg:hidden' : ''}`}>
+                        {item.badge}
+                    </span>
                 )}
+                {/* Dot indicator for badge when collapsed on desktop */}
                 {collapsed && item.badge && (
-                    <span className="absolute left-8 top-0 w-2 h-2 rounded-full bg-[var(--ink-2)]" />
+                    <span className="hidden lg:block absolute left-8 top-0 w-2 h-2 rounded-full bg-[var(--ink-2)]" />
                 )}
             </div>
         );
@@ -79,74 +85,96 @@ export const Sidebar: React.FC = () => {
     };
 
     return (
-        <aside
-            className={`
-                flex flex-col h-full border-r transition-all duration-200 flex-shrink-0
-                ${collapsed ? 'w-[60px]' : 'w-[220px]'}
-            `}
-            style={{
-                backgroundColor: 'var(--surface-0)',
-                borderColor: 'var(--border)',
-            }}
-        >
-            {/* Logo */}
-            <div
-                className={`flex items-center gap-2.5 h-14 px-3 flex-shrink-0 ${collapsed ? 'justify-center' : ''}`}
-                style={{ borderBottom: '1px solid var(--border)' }}
-            >
+        <>
+            {/* Mobile overlay backdrop */}
+            {isOpen && (
                 <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0"
-                    style={{ backgroundColor: primaryColor }}
+                    className="fixed inset-0 z-[200] bg-black/50 lg:hidden"
+                    onClick={onClose}
+                />
+            )}
+
+            <aside
+                className={`
+                    flex flex-col border-r flex-shrink-0
+                    fixed top-0 h-screen z-[210] transition-transform duration-200
+                    lg:relative lg:h-full lg:z-auto
+                    ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    w-[260px] ${collapsed ? 'lg:w-[60px]' : 'lg:w-[220px]'}
+                `}
+                style={{
+                    backgroundColor: 'var(--surface-0)',
+                    borderColor: 'var(--border)',
+                }}
+            >
+                {/* Logo */}
+                <div
+                    className={`flex items-center gap-2.5 h-14 px-3 flex-shrink-0 ${collapsed ? 'lg:justify-center' : ''}`}
+                    style={{ borderBottom: '1px solid var(--border)' }}
                 >
-                    <FlaskConical size={15} />
-                </div>
-                {!collapsed && (
-                    <span className="font-black text-[var(--ink-0)] text-sm uppercase tracking-tight leading-tight">
+                    <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                        style={{ backgroundColor: primaryColor }}
+                    >
+                        <FlaskConical size={15} />
+                    </div>
+                    <span className={`font-black text-[var(--ink-0)] text-sm uppercase tracking-tight leading-tight ${collapsed ? 'lg:hidden' : ''}`}>
                         Kerus
                     </span>
-                )}
-            </div>
+                    {/* Close button — mobile only */}
+                    <button
+                        onClick={onClose}
+                        className="lg:hidden ml-auto ds-icon-button flex-shrink-0"
+                        aria-label="Fechar menu"
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
 
-            {/* Main nav */}
-            <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
-                {!collapsed && (
-                    <p className="text-[10px] font-bold text-[var(--ink-2)] uppercase tracking-widest px-3 pt-3 pb-1.5">
+                {/* Main nav */}
+                <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
+                    <p className={`text-[10px] font-bold text-[var(--ink-2)] uppercase tracking-widest px-3 pt-3 pb-1.5 ${collapsed ? 'lg:hidden' : ''}`}>
                         {t('nav.modules')}
                     </p>
-                )}
-                {mainNav.map(item => <NavItem key={item.to} item={item} />)}
-            </nav>
+                    {mainNav.map(item => <NavItemComponent key={item.to} item={item} />)}
+                </nav>
 
-            {/* Bottom actions */}
-            <div className="p-2 space-y-0.5" style={{ borderTop: '1px solid var(--border)' }}>
-                {bottomNav.map(item => <NavItem key={item.to} item={item} />)}
+                {/* Bottom actions */}
+                <div className="p-2 space-y-0.5" style={{ borderTop: '1px solid var(--border)' }}>
+                    {bottomNav.map(item => <NavItemComponent key={item.to} item={item} />)}
 
-                {/* Dark mode toggle */}
-                <button
-                    onClick={toggleDark}
-                    title={isDark ? t('nav.lightMode') : t('nav.darkMode')}
-                    className={`
-                        w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
-                        text-[var(--ink-1)] hover:bg-[var(--surface-2)] hover:text-[var(--ink-0)]
-                        ${collapsed ? 'justify-center' : ''}
-                    `}
-                >
-                    {isDark ? <Sun size={18} /> : <Moon size={18} />}
-                    {!collapsed && <span className="text-sm font-semibold">{isDark ? t('nav.lightMode') : t('nav.darkMode')}</span>}
-                </button>
+                    {/* Dark mode toggle */}
+                    <button
+                        onClick={toggleDark}
+                        title={isDark ? t('nav.lightMode') : t('nav.darkMode')}
+                        className={`
+                            w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
+                            text-[var(--ink-1)] hover:bg-[var(--surface-2)] hover:text-[var(--ink-0)]
+                            ${collapsed ? 'lg:justify-center' : ''}
+                        `}
+                    >
+                        {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                        <span className={`text-sm font-semibold ${collapsed ? 'lg:hidden' : ''}`}>
+                            {isDark ? t('nav.lightMode') : t('nav.darkMode')}
+                        </span>
+                    </button>
 
-                {/* Collapse toggle */}
-                <button
-                    onClick={() => setCollapsed(p => !p)}
-                    className={`
-                        w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
-                        text-[var(--ink-2)] hover:bg-[var(--surface-2)] hover:text-[var(--ink-1)]
-                        ${collapsed ? 'justify-center' : ''}
-                    `}
-                >
-                    {collapsed ? <ChevronRight size={16} /> : <><ChevronLeft size={16} /><span className="text-xs font-semibold">{t('nav.collapse')}</span></>}
-                </button>
-            </div>
-        </aside>
+                    {/* Collapse toggle — desktop only */}
+                    <button
+                        onClick={() => setCollapsed(p => !p)}
+                        className={`
+                            hidden lg:flex w-full items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
+                            text-[var(--ink-2)] hover:bg-[var(--surface-2)] hover:text-[var(--ink-1)]
+                            ${collapsed ? 'justify-center' : ''}
+                        `}
+                    >
+                        {collapsed
+                            ? <ChevronRight size={16} />
+                            : <><ChevronLeft size={16} /><span className="text-xs font-semibold">{t('nav.collapse')}</span></>
+                        }
+                    </button>
+                </div>
+            </aside>
+        </>
     );
 };

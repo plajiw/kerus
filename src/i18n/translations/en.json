@@ -127,6 +127,7 @@
     "unitPrice": "0.00",
     "step": "Describe this step...",
     "observations": "Quality notes, shelf life, oven temperature...",
+    "quotationNotes": "Scope, timing, deliverables, exclusions and commercial terms...",
     "jsonImportSample": "{\\n  \"nome_formula\": \"Lemon Pepper Seasoning\",\\n  \"empresa_responsavel\": \"\",\\n  \"ingredientes\": [\\n    { \"nome\": \"Refined salt\", \"quantidade\": 12.5, \"unidade\": \"KG\" }\\n  ],\\n  \"modo_preparo\": [],\\n  \"observacoes\": \"\"\\n}"
   },
   "preview": {
@@ -232,10 +233,13 @@
     "appearance": "Appearance",
     "theme": "Theme",
     "saved": "Settings saved!",
+    "helpMode": "Help Mode",
+    "helpModeDesc": "Shows or hides the hint buttons (?) throughout the system. Disable for a cleaner interface.",
+    "helpModeToggle": "Enable Help Mode",
     "advanced": "Advanced Options",
-    "advancedDesc": "Enables additional control features for experienced users.",
+    "advancedDesc": "Reveals technical fields and statistics for experienced formulators: formulation phases (A–E), INCI names, batch size, pH range, viscosity profile, and formula version.",
     "advancedToggle": "Enable Advanced Mode",
-    "advancedActive": "Advanced mode active. The code editor will appear in import modals."
+    "advancedActive": "Advanced mode active — technical fields and formulation phases visible in the editor."
   },
   "quotations": {
     "comingSoonDesc": "The quotations module is under development and will be launched soon.",
@@ -309,7 +313,7 @@
     "exportXml": "Exports the sheet in XML format for backup or future reimport.",
     "statusBadge": "Indicates the sheet's current state. Draft: sheet in editing, export blocked. Final: approved for production, export available as PDF and XML.",
     "recentActivity": "Lists the latest technical sheets created or edited. Click any item to open the full preview.",
-    "advancedMode": "Enables extra import controls: a code editor appears in import modals to paste or edit JSON/XML directly.",
+    "advancedMode": "Unlocks technical fields in the formula editor: phases (A=Aqueous, B=Oil, C=Emulsifier, D=Active, E=Fragrance), INCI name per ingredient, batch size with auto-scaling, pH target range with visual indicator, viscosity profile, and formula version. Also shows a code editor in import modals.",
     "primaryColor": "The accent color applied to buttons, icons and interactive elements throughout the system.",
     "template": "Reference structure of the format accepted by the system. Use as a guide when creating your import file manually.",
     "metrics": "Summary of registered technical sheets. Click any card to access the corresponding module.",

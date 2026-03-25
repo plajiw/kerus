@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { Recipe, Ingredient, Step } from '../types';
 import { arrayMove } from '@dnd-kit/sortable';
 import { isoToday } from '../utils/dateUtils';
-import { sanitizeIllustrationSvg } from '../utils/svgUtils';
 
 const INITIAL_RECIPE: Recipe = {
     id: '',
@@ -12,7 +11,6 @@ const INITIAL_RECIPE: Recipe = {
     stripedRows: true,
     exibir_modo_preparo: true,
     exibir_observacoes: true,
-    exibir_ilustracao: false,
     status: 'RASCUNHO',
     rendimento_kg: 0,
     rendimento_unidades: 0,
@@ -20,8 +18,6 @@ const INITIAL_RECIPE: Recipe = {
     data: isoToday(),
     observacoes: '',
     nome_empresa: '',
-    ilustracao_svg: '',
-    ilustracao_alt: ''
 };
 
 export const useRecipeManager = () => {
@@ -36,22 +32,23 @@ export const useRecipeManager = () => {
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
 
-    // Helper to ensure IDs exist
+    // Helper to ensure IDs exist and defaults are set for new/imported recipes
     const sanitizeRecipe = (recipe: Recipe): Recipe => {
-        const safeSvg = sanitizeIllustrationSvg(recipe.ilustracao_svg);
         return {
             ...recipe,
             id: recipe.id || crypto.randomUUID(),
-            ingredientes: recipe.ingredientes.map(ing => ({ ...ing, id: ing.id || crypto.randomUUID(), porcentagem: ing.porcentagem || 0 })),
+            ingredientes: recipe.ingredientes.map(ing => ({
+                ...ing,
+                id: ing.id || crypto.randomUUID(),
+                porcentagem: ing.porcentagem || 0,
+                // preserve advanced-mode fields as-is (phase, inci, function)
+            })),
             modo_preparo: recipe.modo_preparo.map(step => ({ ...step, id: step.id || crypto.randomUUID() })),
             stripedRows: recipe.stripedRows ?? true,
             exibir_modo_preparo: recipe.exibir_modo_preparo ?? true,
             exibir_observacoes: recipe.exibir_observacoes ?? true,
-            exibir_ilustracao: recipe.exibir_ilustracao ?? false,
             status: recipe.status ?? 'RASCUNHO',
             data: recipe.data || isoToday(),
-            ilustracao_svg: safeSvg || '',
-            ilustracao_alt: recipe.ilustracao_alt || ''
         };
     };
 
@@ -66,7 +63,7 @@ export const useRecipeManager = () => {
             data: isoToday(),
             id: crypto.randomUUID(),
             ingredientes: [{ id: crypto.randomUUID(), nome: '', quantidade: 0, unidade: 'g', porcentagem: 0, custo_unitario: 0, custo_total: 0 }],
-            modo_preparo: [{ id: crypto.randomUUID(), text: '' }]
+            modo_preparo: [{ id: crypto.randomUUID(), text: '' }],
         });
         setValidationErrors([]);
     };
