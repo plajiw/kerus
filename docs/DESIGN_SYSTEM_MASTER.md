@@ -1047,7 +1047,23 @@ Nunca use `<hr>` puro. Use o padrão linha-label-linha:
 
 ---
 
-## 19. Referências Internas
+## 20. Responsive Patterns (Mobile First)
+
+### 20.1 Organic Two-Line Row (DnD)
+Para componentes de lista densa (Ingredientes, Etapas), utilize o padrão **Organic Two-Line** em telas menores que `640px`.
+
+- **Hierarquia Visual:**
+  - **Linha 1 (Identidade):** Grip Handle + Nome/Input Principal. Use `align="start"` no `SortableItem` para que o grip acompanhe o topo do nome.
+  - **Linha 2 (Dados/Ações):** Qty, Unidade, Preço, %, e Lixeira. A lixeira deve estar sempre no **fim da linha**.
+- **Otimização SE (320px):**
+  - Reduza gaps para `gap-1.5` no mobile.
+  - Utilize `maxWidth` reduzido (ex: 60-80px) para inputs numéricos ou `flex-1` com `min-w-0`.
+  - Evite `sm:hidden` em ícones essenciais se puderem ser acomodados no fim da Linha 2.
+- **Transição Desktop:** Em `sm:`, converta para `flex-row items-center` com todos os itens em uma única linha horizontal.
+
+---
+
+## 21. Referências Internas
 
 | Arquivo                                         | Conteúdo                                         |
 | ----------------------------------------------- | ------------------------------------------------ |

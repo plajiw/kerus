@@ -223,103 +223,113 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
                                         key={ing.id}
                                         id={ing.id}
                                         newlyAddedId={newlyAddedId}
-                                        align={advancedMode ? 'start' : 'center'}
+                                        align="start"
                                     >
-                                        {/* Phase badge (advanced only) */}
-                                        {advancedMode && (
-                                            <div className="flex-shrink-0 mt-1">
-                                                <PhaseBadge
-                                                    phase={ing.phase}
-                                                    onClick={() => manager.updateIngredient(ing.id, 'phase', nextPhase(ing.phase))}
-                                                />
+                                        <div className="flex-1 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3 min-w-0">
+                                            {/* Line 1 (Mobile) / Left Part (Desktop): Phase + Name + INCI */}
+                                            <div className="flex items-start gap-2 min-w-0 flex-1">
+                                                {/* Phase badge (advanced only) */}
+                                                {advancedMode && (
+                                                    <div className="flex-shrink-0 mt-0.5">
+                                                        <PhaseBadge
+                                                            phase={ing.phase}
+                                                            onClick={() => manager.updateIngredient(ing.id, 'phase', nextPhase(ing.phase))}
+                                                        />
+                                                    </div>
+                                                )}
+
+                                                {/* Name + INCI area */}
+                                                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                                                    <input
+                                                        className="w-full text-sm bg-transparent outline-none font-medium h-7"
+                                                        style={{ color: 'var(--ink-0)' }}
+                                                        value={ing.nome}
+                                                        onChange={e => manager.updateIngredient(ing.id, 'nome', e.target.value)}
+                                                        placeholder={t('placeholders.ingredientName')}
+                                                    />
+                                                    {advancedMode && (
+                                                        <input
+                                                            className="w-full text-[10px] bg-transparent outline-none italic"
+                                                            style={{ color: 'var(--ink-2)' }}
+                                                            value={ing.inci || ''}
+                                                            onChange={e => manager.updateIngredient(ing.id, 'inci', e.target.value)}
+                                                            placeholder="INCI name..."
+                                                        />
+                                                    )}
+                                                </div>
                                             </div>
-                                        )}
 
-                                        {/* Name + INCI area */}
-                                        <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                                            <input
-                                                className="w-full text-sm bg-transparent outline-none font-medium"
-                                                style={{ color: 'var(--ink-0)' }}
-                                                value={ing.nome}
-                                                onChange={e => manager.updateIngredient(ing.id, 'nome', e.target.value)}
-                                                placeholder={t('placeholders.ingredientName')}
-                                            />
-                                            {advancedMode && (
+                                            {/* Line 2 (Mobile) / Right Part (Desktop): Values + Controls */}
+                                            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
+                                                {/* % badge */}
+                                                <div
+                                                    className="flex-shrink-0 text-[10px] font-mono tabular-nums px-1 rounded-md flex flex-col items-center justify-center h-8 sm:h-9"
+                                                    style={{
+                                                        background: 'var(--surface-2)',
+                                                        color: 'var(--ink-2)',
+                                                        minWidth: 42,
+                                                        border: '1px solid var(--border)',
+                                                    }}
+                                                >
+                                                    <span className="leading-tight">{pct.toFixed(1)}%</span>
+                                                    {advancedMode && batchGrams !== null && (
+                                                        <span style={{ color: 'var(--primary)', fontSize: 9 }} className="leading-tight">
+                                                            {batchGrams.toFixed(2)}g
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                {/* Qty */}
                                                 <input
-                                                    className="w-full text-[10px] bg-transparent outline-none italic"
-                                                    style={{ color: 'var(--ink-2)' }}
-                                                    value={ing.inci || ''}
-                                                    onChange={e => manager.updateIngredient(ing.id, 'inci', e.target.value)}
-                                                    placeholder="INCI name..."
+                                                    type="number"
+                                                    step="0.001"
+                                                    min="0"
+                                                    className="ds-input flex-1 sm:flex-shrink-0 text-right font-mono"
+                                                    style={{
+                                                        width: 'auto',
+                                                        maxWidth: 76,
+                                                        borderColor: ing.quantidade === 0 ? 'rgba(245,158,11,0.6)' : undefined,
+                                                        background: ing.quantidade === 0 ? 'rgba(245,158,11,0.06)' : undefined,
+                                                    }}
+                                                    value={ing.quantidade}
+                                                    onChange={e => manager.updateIngredient(ing.id, 'quantidade', parseFloat(e.target.value) || 0)}
+                                                    onFocus={e => e.currentTarget.select()}
                                                 />
-                                            )}
+
+                                                {/* Unit */}
+                                                <select
+                                                    className="ds-select flex-shrink-0 text-[11px] font-bold uppercase text-center"
+                                                    style={{ width: 56, paddingLeft: 4, paddingRight: 4 }}
+                                                    value={ing.unidade}
+                                                    onChange={e => manager.updateIngredient(ing.id, 'unidade', e.target.value)}
+                                                >
+                                                    {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+                                                </select>
+
+                                                {/* Unit price */}
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    min="0"
+                                                    className="ds-input flex-1 sm:flex-shrink-0 text-right font-mono"
+                                                    style={{ width: 'auto', maxWidth: 84 }}
+                                                    placeholder="0.00"
+                                                    value={ing.custo_unitario || ''}
+                                                    onChange={e => manager.updateIngredient(ing.id, 'custo_unitario', parseFloat(e.target.value) || 0)}
+                                                    onFocus={e => e.currentTarget.select()}
+                                                />
+
+                                                {/* Delete (always at the end) */}
+                                                <button
+                                                    onClick={() => manager.removeIngredient(ing.id)}
+                                                    className="flex-shrink-0 ds-icon-button opacity-50 hover:opacity-100 hover:text-red-500"
+                                                    title={t('common.remove')}
+                                                    style={{ width: 32, height: 32 }}
+                                                >
+                                                    <Trash2 size={13} />
+                                                </button>
+                                            </div>
                                         </div>
-
-                                        {/* % badge */}
-                                        <div
-                                            className="flex-shrink-0 text-[10px] font-mono tabular-nums px-1.5 rounded-md flex flex-col items-end"
-                                            style={{
-                                                background: 'var(--surface-2)',
-                                                color: 'var(--ink-2)',
-                                                minWidth: 42,
-                                            }}
-                                        >
-                                            <span style={{ lineHeight: '20px' }}>{pct.toFixed(1)}%</span>
-                                            {advancedMode && batchGrams !== null && (
-                                                <span style={{ color: 'var(--primary)', lineHeight: '14px', fontSize: 9 }}>
-                                                    {batchGrams.toFixed(2)}g
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Qty */}
-                                        <input
-                                            type="number"
-                                            step="0.001"
-                                            min="0"
-                                            className="ds-input flex-shrink-0 text-right font-mono"
-                                            style={{
-                                                width: 76,
-                                                borderColor: ing.quantidade === 0 ? 'rgba(245,158,11,0.6)' : undefined,
-                                                background: ing.quantidade === 0 ? 'rgba(245,158,11,0.06)' : undefined,
-                                            }}
-                                            value={ing.quantidade}
-                                            onChange={e => manager.updateIngredient(ing.id, 'quantidade', parseFloat(e.target.value) || 0)}
-                                            onFocus={e => e.currentTarget.select()}
-                                        />
-
-                                        {/* Unit */}
-                                        <select
-                                            className="ds-select flex-shrink-0 text-xs font-bold uppercase text-center"
-                                            style={{ width: 64 }}
-                                            value={ing.unidade}
-                                            onChange={e => manager.updateIngredient(ing.id, 'unidade', e.target.value)}
-                                        >
-                                            {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
-                                        </select>
-
-                                        {/* Unit price */}
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            min="0"
-                                            className="ds-input flex-shrink-0 text-right font-mono"
-                                            style={{ width: 84 }}
-                                            placeholder="0.00"
-                                            value={ing.custo_unitario || ''}
-                                            onChange={e => manager.updateIngredient(ing.id, 'custo_unitario', parseFloat(e.target.value) || 0)}
-                                            onFocus={e => e.currentTarget.select()}
-                                        />
-
-                                        {/* Delete */}
-                                        <button
-                                            onClick={() => manager.removeIngredient(ing.id)}
-                                            className="flex-shrink-0 ds-icon-button opacity-50 hover:opacity-100 hover:text-red-500"
-                                            title={t('common.remove')}
-                                        >
-                                            <Trash2 size={13} />
-                                        </button>
-
                                     </SortableItem>
                                 );
                             })}
