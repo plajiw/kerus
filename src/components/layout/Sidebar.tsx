@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../../i18n/i18n.tsx';
 import { useTheme } from '../../hooks/useTheme';
+import { AppVersion } from '../ui/AppVersion';
 
 interface NavItem {
     to: string;
@@ -111,9 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                         <span className={`font-extrabold text-[var(--ink-0)] text-sm uppercase tracking-[0.05em] leading-none ${collapsed ? 'lg:hidden' : ''}`}>
                             Kerus
                         </span>
-                        <span className={`text-[8px] font-mono text-[var(--ink-2)] opacity-60 uppercase tracking-widest mt-1 ${collapsed ? 'lg:hidden' : ''}`}>
-                            alpha-1.0.0
-                        </span>
+                        <AppVersion className={`opacity-60 mt-1 ${collapsed ? 'lg:hidden' : ''}`} />
                     </div>
                     {/* Close button — mobile only */}
                     <button
@@ -155,7 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                     </NavLink>
 
                     {/* Documentation */}
-                    <NavLink to="/docs" title={collapsed ? 'Documentação' : undefined}>
+                    <a href="/docs/" title={collapsed ? 'Documentação' : undefined}>
                         <div className={`
                             flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
                             text-[var(--ink-2)] hover:text-[var(--ink-1)] hover:bg-[var(--surface-2)]
@@ -164,7 +163,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                             <BookOpen size={18} className="flex-shrink-0" />
                             <span className={`text-sm font-semibold ${collapsed ? 'lg:hidden' : ''}`}>Documentação</span>
                         </div>
-                    </NavLink>
+                    </a>
 
                     {/* Divider */}
                     <div className="my-1.5 mx-3" style={{ borderTop: '1px solid var(--border)' }} />

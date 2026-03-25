@@ -28,7 +28,34 @@ export const DashboardPage: React.FC = () => {
     const draftFormulas = statsBase.filter(r => r.status !== 'FINAL').length;
     const quotationsInRange = quotations.filter(q => isWithinDateRange(q.date, dateRange));
 
-    const recent = history.slice(0, 6);
+    const allActivities = [
+        ...history.map(r => ({
+            id: r.id,
+            type: 'formula' as const,
+            title: r.nome_formula,
+            date: new Date(r.data),
+            subtitle: `${r.ingredientes.length} ${t('editor.item')}`,
+            status: r.status,
+            statusLabel: r.status === 'FINAL' ? t('status.final') : t('status.draft'),
+            isFinal: r.status === 'FINAL',
+            path: `/formulas/${r.id}/preview`,
+            color: 'var(--primary)',
+        })),
+        ...quotations.map(q => ({
+            id: q.id,
+            type: 'quotation' as const,
+            title: q.title,
+            date: new Date(q.date),
+            subtitle: q.clientName,
+            status: q.status,
+            statusLabel: q.status,
+            isFinal: q.status === 'APROVADO' || q.status === 'ENVIADO',
+            path: `/orcamentos`,
+            color: '#6366f1',
+        }))
+    ].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    const recent = allActivities.slice(0, 6);
 
     const today = new Date().toLocaleDateString(locale, {
         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
@@ -129,47 +156,61 @@ export const DashboardPage: React.FC = () => {
                     {/* List */}
                     {recent.length > 0 ? (
                         <div>
-                            {recent.map((recipe) => (
+                            {recent.map((act) => (
                                 <button
-                                    key={recipe.id}
-                                    onClick={() => navigate(`/formulas/${recipe.id}/preview`)}
+                                    key={`${act.type}-${act.id}`}
+                                    onClick={() => navigate(act.path)}
                                     className="w-full flex items-center gap-4 px-6 py-4 text-left group transition-colors hover:bg-[var(--surface-3)]"
                                 >
-                                    {/* Mini cover */}
+                                    {/* Mini cover / Icon container */}
                                     <div
-                                        className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-black select-none"
+                                        className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-black select-none relative overflow-hidden"
                                         style={{ 
-                                            background: getCoverGradient(recipe.nome_formula, isDark),
+                                            background: getCoverGradient(act.title, isDark),
                                             color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
                                         }}
                                     >
-                                        {recipe.nome_formula.charAt(0).toUpperCase()}
+                                        {act.type === 'formula' ? (
+                                            act.title.charAt(0).toUpperCase()
+                                        ) : (
+                                            <Receipt size={16} />
+                                        )}
+                                        {/* Type indicator dot */}
+                                        <div 
+                                            className="absolute bottom-0 right-0 w-3.5 h-3.5 border-2 border-[var(--surface-2)] rounded-full"
+                                            style={{ background: act.color }}
+                                        />
                                     </div>
 
                                     {/* Info */}
                                     <div className="flex-1 min-w-0">
                                         <p className="font-semibold text-sm truncate" style={{ color: 'var(--ink-0)' }}>
-                                            {recipe.nome_formula}
+                                            {act.title}
                                         </p>
-                                        <p className="text-xs font-mono mt-0.5" style={{ color: 'var(--ink-2)' }}>
-                                            {new Intl.DateTimeFormat(locale).format(new Date(recipe.data))}
-                                            {' · '}{recipe.ingredientes.length} {t('editor.item')}
-                                        </p>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                            <p className="text-xs font-mono" style={{ color: 'var(--ink-2)' }}>
+                                                {new Intl.DateTimeFormat(locale).format(act.date)}
+                                            </p>
+                                            <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
+                                            <p className="text-xs italic truncate" style={{ color: 'var(--ink-2)' }}>
+                                                {act.subtitle}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     {/* Status badge */}
                                     <span
                                         className="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider flex-shrink-0"
                                         style={{
-                                            background: recipe.status === 'FINAL'
+                                            background: act.isFinal
                                                 ? 'var(--status-success-bg)'
                                                 : 'var(--status-warning-bg)',
-                                            color: recipe.status === 'FINAL'
+                                            color: act.isFinal
                                                 ? 'var(--status-success-text)'
                                                 : 'var(--status-warning-text)',
                                         }}
                                     >
-                                        {recipe.status === 'FINAL' ? t('status.final') : t('status.draft')}
+                                        {act.statusLabel}
                                     </span>
 
                                     <ArrowRight

@@ -24,3 +24,16 @@ dist-ssr
 *.sw?
 .env
 .env.local
+
+# VitePress
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# Environment variants
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Tooling
+.claude/
+.vercel/

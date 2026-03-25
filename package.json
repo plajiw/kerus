@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "build:all": "npm run build && npm run docs:build && mkdir -p dist/docs && cp -r docs/.vitepress/dist/* dist/docs/"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -23,6 +27,7 @@
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "vitepress": "^1.6.3"
   }
 }

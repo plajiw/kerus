@@ -1,12 +1,19 @@
 import { useState, useCallback } from 'react';
 import { Quotation, QuotationStatus } from '../types';
 
+import { SAMPLE_QUOTATIONS } from '../constants/sampleData';
+
 const STORAGE_KEY = 'kerus_quotations';
 
 const load = (): Quotation[] => {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
+        if (raw) return JSON.parse(raw);
+        
+        // First run - inject sample data
+        const samples = SAMPLE_QUOTATIONS;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(samples));
+        return samples;
     } catch {
         return [];
     }

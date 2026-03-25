@@ -97,7 +97,7 @@ Análise completa do projeto:
 
 **Ler se**: Precisa entender visão geral do projeto
 
-### 2. **DESIGN_SYSTEM_OFICIAL.md**
+### 2. **DESIGN_SYSTEM_MASTER.md**
 Design System documentado:
 - Paleta de cores
 - Tipografia
@@ -235,7 +235,7 @@ Hub:
 1. Criar arquivo: `src/components/ui/MyComponent.tsx`
 2. Seguir padrões de design system (cores, spacing, etc)
 3. Usar classes de `index.html` (ds-button, ds-input, etc)
-4. Documentar no DESIGN_SYSTEM_OFICIAL.md
+4. Documentar no DESIGN_SYSTEM_MASTER.md
 
 ### Mudar Cor Primary
 ```html
@@ -312,12 +312,12 @@ Solução:
 
 ### Documentação Principal
 - 📄 [PROJECT_REVIEW.md](./PROJECT_REVIEW.md) - Análise geral
-- 🎨 [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md) - Design
+- 🎨 [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md) - Design
 - 📋 [MELHORIAS_IMPLEMENTADAS.md](./MELHORIAS_IMPLEMENTADAS.md) - Técnica
 - 🚀 [ROADMAP_EXECUTIVO.md](./ROADMAP_EXECUTIVO.md) - Futuro
 
 ### Existentes
-- 📄 [README.md](./README.md) - Setup
+- 📄 [README_FINAL.md](./README_FINAL.md) - Setup
 - 📄 [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) - Original
 - 📄 [DOCUMENTACAO_FUNCIONAL.md](./DOCUMENTACAO_FUNCIONAL.md) - Features
 - 📄 [DOCUMENTACAO_DECISOES.md](./DOCUMENTACAO_DECISOES.md) - Decisões

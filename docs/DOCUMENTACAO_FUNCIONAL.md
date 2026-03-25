@@ -173,7 +173,7 @@ Contexto e limitacoes:
 
 ## 9. Exportacao e impressao
 ### Exportar PDF (recomendado)
-- Nome padrao: Ficha_<NomeDaFormula>_<Status>_<Data>.pdf
+- Nome padrao: Ficha_\<NomeDaFormula\>_\<Status\>_\<Data\>.pdf
 - Ex: Ficha_Chimichurri_FINAL_2026-01-27.pdf
 - Somente permitido quando status = FINAL.
 

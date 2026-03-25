@@ -238,7 +238,7 @@ Criado com:
 - Stack recomendado
 - Quick wins (10 tarefas de baixo esforço)
 
-#### 📄 DESIGN_SYSTEM_OFICIAL.md
+#### 📄 DESIGN_SYSTEM_MASTER.md
 Criado com:
 - Paleta de cores (primárias, semânticas, neutras)
 - Tipografia completa (escala, weights, line-heights)
@@ -354,7 +354,7 @@ Criado com:
 
 Para dúvidas sobre as melhorias implementadas:
 - 📄 Consulte [PROJECT_REVIEW.md](./PROJECT_REVIEW.md)
-- 🎨 Consulte [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)
+- 🎨 Consulte [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)
 - 💻 Verifique código em src/components/
 
 ---

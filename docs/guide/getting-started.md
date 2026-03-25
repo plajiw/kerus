@@ -33,7 +33,7 @@ Without it, the Wizard button still appears but AI generation will fail graceful
 
 ## Project Layout
 
-See [architecture.md](./architecture.md) for the full component and data-flow breakdown.
+See [architecture.md](../architecture.md) for the full component and data-flow breakdown.
 
 ## Adding a New Page
 

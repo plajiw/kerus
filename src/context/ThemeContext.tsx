@@ -45,7 +45,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 return dark;
             }
         } catch {}
-        const dark = resolveIsDark('system');
+        const dark = resolveIsDark('light');
         applyDark(dark);
         return dark;
     });
@@ -71,7 +71,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 if (parsed.themeMode === 'light' || parsed.themeMode === 'dark') return parsed.themeMode;
             }
         } catch {}
-        return 'system';
+        return 'light';
     });
 
     // Apply dark class on every isDark change (single source of truth)

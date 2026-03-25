@@ -9,6 +9,7 @@ import { useAIWizard } from '../../hooks/useAIWizard';
 import { useI18n } from '../../i18n/i18n.tsx';
 import { useTheme } from '../../hooks/useTheme';
 import { Recipe } from '../../types';
+import { AppVersion } from '../ui/AppVersion';
 
 export type AppOutletContext = {
     openWizard: () => void;
@@ -59,9 +60,7 @@ export const AppLayout: React.FC = () => {
                         <span className="font-extrabold text-sm uppercase tracking-[0.05em] leading-none" style={{ color: 'var(--ink-0)' }}>
                             Kerus
                         </span>
-                        <span className="text-[8px] font-mono opacity-50 uppercase tracking-widest mt-0.5" style={{ color: 'var(--ink-2)' }}>
-                            alpha-1.0.0
-                        </span>
+                        <AppVersion className="opacity-50 mt-0.5" />
                     </div>
                 </div>
             </div>

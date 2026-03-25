@@ -34,7 +34,7 @@ Standard text / number / date input.
 Hero-size input for primary page titles.
 
 ```tsx
-<input className="ds-input ds-input-lg w-full font-bold" style={{ height: 'var(--h-control-lg)' }} />
+<input className="ds-input ds-input-lg w-full font-bold" style={ { height: 'var(--h-control-lg)' } } />
 ```
 
 ### `ds-select`
@@ -65,7 +65,7 @@ A search input wraps `ds-input` with an absolute icon:
 
 ```tsx
 <div className="relative">
-  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--ink-2)' }} />
+  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={ { color: 'var(--ink-2)' } } />
   <input className="ds-input w-full pl-9" placeholder="Buscar..." />
 </div>
 ```
@@ -193,7 +193,7 @@ Draggable list item pattern used in Ingredients, Steps, Quotation Items:
 | Brand / accent | `var(--primary)` |
 
 **Never** use hard-coded colors or `dark:` Tailwind classes.
-**Always** use `style={{ color: 'var(--ink-0)' }}` or similar.
+**Always** use `style={ { color: 'var(--ink-0)' } }` or similar.
 
 ---
 
@@ -228,7 +228,7 @@ const STATUS_STYLE = {
 
 <select
   className="ds-select text-xs font-bold uppercase tracking-wide"
-  style={{ color: style.color, background: style.bg, borderColor: style.border }}
+  style={ { color: style.color, background: style.bg, borderColor: style.border } }
   value={status}
   onChange={e => setStatus(e.target.value)}
 >

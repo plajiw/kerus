@@ -36,7 +36,7 @@ O que foi entregue, métricas de impacto, e próximos passos.
 - Stack recomendado para produção
 - Checklist pré-launch
 
-### 4️⃣ **[DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)**
+### 4️⃣ **[DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)**
 **Tempo**: 30 minutos
 **Para quem**: Designers, Desenvolvedores Frontend
 
@@ -74,8 +74,8 @@ O que foi entregue, métricas de impacto, e próximos passos.
 ## 📄 DOCUMENTAÇÃO EXISTENTE
 
 ### Originais (Mantidos)
-- **[README.md](./README.md)** - Setup inicial
-- **[DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)** - Original (agora veja DESIGN_SYSTEM_OFICIAL.md)
+- **[README_FINAL.md](./README_FINAL.md)** - Setup inicial
+- **[DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)** - Original (agora veja DESIGN_SYSTEM_MASTER.md)
 - **[DOCUMENTACAO_FUNCIONAL.md](./DOCUMENTACAO_FUNCIONAL.md)** - Features do app
 - **[DOCUMENTACAO_DECISOES.md](./DOCUMENTACAO_DECISOES.md)** - Decisões técnicas
 
@@ -98,7 +98,7 @@ Total: 45 minutos
 ```
 1. RESUMO_ENTREGA.md           (5 min)
 2. PROJECT_REVIEW.md           (20 min)
-3. DESIGN_SYSTEM_OFICIAL.md    (30 min)
+3. DESIGN_SYSTEM_MASTER.md    (30 min)
 4. MELHORIAS_IMPLEMENTADAS.md  (15 min)
 5. ROADMAP_EXECUTIVO.md        (20 min)
 ═══════════════════════════════════
@@ -109,7 +109,7 @@ Total: 90 minutos
 ```
 1. RESUMO_ENTREGA.md           (5 min)
 2. GUIA_RAPIDO.md              (10 min)
-3. DESIGN_SYSTEM_OFICIAL.md    (30 min)
+3. DESIGN_SYSTEM_MASTER.md    (30 min)
 4. MELHORIAS_IMPLEMENTADAS.md  (15 min)
 ═══════════════════════════════════
 Total: 60 minutos
@@ -127,7 +127,7 @@ Total: 35 minutos
 #### 🎨 Designer/UX
 ```
 1. RESUMO_ENTREGA.md           (5 min)
-2. DESIGN_SYSTEM_OFICIAL.md    (30 min)
+2. DESIGN_SYSTEM_MASTER.md    (30 min)
 3. MELHORIAS_IMPLEMENTADAS.md  (15 min)
 ═══════════════════════════════════
 Total: 50 minutos
@@ -148,7 +148,7 @@ Total: 45 minutos
 ## 🔍 POR TÓPICO
 
 ### Design System & UI/UX
-- 🎨 [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)
+- 🎨 [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)
 - 📋 [MELHORIAS_IMPLEMENTADAS.md](./MELHORIAS_IMPLEMENTADAS.md)
 - ✅ [RESUMO_ENTREGA.md](./RESUMO_ENTREGA.md) - Seção Comparação Visual
 
@@ -166,7 +166,7 @@ Total: 45 minutos
 - 🚀 [ROADMAP_EXECUTIVO.md](./ROADMAP_EXECUTIVO.md) - Fase 3-5
 
 ### Acessibilidade & Compliance
-- ♿ [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md) - WCAG 2.1 AA
+- ♿ [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md) - WCAG 2.1 AA
 - 📋 [PROJECT_REVIEW.md](./PROJECT_REVIEW.md) - Recomendações
 
 ---
@@ -176,11 +176,11 @@ Total: 45 minutos
 ### ✅ Antes de Codar
 - [ ] Leu [RESUMO_ENTREGA.md](./RESUMO_ENTREGA.md)?
 - [ ] Leu [GUIA_RAPIDO.md](./GUIA_RAPIDO.md)?
-- [ ] Verificou [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)?
+- [ ] Verificou [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)?
 - [ ] Testou as melhorias em seu device?
 
 ### ✅ Antes de Commit
-- [ ] Código segue [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)?
+- [ ] Código segue [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)?
 - [ ] Testou em mobile/tablet/desktop?
 - [ ] Verificou dark mode?
 - [ ] Validou acessibilidade?
@@ -204,21 +204,21 @@ Total: 45 minutos
 | Danger | `#ef4444` | Erro, delete |
 | Info | `#0ea5e9` | Informação |
 
-**Ver mais em**: [DESIGN_SYSTEM_OFICIAL.md - Cores](./DESIGN_SYSTEM_OFICIAL.md#-paleta-de-cores)
+**Ver mais em**: [DESIGN_SYSTEM_MASTER.md - Cores](./DESIGN_SYSTEM_MASTER.md#-paleta-de-cores)
 
 ### Espaçamento (4px Base)
 ```
 8px, 16px, 24px, 32px, 48px
 ```
 
-**Ver mais em**: [DESIGN_SYSTEM_OFICIAL.md - Espaçamento](./DESIGN_SYSTEM_OFICIAL.md#-espaçamento-4px-base)
+**Ver mais em**: [DESIGN_SYSTEM_MASTER.md - Espaçamento](./DESIGN_SYSTEM_MASTER.md#-espaçamento-4px-base)
 
 ### Border Radius
 ```
 8px (sm) | 12px (md) | 14px (lg) | 16px (xl)
 ```
 
-**Ver mais em**: [DESIGN_SYSTEM_OFICIAL.md - Border Radius](./DESIGN_SYSTEM_OFICIAL.md#-border-radius)
+**Ver mais em**: [DESIGN_SYSTEM_MASTER.md - Border Radius](./DESIGN_SYSTEM_MASTER.md#-border-radius)
 
 ---
 
@@ -226,7 +226,7 @@ Total: 45 minutos
 
 ### De PROJECT_REVIEW
 - **Stack recomendado** → Ver [ROADMAP_EXECUTIVO.md](./ROADMAP_EXECUTIVO.md)
-- **Design System** → Ver [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)
+- **Design System** → Ver [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)
 - **Componentes** → Ver [MELHORIAS_IMPLEMENTADAS.md](./MELHORIAS_IMPLEMENTADAS.md)
 
 ### De DESIGN_SYSTEM_OFICIAL
@@ -235,7 +235,7 @@ Total: 45 minutos
 
 ### De ROADMAP_EXECUTIVO
 - **Detalhes técnicos** → Ver [PROJECT_REVIEW.md](./PROJECT_REVIEW.md)
-- **Design** → Ver [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md)
+- **Design** → Ver [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md)
 
 ---
 
@@ -245,7 +245,7 @@ Total: 45 minutos
 R: Leia [RESUMO_ENTREGA.md](./RESUMO_ENTREGA.md) em 5 minutos.
 
 **P: Quero codificar um novo componente. O que leio?**
-R: [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md) + [GUIA_RAPIDO.md](./GUIA_RAPIDO.md)
+R: [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md) + [GUIA_RAPIDO.md](./GUIA_RAPIDO.md)
 
 **P: Quero saber o roadmap. O que leio?**
 R: [ROADMAP_EXECUTIVO.md](./ROADMAP_EXECUTIVO.md)
@@ -307,7 +307,7 @@ R: Ver [RESUMO_ENTREGA.md - Métricas](./RESUMO_ENTREGA.md#-métricas-de-impacto
 | Doc | Tempo | Prioridade | Link |
 |-----|-------|-----------|------|
 | Resumo Entrega | 5 min | 🔴 Alta | [RESUMO_ENTREGA.md](./RESUMO_ENTREGA.md) |
-| Design System | 30 min | 🔴 Alta | [DESIGN_SYSTEM_OFICIAL.md](./DESIGN_SYSTEM_OFICIAL.md) |
+| Design System | 30 min | 🔴 Alta | [DESIGN_SYSTEM_MASTER.md](./DESIGN_SYSTEM_MASTER.md) |
 | Roadmap | 20 min | 🔴 Alta | [ROADMAP_EXECUTIVO.md](./ROADMAP_EXECUTIVO.md) |
 | Guia Rápido | 10 min | 🟡 Média | [GUIA_RAPIDO.md](./GUIA_RAPIDO.md) |
 | Análise Projeto | 20 min | 🟡 Média | [PROJECT_REVIEW.md](./PROJECT_REVIEW.md) |

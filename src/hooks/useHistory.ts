@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Recipe } from '../types';
 import { toISODate } from '../utils/dateUtils';
+import { SAMPLE_RECIPES } from '../constants/sampleData';
 
 export const useHistory = () => {
     const [history, setHistory] = useState<Recipe[]>([]);
@@ -10,7 +11,13 @@ export const useHistory = () => {
 
     useEffect(() => {
         const savedHistory = localStorage.getItem('ficha_tecnica_history');
-        if (savedHistory) setHistory(JSON.parse(savedHistory));
+        if (savedHistory) {
+            setHistory(JSON.parse(savedHistory));
+        } else {
+            // First run - inject sample data
+            setHistory(SAMPLE_RECIPES);
+            localStorage.setItem('ficha_tecnica_history', JSON.stringify(SAMPLE_RECIPES));
+        }
     }, []);
 
     useEffect(() => {
