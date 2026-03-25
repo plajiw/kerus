@@ -1,27 +1,168 @@
 import React, { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Receipt, Plus, Wand2, Search, X, Eye, Edit3, Settings2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import {
+    Receipt, Plus, Wand2, Search, X, Eye, Edit3,
+    FileEdit, Send, TrendingUp,
+} from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
 import { useApp } from '../context/AppContext';
-import { HintButton } from '../components/ui/HintButton';
+import { StatCard } from '../components/ui/StatCard';
 import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../components/ui/StatusToggle';
-import { AppOutletContext } from '../components/layout/AppLayout';
+import { HubHeader } from '../components/ui/hub/HubHeader';
+import { HubStatsGrid } from '../components/ui/hub/HubStatsGrid';
+import { HubToolbar } from '../components/ui/hub/HubToolbar';
+import { HubViewToggle, ViewMode } from '../components/ui/hub/HubViewToggle';
+import { HubGridCard, CoverStatusVariant } from '../components/ui/hub/HubGridCard';
+import { HubStatusFilter } from '../components/ui/hub/HubStatusFilter';
+import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../components/ui/hub/HubDateFilter';
 import { PaymentModelsModal } from '../components/modals/PaymentModelsModal';
+import { getCoverGradient } from '../utils/coverGradient';
 import { Quotation, QuotationStatus } from '../types';
 
 type FilterStatus = 'all' | QuotationStatus;
 
+// ─── Status variant mapping ────────────────────────────────────
+function quotationStatusVariant(status: QuotationStatus): CoverStatusVariant {
+    switch (status) {
+        case 'APROVADO': return 'green';
+        case 'ENVIADO':  return 'blue';
+        case 'REPROVADO': return 'red';
+        default: return 'gray';
+    }
+}
+
+// ─── Table view ───────────────────────────────────────────────
+interface QuotationTableProps {
+    quotations: Quotation[];
+    locale: string;
+    statusConfigs: ReturnType<typeof QUOTATION_STATUS_CONFIGS>;
+    onEdit: (id: string) => void;
+    onPreview: (id: string) => void;
+    onDelete: (id: string) => void;
+    onStatusChange: (q: Quotation, next: string) => void;
+    t: (k: string) => string;
+}
+
+const QuotationTable: React.FC<QuotationTableProps> = ({
+    quotations, locale, statusConfigs, onEdit, onPreview, onDelete, onStatusChange, t,
+}) => {
+    const formatCurrency = (v: number) =>
+        new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(v);
+
+    return (
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
+            <table className="w-full text-left border-collapse">
+                <thead>
+                    <tr style={{ background: 'var(--surface-3)' }}>
+                        <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
+                            Orçamento
+                        </th>
+                        <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest hidden md:table-cell" style={{ color: 'var(--ink-2)' }}>
+                            Cliente
+                        </th>
+                        <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
+                            Status
+                        </th>
+                        <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest hidden md:table-cell" style={{ color: 'var(--ink-2)' }}>
+                            Total
+                        </th>
+                        <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest hidden lg:table-cell" style={{ color: 'var(--ink-2)' }}>
+                            Data
+                        </th>
+                        <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest text-right" style={{ color: 'var(--ink-2)' }}>
+                            Ações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {quotations.map((q) => (
+                        <tr
+                            key={q.id}
+                            className="group border-t transition-colors hover:bg-[var(--surface-3)]"
+                            style={{ borderColor: 'rgba(72,72,71,0.15)' }}
+                        >
+                            <td className="px-5 py-4">
+                                <div className="flex items-center gap-3">
+                                    <div
+                                        className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black text-white select-none"
+                                        style={{ background: getCoverGradient(q.title) }}
+                                    >
+                                        {q.title.charAt(0).toUpperCase()}
+                                    </div>
+                                    <span className="font-semibold text-sm" style={{ color: 'var(--ink-0)' }}>
+                                        {q.title}
+                                    </span>
+                                </div>
+                            </td>
+                            <td className="px-5 py-4 hidden md:table-cell">
+                                <span className="text-sm" style={{ color: 'var(--ink-2)' }}>
+                                    {q.clientName || '—'}
+                                </span>
+                            </td>
+                            <td className="px-5 py-4">
+                                <StatusToggle
+                                    value={q.status}
+                                    configs={statusConfigs}
+                                    size="sm"
+                                    onChange={(next) => onStatusChange(q, next)}
+                                />
+                            </td>
+                            <td className="px-5 py-4 hidden md:table-cell">
+                                <span
+                                    className="text-sm font-bold"
+                                    style={{ color: q.payment.total > 0 ? 'var(--primary)' : 'var(--ink-2)' }}
+                                >
+                                    {q.payment.total > 0 ? formatCurrency(q.payment.total) : '—'}
+                                </span>
+                            </td>
+                            <td className="px-5 py-4 hidden lg:table-cell">
+                                <span className="text-sm font-mono" style={{ color: 'var(--ink-2)' }}>
+                                    {new Intl.DateTimeFormat(locale).format(new Date(q.date))}
+                                </span>
+                            </td>
+                            <td className="px-5 py-4">
+                                <div className="flex items-center justify-end gap-1">
+                                    <button onClick={() => onEdit(q.id)} className="ds-icon-button" title={t('quotations.editQuotation')}>
+                                        <Edit3 size={14} />
+                                    </button>
+                                    <button onClick={() => onPreview(q.id)} className="ds-icon-button" style={{ color: 'var(--primary)' }} title="Preview">
+                                        <Eye size={14} />
+                                    </button>
+                                    <button onClick={() => onDelete(q.id)} className="ds-icon-button" style={{ color: 'var(--ink-2)' }} title="Excluir">
+                                        <X size={14} />
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+// ─── Main page ────────────────────────────────────────────────
 export const QuotationsPage: React.FC = () => {
     const { t, locale } = useI18n();
     const { quotations, deleteQuotation, updateQuotationStatus, addToast } = useApp();
-    const { openWizard } = useOutletContext<AppOutletContext>();
     const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
+    const [dateRange, setDateRange] = useState<DateRange>('all');
     const [isModelsOpen, setIsModelsOpen] = useState(false);
+    const [view, setView] = useState<ViewMode>('grid');
 
-    const filters: { value: FilterStatus; label: string }[] = [
+    const dateRangeLabel = DATE_RANGE_OPTIONS.find(o => o.value === dateRange)?.label ?? '';
+
+    const statusConfigs = QUOTATION_STATUS_CONFIGS({
+        draft: t('quotations.statusDraft'),
+        sent: t('quotations.statusSent'),
+        approved: t('quotations.statusApproved'),
+        rejected: t('quotations.statusRejected'),
+    });
+
+    const statusFilterOptions: { value: FilterStatus; label: string }[] = [
         { value: 'all', label: t('quotations.filterAll') },
         { value: 'RASCUNHO', label: t('quotations.filterDraft') },
         { value: 'ENVIADO', label: t('quotations.filterSent') },
@@ -33,14 +174,8 @@ export const QuotationsPage: React.FC = () => {
             || q.title.toLowerCase().includes(search.toLowerCase())
             || q.clientName.toLowerCase().includes(search.toLowerCase());
         const matchStatus = filterStatus === 'all' || q.status === filterStatus;
-        return matchSearch && matchStatus;
-    });
-
-    const statusConfigs = QUOTATION_STATUS_CONFIGS({
-        draft: t('quotations.statusDraft'),
-        sent: t('quotations.statusSent'),
-        approved: t('quotations.statusApproved'),
-        rejected: t('quotations.statusRejected'),
+        const matchDate = isWithinDateRange(q.date, dateRange);
+        return matchSearch && matchStatus && matchDate;
     });
 
     const handleDelete = (id: string) => {
@@ -48,58 +183,95 @@ export const QuotationsPage: React.FC = () => {
         addToast(t('quotations.deleted'), 'success');
     };
 
+    const formatCurrency = (v: number) =>
+        new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(v);
+
+    // Stats computed over date-filtered quotations
+    const statsBase = quotations.filter(q => isWithinDateRange(q.date, dateRange));
+    const stats = {
+        total: statsBase.length,
+        drafts: statsBase.filter(q => q.status === 'RASCUNHO').length,
+        sent: statsBase.filter(q => q.status === 'ENVIADO').length,
+        approvedTotal: statsBase.filter(q => q.status === 'APROVADO').reduce((s, q) => s + (q.payment?.total || 0), 0),
+    };
+
+    // Status label for cover badge
+    const statusLabel = (q: Quotation): string => {
+        const cfg = statusConfigs.find(c => c.value === q.status);
+        return cfg?.label ?? q.status;
+    };
+
     return (
         <div className="p-6 lg:p-8 animate-in fade-in duration-300">
 
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                    <h1 className="text-2xl font-black uppercase tracking-tight" style={{ color: 'var(--ink-0)' }}>
-                        {t('quotations.pageTitle')}
-                    </h1>
-                    <p className="text-xs font-mono mt-0.5" style={{ color: 'var(--ink-2)' }}>
-                        {quotations.length} {t('quotations.items')}
-                    </p>
-                </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto">
-                    <button
-                        onClick={() => navigate('/orcamentos/novo')}
-                        className="ds-button-primary flex items-center gap-2"
-                    >
-                        <Plus size={15} />
-                        {t('quotations.newQuotation')}
-                    </button>
-                    <HintButton hint={t('hints.newQuotation')} />
-                </div>
-            </div>
+            <HubHeader
+                title={t('quotations.pageTitle')}
+                subtitle={`${quotations.length} ${quotations.length === 1 ? 'orçamento cadastrado' : 'orçamentos cadastrados'}`}
+            />
+
+            {/* KPIs */}
+            {quotations.length > 0 && (
+                <HubStatsGrid
+                    headerRight={
+                        <HubDateFilter value={dateRange} onChange={setDateRange} />
+                    }
+                >
+                    <StatCard
+                        title="Total de Orçamentos"
+                        value={stats.total}
+                        icon={<Receipt size={20} />}
+                        dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
+                    />
+                    <StatCard
+                        title="Aguardando Envio"
+                        value={stats.drafts}
+                        icon={<FileEdit size={20} />}
+                        dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
+                    />
+                    <StatCard
+                        title="Aguardando Resposta"
+                        value={stats.sent}
+                        icon={<Send size={20} />}
+                        dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
+                    />
+                    <StatCard
+                        title="Receita Aprovada"
+                        value={formatCurrency(stats.approvedTotal)}
+                        icon={<TrendingUp size={20} />}
+                        dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
+                    />
+                </HubStatsGrid>
+            )}
 
             {/* Toolbar */}
-            <div className="flex flex-wrap items-center gap-2 mb-5">
-                <button 
-                    onClick={() => setIsModelsOpen(true)}
-                    className="ds-button flex items-center gap-1.5 text-xs"
-                >
-                    <Settings2 size={13} />
-                    Modelos de Pagamento
-                </button>
-
-                <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
-
-                <button 
-                    onClick={() => addToast('Geração de orçamentos por IA em breve!', 'info')}
-                    className="ds-button flex items-center gap-1.5 text-xs"
-                    style={{ background: 'rgba(168,85,247,0.1)', color: 'rgb(168,85,247)', borderColor: 'rgba(168,85,247,0.2)' }}
-                >
-                    <Wand2 size={13} />
-                    Assistente de IA
-                </button>
-            </div>
-
-            {/* Search + filter */}
-            {quotations.length > 0 && (
-                <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                    <div className="relative flex-1 max-w-xs">
-                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--ink-2)' }} />
+            <HubToolbar
+                primaryAction={
+                    <button
+                        onClick={() => navigate('/orcamentos/novo')}
+                        className="ds-button-primary flex items-center gap-1.5"
+                    >
+                        <Plus size={14} /> {t('quotations.newQuotation')}
+                    </button>
+                }
+                secondaryActions={
+                    <>
+                        <button
+                            onClick={() => addToast('Geração de orçamentos por IA em breve!', 'info')}
+                            className="ds-button text-xs flex items-center gap-1.5"
+                        >
+                            <Wand2 size={14} /> Assistente de IA
+                        </button>
+                        <button
+                            onClick={() => setIsModelsOpen(true)}
+                            className="ds-button text-xs"
+                        >
+                            Modelos de Pagamento
+                        </button>
+                    </>
+                }
+                searchVariant={
+                    <div className="relative w-full min-w-[200px]">
+                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--ink-2)' }} />
                         <input
                             className="ds-input w-full pl-9"
                             placeholder={t('quotations.searchPlaceholder')}
@@ -107,103 +279,81 @@ export const QuotationsPage: React.FC = () => {
                             onChange={e => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-1 rounded-lg p-1" style={{ background: 'var(--surface-2)' }}>
-                        {filters.map(f => (
-                            <button
-                                key={f.value}
-                                onClick={() => setFilterStatus(f.value)}
-                                className="px-3 py-1.5 rounded-md text-xs font-semibold transition-all"
-                                style={filterStatus === f.value
-                                    ? { background: 'var(--surface-0)', color: 'var(--ink-0)', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }
-                                    : { color: 'var(--ink-2)' }
+                }
+                filterViews={
+                    <div className="flex items-center gap-2">
+                        <HubStatusFilter
+                            options={statusFilterOptions}
+                            value={filterStatus}
+                            onChange={setFilterStatus}
+                        />
+                        <HubDateFilter value={dateRange} onChange={setDateRange} />
+                    </div>
+                }
+                viewToggle={<HubViewToggle view={view} onChange={setView} />}
+            />
+
+            {/* Content */}
+            {filtered.length > 0 ? (
+                view === 'grid' ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {filtered.map(q => (
+                            <HubGridCard
+                                key={q.id}
+                                name={q.title}
+                                coverFixedHeight="120px"
+                                coverIcon={<Receipt size={28} style={{ color: 'rgba(255,255,255,0.25)' }} />}
+                                statusText={statusLabel(q)}
+                                statusVariant={quotationStatusVariant(q.status)}
+                                onEdit={() => navigate(`/orcamentos/${q.id}/editar`)}
+                                onPreview={() => navigate(`/orcamentos/${q.id}/preview`)}
+                                onDelete={() => handleDelete(q.id)}
+                                infoSlot={
+                                    <>
+                                        {q.clientName && (
+                                            <p className="text-xs truncate -mt-1 mb-1.5" style={{ color: 'var(--ink-1)' }}>
+                                                {q.clientName}
+                                            </p>
+                                        )}
+                                        {q.payment.total > 0 && (
+                                            <p className="text-base font-black mb-1.5" style={{ color: 'var(--primary)' }}>
+                                                {formatCurrency(q.payment.total)}
+                                            </p>
+                                        )}
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="text-xs font-mono" style={{ color: 'var(--ink-2)' }}>
+                                                {new Intl.DateTimeFormat(locale).format(new Date(q.date))}
+                                                {q.items.length > 0 ? ` · ${q.items.length} itens` : ''}
+                                            </span>
+                                            <StatusToggle
+                                                value={q.status}
+                                                configs={statusConfigs}
+                                                size="sm"
+                                                onChange={next => updateQuotationStatus(q.id, next as QuotationStatus)}
+                                            />
+                                        </div>
+                                    </>
                                 }
-                            >
-                                {f.label}
-                            </button>
+                            />
                         ))}
                     </div>
-                </div>
-            )}
-
-            {/* Cards grid */}
-            {filtered.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {filtered.map(q => (
-                        <div
-                            key={q.id}
-                            className="group relative rounded-2xl border transition-all duration-150 hover:-translate-y-0.5 hover:shadow-md"
-                            style={{ background: 'var(--surface-0)', borderColor: 'var(--border)' }}
-                        >
-                            {/* Delete */}
-                            <button
-                                onClick={() => handleDelete(q.id)}
-                                className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-red-100 dark:hover:bg-red-900/30"
-                                style={{ color: 'var(--ink-2)' }}
-                            >
-                                <X size={12} />
-                            </button>
-
-                            <div className="p-5">
-                                {/* Avatar */}
-                                <div
-                                    className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm mb-4"
-                                    style={{ background: 'var(--surface-2)', color: 'var(--ink-1)' }}
-                                >
-                                    {q.title.charAt(0).toUpperCase() || <Receipt size={16} />}
-                                </div>
-
-                                {/* Info */}
-                                <h3 className="font-bold text-base truncate mb-0.5 pr-6" style={{ color: 'var(--ink-0)' }}>
-                                    {q.title}
-                                </h3>
-                                {q.clientName && (
-                                    <p className="text-xs truncate mb-0.5" style={{ color: 'var(--ink-1)' }}>{q.clientName}</p>
-                                )}
-                                <p className="text-xs font-mono mb-3" style={{ color: 'var(--ink-2)' }}>
-                                    {new Intl.DateTimeFormat(locale).format(new Date(q.date))}
-                                    {q.items.length > 0 ? ` · ${q.items.length} ${t('quotations.items')}` : ''}
-                                </p>
-
-                                {/* Total value */}
-                                {q.payment.total > 0 && (
-                                    <p className="text-sm font-black mb-3" style={{ color: 'var(--primary)' }}>
-                                        {new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(q.payment.total)}
-                                    </p>
-                                )}
-
-                                {/* Footer */}
-                                <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
-                                    <StatusToggle
-                                        value={q.status}
-                                        configs={statusConfigs}
-                                        size="sm"
-                                        onChange={next => updateQuotationStatus(q.id, next as QuotationStatus)}
-                                    />
-                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button
-                                            onClick={() => navigate(`/orcamentos/${q.id}/editar`)}
-                                            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--surface-2)]"
-                                            style={{ color: 'var(--ink-2)' }}
-                                            title={t('quotations.editQuotation')}
-                                        >
-                                            <Edit3 size={13} />
-                                        </button>
-                                        <button
-                                            onClick={() => navigate(`/orcamentos/${q.id}/preview`)}
-                                            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors"
-                                            style={{ color: 'var(--primary)' }}
-                                            title="Preview"
-                                        >
-                                            <Eye size={13} />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                ) : (
+                    <QuotationTable
+                        quotations={filtered}
+                        locale={locale}
+                        statusConfigs={statusConfigs}
+                        onEdit={id => navigate(`/orcamentos/${id}/editar`)}
+                        onPreview={id => navigate(`/orcamentos/${id}/preview`)}
+                        onDelete={id => handleDelete(id)}
+                        onStatusChange={(q, next) => updateQuotationStatus(q.id, next as QuotationStatus)}
+                        t={t}
+                    />
+                )
             ) : quotations.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-dashed" style={{ borderColor: 'var(--border)' }}>
+                <div
+                    className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-dashed"
+                    style={{ borderColor: 'var(--border)' }}
+                >
                     <Receipt size={40} className="mb-4 opacity-20" style={{ color: 'var(--ink-1)' }} />
                     <p className="font-semibold mb-1" style={{ color: 'var(--ink-1)' }}>{t('quotations.emptyTitle')}</p>
                     <p className="text-sm mb-5" style={{ color: 'var(--ink-2)' }}>{t('quotations.emptyDesc')}</p>
@@ -216,7 +366,7 @@ export const QuotationsPage: React.FC = () => {
                     <Search size={32} className="mb-3 opacity-20" style={{ color: 'var(--ink-1)' }} />
                     <p className="text-sm" style={{ color: 'var(--ink-2)' }}>{t('quotations.noResults')}</p>
                     <button
-                        onClick={() => { setSearch(''); setFilterStatus('all'); }}
+                        onClick={() => { setSearch(''); setFilterStatus('all'); setDateRange('all'); }}
                         className="mt-2 text-sm font-bold hover:underline"
                         style={{ color: 'var(--primary)' }}
                     >

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
     FlaskConical, LayoutDashboard, Receipt,
-    Package, Settings, ChevronLeft, ChevronRight, Moon, Sun, X,
+    Package, Settings, ChevronLeft, ChevronRight, Moon, Sun, X, BookOpen,
 } from 'lucide-react';
 import { useI18n } from '../../i18n/i18n.tsx';
 import { useTheme } from '../../hooks/useTheme';
@@ -13,6 +13,7 @@ interface NavItem {
     label: string;
     badge?: string;
     disabled?: boolean;
+    external?: boolean;
 }
 
 interface SidebarProps {
@@ -31,10 +32,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
         { to: '/formulas', icon: <FlaskConical size={18} />, label: t('nav.formulas') },
         { to: '/orcamentos', icon: <Receipt size={18} />, label: t('nav.quotations') },
         { to: '/estoque', icon: <Package size={18} />, label: t('nav.stock'), badge: t('nav.soon'), disabled: true },
-    ];
-
-    const bottomNav: NavItem[] = [
-        { to: '/configuracoes', icon: <Settings size={18} />, label: t('nav.settings') },
     ];
 
     const NavItemComponent = ({ item }: { item: NavItem }) => {
@@ -57,7 +54,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                 style={isActive ? { backgroundColor: primaryColor } : undefined}
             >
                 <span className="flex-shrink-0">{item.icon}</span>
-                {/* Labels: always visible on mobile drawer, hide on desktop when collapsed */}
                 <span className={`text-sm font-semibold flex-1 truncate ${collapsed ? 'lg:hidden' : ''}`}>
                     {item.label}
                 </span>
@@ -66,7 +62,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                         {item.badge}
                     </span>
                 )}
-                {/* Dot indicator for badge when collapsed on desktop */}
                 {collapsed && item.badge && (
                     <span className="hidden lg:block absolute left-8 top-0 w-2 h-2 rounded-full bg-[var(--ink-2)]" />
                 )}
@@ -139,9 +134,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                     {mainNav.map(item => <NavItemComponent key={item.to} item={item} />)}
                 </nav>
 
-                {/* Bottom actions */}
+                {/* Bottom section */}
                 <div className="p-2 space-y-0.5" style={{ borderTop: '1px solid var(--border)' }}>
-                    {bottomNav.map(item => <NavItemComponent key={item.to} item={item} />)}
+                    {/* Settings */}
+                    <NavLink to="/configuracoes" title={collapsed ? t('nav.settings') : undefined}>
+                        <div className={`
+                            flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
+                            text-[var(--ink-1)] hover:text-[var(--ink-0)] hover:bg-[var(--surface-2)]
+                            ${collapsed ? 'lg:justify-center' : ''}
+                        `}>
+                            <Settings size={18} className="flex-shrink-0" />
+                            <span className={`text-sm font-semibold ${collapsed ? 'lg:hidden' : ''}`}>{t('nav.settings')}</span>
+                        </div>
+                    </NavLink>
+
+                    {/* Documentation — always at bottom, well placed */}
+                    <NavLink to="/docs" title={collapsed ? 'Documentação' : undefined}>
+                        <div className={`
+                            flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
+                            text-[var(--ink-2)] hover:text-[var(--ink-1)] hover:bg-[var(--surface-2)]
+                            ${collapsed ? 'lg:justify-center' : ''}
+                        `}>
+                            <BookOpen size={18} className="flex-shrink-0" />
+                            <span className={`text-sm font-semibold ${collapsed ? 'lg:hidden' : ''}`}>Documentação</span>
+                        </div>
+                    </NavLink>
 
                     {/* Dark mode toggle */}
                     <button

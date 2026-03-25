@@ -39,8 +39,21 @@
                 theme: {
                     extend: {
                         fontFamily: {
-                            sans: ['Manrope', 'sans-serif'],
+                            sans: ['Inter', 'sans-serif'],
+                            display: ['Manrope', 'sans-serif'],
                         },
+                        colors: {
+                            'surface-0': 'var(--surface-0)',
+                            'surface-1': 'var(--surface-1)',
+                            'surface-2': 'var(--surface-2)',
+                            'surface-3': 'var(--surface-3)',
+                            'ink-0': 'var(--ink-0)',
+                            'ink-1': 'var(--ink-1)',
+                            'ink-2': 'var(--ink-2)',
+                            'border-color': 'var(--border)',
+                            primary: 'var(--primary)',
+                            'primary-container': 'var(--primary-container)',
+                        }
                     },
                 },
             },
@@ -49,30 +62,59 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Merriweather:wght@400;600;700&family=Oswald:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
         body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--surface-0);
+            color: var(--ink-0);
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-display {
             font-family: 'Manrope', sans-serif;
-            background-color: #f9fafb;
         }
 
         html.dark body {
-            background-color: #0b0b0c;
+            background-color: var(--surface-0);
         }
 
         :root {
-            --radius-lg: 14px;
-            --radius-md: 12px;
-            --radius-sm: 8px;
-            --border: #d9d9d9;
-            --shadow-1: 0 8px 20px rgba(0, 0, 0, 0.08);
-            --surface-0: #ffffff;
-            --surface-1: #f5f5f5;
-            --surface-2: #e8e8e8;
-            --surface-3: #d3d3d3;
-            --ink-0: #1a1a1a;
-            --ink-1: #4a4a4a;
-            --ink-2: #757575;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --radius-sm: 6px;
+
+            /* ── Light mode surfaces (warm-neutral paper tones) ─── */
+            --surface-0: #EAE6E1; /* Sidebar — warm stone              */
+            --surface-1: #F4F1ED; /* Page background — warm parchment  */
+            --surface-2: #FFFFFF; /* Cards — crisp white, elevated      */
+            --surface-3: #EDE8E3; /* Toolbar / inputs / popovers        */
+
+            --border: #DDD8D2;
+            --shadow-1: 0 1px 4px rgba(20, 15, 10, 0.06), 0 2px 10px rgba(20, 15, 10, 0.04);
+            --shadow-ambient: 0 8px 28px -4px rgba(20, 15, 10, 0.14);
+
+            --primary: #E67E00;
+            --primary-rgb: 230, 126, 0;
+            --primary-container: #cc7000;
+
+            /* ── Light mode ink (warm dark tones) ─────────────────  */
+            --ink-0: #1C1714;  /* near-black warm     */
+            --ink-1: #3D3430;  /* dark warm brown-gray */
+            --ink-2: #7C7370;  /* medium warm gray    */
+
+            /* ── Semantic status tokens — light mode ──────────────
+               Text colors are dark (700-level) for legibility
+               on white/near-white surfaces.                        */
+            --status-success-bg:   rgba(22,  163,  74, 0.10);
+            --status-success-text: #15803d;   /* green-700  */
+            --status-warning-bg:   rgba(180,  83,   9, 0.10);
+            --status-warning-text: #b45309;   /* amber-700  */
+            --status-info-bg:      rgba(29,   78, 216, 0.10);
+            --status-info-text:    #1d4ed8;   /* blue-700   */
+            --status-neutral-bg:   rgba(120, 113, 108, 0.10);
+            --status-neutral-text: #57534e;   /* stone-600  */
+            --status-error-bg:     rgba(185,  28,  28, 0.10);
+            --status-error-text:   #b91c1c;   /* red-700    */
 
             /* ── Control height tokens ─────────────────────────────
                All interactive controls (button, input, select,
@@ -95,15 +137,36 @@
         }
 
         html.dark {
-            --surface-0: #0f0f0f;
-            --surface-1: #1a1a1a;
-            --surface-2: #2a2a2a;
-            --surface-3: #3a3a3a;
-            --ink-0: #f5f5f5;
-            --ink-1: #d0d0d0;
-            --ink-2: #a0a0a0;
-            --border: #3a3a3a;
+            --surface-0: #0e0e0e;
+            --surface-1: #131313;
+            --surface-2: #202020;
+            --surface-3: #2c2c2c;
+
+            --ink-0: #ffffff;
+            --ink-1: #e4e2e1;
+            --ink-2: #adaaaa;
+
+            --border: #222222;
             --shadow-1: 0 10px 22px rgba(0, 0, 0, 0.4);
+            --shadow-ambient: 0 20px 60px -5px rgba(0, 0, 0, 0.4);
+
+            --primary: #FF8C00;
+            --primary-rgb: 255, 140, 0;
+            --primary-container: #fd8b00;
+
+            /* ── Semantic status tokens — dark mode ───────────────
+               Text colors are light (400-level) for legibility
+               on dark surfaces.                                    */
+            --status-success-bg:   rgba(16,  185, 129, 0.15);
+            --status-success-text: #34d399;   /* emerald-400 */
+            --status-warning-bg:   rgba(245, 158,  11, 0.15);
+            --status-warning-text: #fbbf24;   /* amber-400   */
+            --status-info-bg:      rgba(99,  102, 241, 0.15);
+            --status-info-text:    #818cf8;   /* indigo-400  */
+            --status-neutral-bg:   rgba(255, 255, 255, 0.08);
+            --status-neutral-text: #adaaaa;
+            --status-error-bg:     rgba(239,  68,  68, 0.15);
+            --status-error-text:   #f87171;   /* red-400     */
         }
 
         .rounded-2xl {
@@ -125,33 +188,39 @@
 
         .ds-card {
             border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
+            border: none;
             background: var(--surface-1);
-            box-shadow: var(--shadow-1);
         }
 
         .ds-panel {
             border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            background: var(--surface-2);
+            border: none;
+            background: var(--surface-1);
         }
 
         .ds-input,
         .ds-select,
         .ds-textarea {
             border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            background: var(--surface-1);
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Ghost border */
+            background: var(--surface-2);
             color: var(--ink-0);
             outline: none;
             transition: all 0.2s ease;
+        }
+
+        html:not(.dark) .ds-input,
+        html:not(.dark) .ds-select,
+        html:not(.dark) .ds-textarea {
+            border: 1px solid var(--border);
+            background: var(--surface-3);
         }
 
         .ds-input:focus,
         .ds-select:focus,
         .ds-textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 59, 130, 246), 0.1);
+            box-shadow: 0 0 0 1px var(--primary);
         }
 
         /* ── Input ────────────────────────────────────────────── */
@@ -220,7 +289,7 @@
         }
 
         .ds-button:hover {
-            background-color: var(--surface-2);
+            background-color: var(--surface-3);
         }
 
         .ds-button:active {
@@ -273,7 +342,7 @@
         }
 
         .ds-icon-button:hover {
-            background-color: var(--surface-2);
+            background-color: var(--surface-3);
         }
 
         /* ── Skeleton / shimmer ────────────────────────────────── */

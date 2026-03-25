@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KERUS - Formulas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#474747",
+              "error-container": "#b92902",
+              "on-primary-fixed": "#180800",
+              "tertiary-fixed-dim": "#efc52b",
+              "on-error": "#450900",
+              "on-primary-fixed-variant": "#512800",
+              "on-secondary-container": "#d2d0cf",
+              "outline": "#767575",
+              "secondary-dim": "#d6d4d3",
+              "on-tertiary": "#665100",
+              "secondary-fixed-dim": "#d6d4d3",
+              "on-tertiary-container": "#5c4900",
+              "primary-dim": "#ed8200",
+              "on-secondary-fixed-variant": "#5c5b5b",
+              "tertiary-container": "#ffd33a",
+              "surface-container-low": "#131313",
+              "inverse-surface": "#fcf9f8",
+              "on-tertiary-fixed-variant": "#675200",
+              "surface": "#0e0e0e",
+              "background": "#0e0e0e",
+              "tertiary": "#ffe393",
+              "surface-bright": "#2c2c2c",
+              "surface-container-lowest": "#000000",
+              "secondary": "#e4e2e1",
+              "on-secondary": "#525251",
+              "primary": "#ff9f4a",
+              "on-error-container": "#ffd2c8",
+              "on-tertiary-fixed": "#453600",
+              "on-primary-container": "#442100",
+              "surface-dim": "#0e0e0e",
+              "on-surface-variant": "#adaaaa",
+              "surface-container-high": "#20201f",
+              "primary-fixed-dim": "#ea8000",
+              "error-dim": "#d53d18",
+              "surface-variant": "#262626",
+              "surface-container": "#1a1a1a",
+              "inverse-primary": "#914d00",
+              "surface-tint": "#ff9f4a",
+              "on-secondary-fixed": "#3f3f3f",
+              "on-surface": "#ffffff",
+              "surface-container-highest": "#262626",
+              "primary-fixed": "#fd8b00",
+              "tertiary-dim": "#efc52b",
+              "error": "#ff7351",
+              "inverse-on-surface": "#565555",
+              "on-background": "#ffffff",
+              "tertiary-fixed": "#ffd33a",
+              "on-primary": "#532a00",
+              "secondary-fixed": "#e4e2e1",
+              "primary-container": "#fd8b00",
+              "outline-variant": "#484847"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; background-color: #0e0e0e; color: #ffffff; }
+      .font-manrope { font-family: 'Manrope', sans-serif; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface overflow-x-hidden">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-bold text-orange-500 tracking-tight font-manrope">KERUS</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-[#2c2c2c] transition-colors p-2 rounded-xl cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-[#2c2c2c] transition-colors p-2 rounded-xl cursor-pointer" data-icon="settings">settings</span>
+</div>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="close-up portrait of a professional chef in a dark modern kitchen setting with warm accent lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqjGIhrE9lm7JKJtwqBh9h4krMt8xMdvbEbkJBMN2R8EzrfusoOAGrN16Ev9N2DyjWOI-1QYsPBfvFtqIiwjmdWMFxsR6D9yI8rFDItjZod3ZFwb2xsc2DABlWKz0Go-IaSdZlcy1y9xCbZZog3Odt2C2URfNN4QkDXwugKJbPyN3h3KKR6oDcDtsF5nlKzPkZHiod11sRFsNephbgxmDqYQw7FZlp3ZzqaWuVdMw2dSDf3veidQgMR0lTDMGEbPX5qe4DEk42pYw"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 h-full w-64 pt-20 bg-[#131313] flex flex-col gap-2 p-4 hidden md:flex">
+<div class="mb-8 px-2">
+<h2 class="text-xl font-black text-orange-500 font-manrope">KERUS</h2>
+<p class="text-xs text-on-surface-variant font-medium">Formula Management</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#adaaaa] font-manrope text-sm hover:text-white hover:bg-[#20201f] transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-orange-400 font-bold border-r-2 border-orange-500 bg-gradient-to-r from-orange-500/10 to-transparent font-manrope text-sm transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+                Formulas
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#adaaaa] font-manrope text-sm hover:text-white hover:bg-[#20201f] transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="Category">category</span>
+                Ingredients
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#adaaaa] font-manrope text-sm hover:text-white hover:bg-[#20201f] transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#adaaaa] font-manrope text-sm hover:text-white hover:bg-[#20201f] transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reports
+            </a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-outline-variant/20 pt-4 pb-4">
+<button class="flex items-center justify-center gap-2 bg-gradient-to-tr from-primary to-primary-container text-on-primary-fixed font-bold py-3 rounded-xl mb-4 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                Create with AI
+            </button>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#adaaaa] font-manrope text-sm hover:text-white hover:bg-[#20201f] transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Help
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-[#adaaaa] font-manrope text-sm hover:text-white hover:bg-[#20201f] transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 pb-12 px-8 min-h-screen">
+<!-- Header Section -->
+<header class="mb-10">
+<h1 class="text-4xl font-extrabold font-manrope tracking-tight text-on-surface">FÓRMULAS</h1>
+<p class="text-on-surface-variant font-medium mt-1">Total: 12 Fórmulas</p>
+</header>
+<!-- Summary Row -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+<!-- Metric Card 1 -->
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-secondary-container p-2 rounded-xl">
+<span class="material-symbols-outlined text-primary" data-icon="inventory">inventory</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm font-semibold mb-1">Total de Fórmulas</p>
+<h3 class="text-3xl font-bold font-manrope">12</h3>
+</div>
+<!-- Metric Card 2 -->
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-secondary-container p-2 rounded-xl">
+<span class="material-symbols-outlined text-primary" data-icon="task_alt">task_alt</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm font-semibold mb-1">Fórmulas Finais</p>
+<h3 class="text-3xl font-bold font-manrope">8</h3>
+</div>
+<!-- Metric Card 3 -->
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-secondary-container p-2 rounded-xl">
+<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm font-semibold mb-1">Em Rascunho</p>
+<h3 class="text-3xl font-bold font-manrope">4</h3>
+</div>
+<!-- Metric Card 4 -->
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-secondary-container p-2 rounded-xl">
+<span class="material-symbols-outlined text-primary" data-icon="update">update</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm font-semibold mb-1">Atualizadas Recente</p>
+<h3 class="text-3xl font-bold font-manrope text-primary">12 <span class="text-sm font-normal text-on-surface-variant">nos últimos 7 dias</span></h3>
+</div>
+</section>
+<!-- Toolset Row -->
+<section class="bg-surface-container-highest p-4 rounded-xl flex flex-col lg:flex-row justify-between items-center gap-6 mb-12">
+<div class="flex flex-wrap items-center gap-3">
+<button class="bg-primary hover:bg-primary-container text-on-primary-fixed font-bold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2 active:scale-95">
+<span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+                    Nova Ficha
+                </button>
+<button class="bg-transparent border border-outline-variant hover:bg-surface-bright text-on-surface font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-xl text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    Criar com IA
+                </button>
+<button class="bg-transparent border border-outline-variant hover:bg-surface-bright text-on-surface font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-xl" data-icon="file_upload">file_upload</span>
+                    Importar
+                </button>
+</div>
+<div class="flex flex-wrap items-center gap-6 w-full lg:w-auto">
+<div class="relative w-full lg:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-on-surface-variant" placeholder="Buscar fórmula..." type="text"/>
+</div>
+<div class="flex items-center bg-surface-container-low p-1 rounded-xl">
+<button class="bg-primary-container text-on-primary-container font-bold px-4 py-1.5 rounded-lg text-xs transition-all">Todas</button>
+<button class="text-on-surface-variant font-semibold px-4 py-1.5 rounded-lg text-xs hover:text-on-surface transition-all">Final</button>
+<button class="text-on-surface-variant font-semibold px-4 py-1.5 rounded-lg text-xs hover:text-on-surface transition-all">Rascunho</button>
+</div>
+</div>
+</section>
+<!-- Formula Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Card: Chimichurri -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Chimichurri" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="vibrant green chimichurri sauce in a rustic glass jar on a dark slate background, shallow depth of field, high contrast food photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz67K8rUALgZ8Mrs3DnF-4rFW4CP0HOYEs69CfYL51N2zGZo7G93z-4Fg01KrzR5mV_oLunjITFV47sFE8xLlRk_jQke2NVmDrto0xYe0_GZ7tQN67ZmAZ7l-TIsGb6iOQLTdA36tN3dEjLTtxqLPVMcGABOAqqFqlnlIT1sVsglu53sjOceoYRC2Is48Oc2p3qAePtTXrgw1wmWzxL7AAcjOY0CFcikmUpiSmPixFjaYszeBOPJ5-EB0nbEhLnNeMnrcGDPn6bVs"/>
+<div class="absolute top-3 right-3 bg-green-900/40 backdrop-blur-md border border-green-500/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-green-400 tracking-widest">FINAL</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Chimichurri</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>24/03/2026</span>
+</div>
+</div>
+<!-- Card: Tempero Paga Marido -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Tempero Paga Marido" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="artistic heap of yellow and orange spice blend on a dark wood surface, dramatic side lighting highlighting textures of ground turmeric and spices" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOJ_LAn9GUaKE5npHCnnTFLHJcX8d9f38zI9fxL8eWsBjBsdlubwPWY_cIAQOVqrnONb8Cz6HEGGBrMZ5tfC3sitDPus9FxEgOSSqNW5AVWXSCYEASZoGZScWOp8KXZCAXzfq3HvYvYwMAXJl3Y8xTSlSPZiDjb-E_wg42PFEkDe5KnevGyPN9dWC4-bXj2cmjhaxUkqLlzGKnsQgMb4KMUzRW1K7CG6PDcrMrkPls2N7x1sIjzAGMD5uQKA3yW_wtLNvlvgq2CCM"/>
+<div class="absolute top-3 right-3 bg-secondary-container/40 backdrop-blur-md border border-outline-variant/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest">RASCUNHO</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Tempero Paga Marido</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>22/03/2026</span>
+</div>
+</div>
+<!-- Card: Mix de Cebola -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Mix de Cebola" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="crispy dehydrated onion flakes and purple onion powder mix on a matte black ceramic plate, elegant shadows and sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSVf7BG0eRH6TXeh3hDgqU8w872bqmKOSPUlK97TaFfD1RvAktDP9QDVHrrQdJz0SyKe-jYv9tleG-ZxvbXyGSv-_bRoaLRGTWS7lsVV6izCeutmcx6Ce9zzZvs4AdGxToaJw5FMwQZHp8eJZXC3tNqSNpXtJXe-Fp9WRmwDrGimtSzepxIMzl0ymUX3_DBuICDUnE1B-vmyTfgDnaYWjaxSREy9pIXNCqloXu3WABpp0Sy3TOn4rT_g1Z0yadil9Wr-dhjX8M_sc"/>
+<div class="absolute top-3 right-3 bg-green-900/40 backdrop-blur-md border border-green-500/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-green-400 tracking-widest">FINAL</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Mix de Cebola</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>20/03/2026</span>
+</div>
+</div>
+<!-- Card: Tempero Baiano -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Tempero Baiano" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="vibrant reddish-brown brazilian spice mix in a small copper bowl, dark background, warm professional food photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvsNIdfZZrS5X5jAK12uGfprTRCnxgWFJWeLFl2wxNhnLAbfWdibyBi4OHz3zU9wg5bxok_MSxbPna31212IZFJ9LRxIjhRonI1pifgWzBqFmo85qXVjYD3E4zNAbNFanxlALvT0xPti5zpOisJQWz-tSp8EnO5jjD2eXxkOeME50CvHTyMGffYzqgvIumCT7ggCeHztSEHCunuEYREsX0OboHCHZnt2oiWaP42xQ0cpefJ5v7k96T-noz1FFYaYgDtOpeWfRc1l0"/>
+<div class="absolute top-3 right-3 bg-green-900/40 backdrop-blur-md border border-green-500/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-green-400 tracking-widest">FINAL</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Tempero Baiano</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>18/03/2026</span>
+</div>
+</div>
+<!-- Card: Lemon Pepper -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Lemon Pepper" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="close-up of lemon pepper seasoning showing yellow zest and black pepper corns, bright citrus accent on dark stone background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm3K2g3UcFo8h74XHdajl0q6Ewa-Ky1XOIXdzEuBB2OIzumHPZtV1jXvc7u618ginDBvpi94gpPZ8AgveMzdAkpGk-DAy1fBPQhfZyUkEPuMgC-tvs6Mbrn34CZ3LwKxOdQAYQ1UAw1DfDyNpaQ0lxRVxrP-gbi5BsI93Xb8Zi_XnUVZ7L3xwW0cACTuH-tj2aR0SEuQH3lk_rh1UmyrtwLFkBrw_Rn1cafD25J3YHT6jS0bga8hNDFNgz4OA2mLrtHTadYn8mqsI"/>
+<div class="absolute top-3 right-3 bg-secondary-container/40 backdrop-blur-md border border-outline-variant/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest">RASCUNHO</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Lemon Pepper</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>15/03/2026</span>
+</div>
+</div>
+<!-- Card: Sal de Ervas -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Sal de Ervas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="coarse sea salt mixed with rosemary and thyme on a dark marble surface, top-down view, moody lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG0kq571ZVsHa1MvN0ez12aYhlH5kM8a7Sfm84zwmFP3PoLUTxHpk5VFk5kFV2rZgvNL87Uim30aV9mH4SkaUVgpkOc6Hu47rOnGtJJsz8grGj5t4gDmPwZTcLAMSrKHBWRBTHxBm3m9Cfsd0-oxIiVwo4YbZAWU7lTNadthBScdklVyFVa0lbKk7ly07BtwPqd-eT0tTQW__a8pvy6ONsPmm_YTE6MQrfBsitrlUNH72EHmuOnd2jqdXwNQatmoonWUm8OKl9ItQ"/>
+<div class="absolute top-3 right-3 bg-green-900/40 backdrop-blur-md border border-green-500/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-green-400 tracking-widest">FINAL</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Sal de Ervas</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>10/03/2026</span>
+</div>
+</div>
+<!-- Card: Molho Pesto -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Molho Pesto" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="fresh green basil pesto with pine nuts and olive oil droplets, vibrant colors on a dark background, professional culinary photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN2IFkTa0UQMlnR3L6F1qlmBBej3qGh5NQiX8_pLgNZZ7-IJNSHR1ooZE8L4m_ll3tPPIUSotLWUvH1NPQGJ_2R8aqKYupSsL2mctV-KbV3teQd0nrcEhkJNAqsLn7gvLF0b9GjpEQJ2xBucA_oeKyWBmxN1Gj1Oyhdvy6g8Yp-2Dfv5Kip60s4VeYpHOLWe0im-P7M6AyKIMg1ZGU2Xwqi3vmxcqgeaU9Ef08DJ_Fs7Bv_4b-vbsHWSm_2QvoJFqjfvaju6SVXbo"/>
+<div class="absolute top-3 right-3 bg-secondary-container/40 backdrop-blur-md border border-outline-variant/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest">RASCUNHO</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Molho Pesto</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>08/03/2026</span>
+</div>
+</div>
+<!-- Card: Rub Defumado -->
+<div class="bg-surface-container-low hover:bg-surface-container-high p-4 rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant/20">
+<div class="relative w-full aspect-square mb-4 rounded-xl overflow-hidden bg-surface-variant">
+<img alt="Rub Defumado" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="deep red smoky dry rub for barbecue in a wooden bowl, moody dark lighting with texture of spices highlighted" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbGR6DulRsOUJeHGPbU4-imbC-f-mysNA1t874l9UsL80QzLYbYYyswaTKBKBUWbPNWbXmOE42uC8D6fnz7CzgPXPJmaa5YaI0b_pw1Q6V6r4J_FKzDsdfgqJpYw3baJa8HKqvatUmnjRTMIbDBamIpfUjbk4o25ADu_8bxyR3F41_0f54halyrkEVXqlXO5tgR1xn3ZgIrvf906nfc-iou0PbCO-JtND4fbRywohALI54jgRjmqbd2cSqQnvsLIOpO3NsyNiXMFE"/>
+<div class="absolute top-3 right-3 bg-green-900/40 backdrop-blur-md border border-green-500/30 px-3 py-1 rounded-full">
+<span class="text-[10px] font-bold text-green-400 tracking-widest">FINAL</span>
+</div>
+</div>
+<h4 class="text-lg font-bold font-manrope text-on-surface mb-1">Rub Defumado</h4>
+<div class="flex justify-between items-center text-on-surface-variant text-xs font-medium">
+<span>Última atualização</span>
+<span>05/03/2026</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#131313] h-16 flex items-center justify-around border-t border-outline-variant/10 z-50">
+<a class="flex flex-col items-center gap-1 text-[#adaaaa] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold font-manrope">DASHBOARD</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-orange-400 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="science">science</span>
+<span class="text-[10px] font-bold font-manrope">FORMULAS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#adaaaa] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] font-bold font-manrope">INVENTORY</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#adaaaa] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="assessment">assessment</span>
+<span class="text-[10px] font-bold font-manrope">REPORTS</span>
+</a>
+</nav>
+</body></html>

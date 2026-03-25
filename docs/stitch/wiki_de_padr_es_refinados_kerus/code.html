@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KERUS Design Wiki | Obsidian Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#675200",
+              "secondary-container": "#474747",
+              "inverse-on-surface": "#565555",
+              "on-surface-variant": "#adaaaa",
+              "surface-container-high": "#20201f",
+              "background": "#0e0e0e",
+              "tertiary": "#ffe393",
+              "on-primary-fixed-variant": "#512800",
+              "surface-container": "#1a1a1a",
+              "surface": "#0e0e0e",
+              "primary-fixed-dim": "#ea8000",
+              "secondary-dim": "#d6d4d3",
+              "surface-variant": "#262626",
+              "on-tertiary-container": "#5c4900",
+              "secondary-fixed": "#e4e2e1",
+              "inverse-surface": "#fcf9f8",
+              "on-surface": "#ffffff",
+              "primary-container": "#fd8b00",
+              "on-secondary": "#525251",
+              "on-secondary-fixed": "#3f3f3f",
+              "surface-dim": "#0e0e0e",
+              "error-dim": "#d53d18",
+              "on-tertiary-fixed": "#453600",
+              "primary-dim": "#ed8200",
+              "on-error": "#450900",
+              "outline": "#767575",
+              "on-primary-container": "#442100",
+              "on-background": "#ffffff",
+              "on-secondary-fixed-variant": "#5c5b5b",
+              "on-error-container": "#ffd2c8",
+              "error-container": "#b92902",
+              "inverse-primary": "#914d00",
+              "primary-fixed": "#fd8b00",
+              "primary": "#ff9f4a",
+              "surface-container-highest": "#262626",
+              "secondary-fixed-dim": "#d6d4d3",
+              "surface-container-lowest": "#000000",
+              "tertiary-fixed": "#ffd33a",
+              "surface-container-low": "#131313",
+              "on-tertiary": "#665100",
+              "on-primary": "#532a00",
+              "error": "#ff7351",
+              "surface-bright": "#2c2c2c",
+              "on-primary-fixed": "#180800",
+              "tertiary-container": "#ffd33a",
+              "tertiary-fixed-dim": "#efc52b",
+              "tertiary-dim": "#efc52b",
+              "outline-variant": "#484847",
+              "surface-tint": "#ff9f4a",
+              "secondary": "#e4e2e1",
+              "on-secondary-container": "#d2d0cf"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-16 bg-[#0e0e0e]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black text-orange-500 tracking-tighter font-headline">Obsidian Wiki</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-headline font-bold text-lg tracking-tight text-orange-400 border-b-2 border-orange-500 pb-1" href="#">Standards</a>
+<a class="font-headline font-bold text-lg tracking-tight text-[#adaaaa] hover:text-white transition-colors" href="#">Components</a>
+<a class="font-headline font-bold text-lg tracking-tight text-[#adaaaa] hover:text-white transition-colors" href="#">Assets</a>
+<a class="font-headline font-bold text-lg tracking-tight text-[#adaaaa] hover:text-white transition-colors" href="#">Guidelines</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#adaaaa] hover:bg-[#2c2c2c] transition-all duration-200 active:scale-95 rounded-xl">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 text-[#adaaaa] hover:bg-[#2c2c2c] transition-all duration-200 active:scale-95 rounded-xl">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/20">
+<img alt="User Profile" data-alt="close-up portrait of a professional male designer with creative lighting and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFwqeuG4a92NSA3F_z2aeYRcthStctxuhgx3fwCqtrlsmoE3-lG-n_sBqsaMG6bop6SYyWDSb2gdMWXe26oy0eVlnEykt3Qhh8tJy6Vohwnytc0AuymUg77te_cnoLFtzwgW3Imxyn2zvXfPFjD2kHuQzhV3Ew0uTQs98hY5s79LHeEj8ha5LfF8HUcsLJG1erEtp3jSWPd777KUy6WMAoO0n8QUuA7yetS2pPa--PjSZpu_b0JncJvCFphJD3SicJKB4wIQKNNp8"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] flex flex-col p-4 space-y-2 bg-[#131313] w-64 shadow-[40px_0_60px_-5px_rgba(0,0,0,0.4)] z-40">
+<div class="px-4 py-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[#180800]" data-icon="architecture" data-weight="fill" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<div>
+<h3 class="text-orange-500 font-bold font-headline text-sm leading-tight">Design System</h3>
+<p class="text-[10px] text-on-surface-variant font-medium">v2.4.0 Obsidian</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-[#180800] rounded-lg font-bold font-headline text-sm transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span>Foundations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] hover:bg-[#20201f] hover:text-white rounded-lg font-medium font-headline text-sm transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="Category">category</span>
+<span>Iconography</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] hover:bg-[#20201f] hover:text-white rounded-lg font-medium font-headline text-sm transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="smart_button">smart_button</span>
+<span>Buttons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] hover:bg-[#20201f] hover:text-white rounded-lg font-medium font-headline text-sm transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="widgets">widgets</span>
+<span>Micro-UI</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] hover:bg-[#20201f] hover:text-white rounded-lg font-medium font-headline text-sm transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="rule_folder">rule_folder</span>
+<span>Status Cards</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<button class="w-full py-3 bg-surface-container-highest rounded-xl text-primary font-bold flex items-center justify-center gap-2 hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-tertiary" data-icon="auto_awesome">auto_awesome</span>
+<span>Create with AI</span>
+</button>
+<div class="pt-4 border-t border-outline-variant/10 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-[#adaaaa] hover:text-white transition-colors text-sm font-headline" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="menu_book">menu_book</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#adaaaa] hover:text-white transition-colors text-sm font-headline" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="chat_bubble">chat_bubble</span>
+<span>Feedback</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-12 min-h-screen bg-background">
+<!-- Header Section -->
+<header class="mb-16">
+<div class="flex items-center gap-2 text-primary font-semibold mb-2 tracking-widest text-[10px] uppercase">Design Wiki / System</div>
+<h1 class="text-6xl font-black font-headline tracking-tighter mb-4">KERUS <span class="text-primary">Standards</span></h1>
+<p class="text-on-surface-variant max-w-2xl text-lg leading-relaxed">
+                The Obsidian Architect framework applied to the KERUS system. 
+                A premium, dark-glass workspace where data is curated for the executive mind.
+            </p>
+</header>
+<!-- Section 1: ICONOGRAPHY STANDARDS -->
+<section class="mb-24">
+<div class="flex items-baseline justify-between mb-8">
+<h2 class="text-3xl font-bold font-headline">01. Iconography Standards</h2>
+<span class="text-outline-variant text-sm font-label">Visual Hierarchy System</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<div class="lg:col-span-8 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+<!-- ROW A: Brand Icons -->
+<div class="mb-12">
+<div class="flex items-center gap-3 mb-6">
+<div class="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+<span class="text-primary text-[10px] font-bold uppercase tracking-wider">Row A: Primary Navigation</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-8">
+<div class="group flex flex-col items-center gap-3">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center transition-all group-hover:bg-primary/5">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="dashboard">dashboard</span>
+</div>
+<span class="text-xs text-on-surface font-medium uppercase tracking-tighter">Dashboard</span>
+</div>
+<div class="group flex flex-col items-center gap-3">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center transition-all group-hover:bg-primary/5">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="functions">functions</span>
+</div>
+<span class="text-xs text-on-surface font-medium uppercase tracking-tighter">Formulas</span>
+</div>
+<div class="group flex flex-col items-center gap-3">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center transition-all group-hover:bg-primary/5">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<span class="text-xs text-on-surface font-medium uppercase tracking-tighter">Budgets</span>
+</div>
+</div>
+</div>
+<!-- ROW B: Neutral Icons -->
+<div>
+<div class="flex items-center gap-3 mb-6">
+<div class="px-3 py-1 bg-secondary-container/30 rounded-full border border-outline-variant/20">
+<span class="text-[#adaaaa] text-[10px] font-bold uppercase tracking-wider">Row B: Secondary Utilities</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-8">
+<div class="group flex flex-col items-center gap-3">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center transition-all group-hover:bg-surface-bright">
+<span class="material-symbols-outlined text-[#adaaaa] text-3xl" data-icon="settings">settings</span>
+</div>
+<span class="text-xs text-on-surface-variant font-medium uppercase tracking-tighter">Settings</span>
+</div>
+<div class="group flex flex-col items-center gap-3">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center transition-all group-hover:bg-surface-bright">
+<span class="material-symbols-outlined text-[#adaaaa] text-3xl" data-icon="help_center">help_center</span>
+</div>
+<span class="text-xs text-on-surface-variant font-medium uppercase tracking-tighter">Help</span>
+</div>
+<div class="group flex flex-col items-center gap-3">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center transition-all group-hover:bg-surface-bright">
+<span class="material-symbols-outlined text-[#adaaaa] text-3xl" data-icon="logout">logout</span>
+</div>
+<span class="text-xs text-on-surface-variant font-medium uppercase tracking-tighter">Logout</span>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 bg-surface-container-high rounded-xl p-8 flex flex-col justify-center">
+<span class="material-symbols-outlined text-primary mb-4" data-icon="info">info</span>
+<h4 class="text-xl font-headline font-bold mb-4">Functional Coloring</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                        In the KERUS system, color is not decorative; it is a semantic anchor. 
+                        <br/><br/>
+<strong class="text-primary">Row A Icons</strong> use the signature Obsidian Orange to denote core product destinations and critical navigation nodes.
+                        <br/><br/>
+<strong class="text-secondary">Row B Icons</strong> utilize Neutral Light Grey to recede into the UI, signaling utility actions that are secondary to the user's primary workflow.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Section 2: BUTTON GUIDELINES -->
+<section class="mb-24">
+<div class="flex items-baseline justify-between mb-8">
+<h2 class="text-3xl font-bold font-headline">02. Button Guidelines</h2>
+<span class="text-outline-variant text-sm font-label">The "Never Mix" Paradigm</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Text-Only Buttons -->
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+<h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-8">Text-Only Architecture</h4>
+<div class="space-y-6">
+<div>
+<button class="w-full py-3 bg-primary text-on-primary-fixed font-bold font-headline rounded-xl transition-all active:scale-95">Primary Action</button>
+<span class="block text-[10px] mt-2 text-outline text-center uppercase">Solid Primary</span>
+</div>
+<div>
+<button class="w-full py-3 bg-surface-container-highest text-on-surface font-bold font-headline rounded-xl transition-all active:scale-95">Secondary Action</button>
+<span class="block text-[10px] mt-2 text-outline text-center uppercase">Surface Container High</span>
+</div>
+</div>
+</div>
+<!-- Icon-Only Buttons -->
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+<h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-8">Icon-Only (Ghost/Outline)</h4>
+<div class="flex flex-col items-center justify-center h-48 gap-8">
+<div class="flex gap-6">
+<button class="w-12 h-12 flex items-center justify-center rounded-xl border border-outline-variant/30 text-primary hover:border-primary/50 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-xl text-[#adaaaa] hover:bg-surface-bright transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-xl text-primary hover:bg-primary/10 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+<p class="text-[10px] text-outline text-center max-w-[180px] leading-tight">USE ONLY FOR REPETITIVE GRID ACTIONS OR GLOBAL UTILITIES.</p>
+</div>
+</div>
+<!-- Special Hint & Logic -->
+<div class="bg-surface-container-high p-8 rounded-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
+<h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-8">Specialized: Hint Trigger</h4>
+<div class="flex flex-col items-center justify-center h-40">
+<button class="group relative w-10 h-10 flex items-center justify-center rounded-full bg-surface-bright border border-outline-variant/20 hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-[#adaaaa] group-hover:text-primary transition-colors text-lg" data-icon="help_outline">help_outline</span>
+<!-- Mock Tooltip -->
+<div class="absolute bottom-full mb-3 w-48 p-4 bg-surface-container-highest rounded-xl text-[11px] text-on-surface-variant leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl border border-outline-variant/20">
+<strong class="text-on-surface block mb-1">Contextual Metadata</strong>
+                                Hints provide non-obstructive guidance during complex formula entry.
+                            </div>
+</button>
+<span class="block text-[10px] mt-4 text-primary font-bold uppercase">The "i" Trigger</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: REFINED PATTERNS -->
+<section>
+<div class="flex items-baseline justify-between mb-8">
+<h2 class="text-3xl font-bold font-headline">03. Refined Patterns</h2>
+<span class="text-outline-variant text-sm font-label">The Executive Interface</span>
+</div>
+<!-- Bento Grid of Patterns -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Quick Status Cards -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 flex items-center justify-between group hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Active Formulas</p>
+<h5 class="text-2xl font-black font-headline">1,284</h5>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary text-xs font-bold bg-primary/10 px-2 py-1 rounded-lg">
+<span>+12%</span>
+<span class="material-symbols-outlined text-sm" data-icon="north_east">north_east</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 flex items-center justify-between group hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Total Asset Value</p>
+<h5 class="text-2xl font-black font-headline">$4.2M</h5>
+</div>
+</div>
+<div class="flex items-center gap-1 text-[#adaaaa] text-xs font-bold bg-surface-container-high px-2 py-1 rounded-lg">
+<span>0.4%</span>
+<span class="material-symbols-outlined text-sm" data-icon="trending_flat">trending_flat</span>
+</div>
+</div>
+<!-- Segmented Control Example -->
+<div class="sm:col-span-2 bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div>
+<h5 class="font-headline font-bold text-lg">Interface State</h5>
+<p class="text-xs text-on-surface-variant">Toggle workspace interaction modes.</p>
+</div>
+<div class="bg-[#0e0e0e] p-1 rounded-xl flex items-center border border-outline-variant/20">
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface rounded-lg text-sm font-bold shadow-lg transition-all">View</button>
+<button class="px-6 py-2 text-on-surface-variant hover:text-on-surface text-sm font-bold transition-all">Edit</button>
+</div>
+</div>
+</div>
+<!-- Popover/Tooltip Example -->
+<div class="md:col-span-4 bg-[#131313] rounded-xl p-8 border border-outline-variant/10 flex flex-col">
+<h5 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-6">Popover Elevation</h5>
+<div class="flex-1 flex items-center justify-center">
+<div class="bg-surface-container-highest w-full rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-outline-variant/30 overflow-hidden">
+<div class="p-4 bg-surface-bright flex items-center justify-between">
+<span class="text-sm font-bold">Node Properties</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant" data-icon="close">close</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="h-2 w-3/4 bg-outline-variant/20 rounded-full"></div>
+<div class="h-2 w-1/2 bg-outline-variant/20 rounded-full"></div>
+<div class="pt-4 flex gap-2">
+<div class="h-8 flex-1 bg-primary/20 rounded-lg"></div>
+<div class="h-8 flex-1 bg-surface-container-low rounded-lg border border-outline-variant/10"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="ml-64 w-full py-6 px-8 flex justify-between items-center bg-[#0e0e0e] border-t border-[#2c2c2c]/15">
+<span class="font-body text-xs text-[#adaaaa]">© 2024 Obsidian Architect. Internal Design Standards.</span>
+<div class="flex gap-6">
+<a class="font-body text-xs text-[#adaaaa] hover:text-white transition-colors underline-offset-4 hover:underline" href="#">Privacy Policy</a>
+<a class="font-body text-xs text-[#adaaaa] hover:text-white transition-colors underline-offset-4 hover:underline" href="#">Support</a>
+<a class="font-body text-xs text-[#adaaaa] hover:text-white transition-colors underline-offset-4 hover:underline" href="#">Changelog</a>
+</div>
+</footer>
+</body></html>
