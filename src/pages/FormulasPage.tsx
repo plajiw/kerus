@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
 import { useApp } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 import { AppOutletContext } from '../components/layout/AppLayout';
 import { ImportModal, ImportType } from '../components/modals/ImportModal';
 import { StatCard } from '../components/ui/StatCard';
@@ -81,10 +82,11 @@ interface FormulaTableProps {
     onDelete: (id: string) => void;
     onStatusChange: (recipe: Recipe, next: string) => void;
     t: (k: string) => string;
+    isDark: boolean;
 }
 
 const FormulaTable: React.FC<FormulaTableProps> = ({
-    recipes, locale, statusConfigs, onEdit, onPreview, onDelete, onStatusChange, t,
+    recipes, locale, statusConfigs, onEdit, onPreview, onDelete, onStatusChange, t, isDark
 }) => (
     <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
         <table className="w-full text-left border-collapse">
@@ -117,8 +119,11 @@ const FormulaTable: React.FC<FormulaTableProps> = ({
                         <td className="px-5 py-4">
                             <div className="flex items-center gap-3">
                                 <div
-                                    className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black text-white select-none"
-                                    style={{ background: getCoverGradient(recipe.nome_formula) }}
+                                    className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none"
+                                    style={{ 
+                                        background: getCoverGradient(recipe.nome_formula, isDark),
+                                        color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
+                                    }}
                                 >
                                     {recipe.nome_formula.charAt(0).toUpperCase()}
                                 </div>
@@ -198,8 +203,9 @@ function formulaStatusVariant(status: string | undefined): CoverStatusVariant {
 // ─── Main page ────────────────────────────────────────────────
 export const FormulasPage: React.FC = () => {
     const { t, locale } = useI18n();
-    const { history, deleteRecipe, recipeManager, addToast, saveToHistory } = useApp();
+    const { history, deleteRecipe, recipeManager, addToast, saveToHistory, isFavorite, toggleFavorite } = useApp();
     const { openWizard } = useOutletContext<AppOutletContext>();
+    const { isDark } = useTheme();
     const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
@@ -207,8 +213,17 @@ export const FormulasPage: React.FC = () => {
     const [dateRange, setDateRange] = useState<DateRange>('all');
     const [importType, setImportType] = useState<ImportType | null>(null);
     const [view, setView] = useState<ViewMode>('grid');
+    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+    const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
     const dateRangeLabel = DATE_RANGE_OPTIONS.find(o => o.value === dateRange)?.label ?? '';
+
+    const toggleSelection = (id: string) => {
+        const next = new Set(selectedIds);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        setSelectedIds(next);
+    };
 
     const filtered = history.filter(r => {
         const matchSearch = !search || r.nome_formula.toLowerCase().includes(search.toLowerCase());
@@ -216,8 +231,19 @@ export const FormulasPage: React.FC = () => {
             || (filterStatus === 'FINAL' && r.status === 'FINAL')
             || (filterStatus === 'RASCUNHO' && r.status !== 'FINAL');
         const matchDate = isWithinDateRange(r.data, dateRange);
-        return matchSearch && matchStatus && matchDate;
+        const matchFav = !showFavoritesOnly || isFavorite(r.id);
+        return matchSearch && matchStatus && matchDate && matchFav;
     });
+
+    const handleDeleteSelected = () => {
+        selectedIds.forEach(id => deleteRecipe(id));
+        addToast(`${selectedIds.size} fórmula(s) excluída(s)`, 'success');
+        setSelectedIds(new Set());
+    };
+
+    const handleExport = (format: 'pdf' | 'json' | 'xml') => {
+        addToast(`Exportação em ${format.toUpperCase()} em breve!`, 'info');
+    };
 
     const statusConfigs = FORMULA_STATUS_CONFIGS({
         draft: t('status.draft'),
@@ -229,6 +255,12 @@ export const FormulasPage: React.FC = () => {
         { value: 'FINAL', label: t('formulas.filterFinal') },
         { value: 'RASCUNHO', label: t('formulas.filterDraft') },
     ];
+
+    const sortedFiltered = [...filtered].sort((a, b) => {
+        const af = isFavorite(a.id) ? 0 : 1;
+        const bf = isFavorite(b.id) ? 0 : 1;
+        return af - bf;
+    });
 
     // Stats computed over date-filtered history
     const statsBase = history.filter(r => isWithinDateRange(r.data, dateRange));
@@ -317,13 +349,19 @@ export const FormulasPage: React.FC = () => {
                     </div>
                 }
                 viewToggle={<HubViewToggle view={view} onChange={setView} />}
+                showFavoritesOnly={showFavoritesOnly}
+                onToggleFavoritesOnly={() => setShowFavoritesOnly(p => !p)}
+                selectionCount={selectedIds.size}
+                onClearSelection={() => setSelectedIds(new Set())}
+                onDeleteSelected={handleDeleteSelected}
+                onExport={handleExport}
             />
 
             {/* Content */}
             {filtered.length > 0 ? (
                 view === 'grid' ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filtered.map((recipe) => (
+                        {sortedFiltered.map((recipe) => (
                             <HubGridCard
                                 key={recipe.id}
                                 name={recipe.nome_formula}
@@ -333,6 +371,10 @@ export const FormulasPage: React.FC = () => {
                                 onEdit={() => navigate(`/formulas/${recipe.id}/editar`)}
                                 onPreview={() => navigate(`/formulas/${recipe.id}/preview`)}
                                 onDelete={() => deleteRecipe(recipe.id)}
+                                selected={selectedIds.has(recipe.id)}
+                                onToggleSelect={() => toggleSelection(recipe.id)}
+                                pinned={isFavorite(recipe.id)}
+                                onTogglePin={() => toggleFavorite(recipe.id)}
                                 infoSlot={
                                     <div className="flex items-center justify-between gap-2">
                                         <span className="text-xs font-mono flex-shrink-0" style={{ color: 'var(--ink-2)' }}>
@@ -360,6 +402,7 @@ export const FormulasPage: React.FC = () => {
                         onDelete={id => deleteRecipe(id)}
                         onStatusChange={(recipe, next) => saveToHistory({ ...recipe, status: next as any })}
                         t={t}
+                        isDark={isDark}
                     />
                 )
             ) : history.length === 0 ? (

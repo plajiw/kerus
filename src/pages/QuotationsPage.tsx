@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
 import { useApp } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 import { StatCard } from '../components/ui/StatCard';
 import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../components/ui/StatusToggle';
 import { HubHeader } from '../components/ui/hub/HubHeader';
@@ -27,7 +28,7 @@ function quotationStatusVariant(status: QuotationStatus): CoverStatusVariant {
     switch (status) {
         case 'APROVADO': return 'green';
         case 'ENVIADO':  return 'blue';
-        case 'REPROVADO': return 'red';
+        case 'RECUSADO': return 'red';
         default: return 'gray';
     }
 }
@@ -42,10 +43,11 @@ interface QuotationTableProps {
     onDelete: (id: string) => void;
     onStatusChange: (q: Quotation, next: string) => void;
     t: (k: string) => string;
+    isDark: boolean;
 }
 
 const QuotationTable: React.FC<QuotationTableProps> = ({
-    quotations, locale, statusConfigs, onEdit, onPreview, onDelete, onStatusChange, t,
+    quotations, locale, statusConfigs, onEdit, onPreview, onDelete, onStatusChange, t, isDark
 }) => {
     const formatCurrency = (v: number) =>
         new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(v);
@@ -85,8 +87,11 @@ const QuotationTable: React.FC<QuotationTableProps> = ({
                             <td className="px-5 py-4">
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black text-white select-none"
-                                        style={{ background: getCoverGradient(q.title) }}
+                                        className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none"
+                                        style={{ 
+                                            background: getCoverGradient(q.title, isDark),
+                                            color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
+                                        }}
                                     >
                                         {q.title.charAt(0).toUpperCase()}
                                     </div>
@@ -145,7 +150,8 @@ const QuotationTable: React.FC<QuotationTableProps> = ({
 // ─── Main page ────────────────────────────────────────────────
 export const QuotationsPage: React.FC = () => {
     const { t, locale } = useI18n();
-    const { quotations, deleteQuotation, updateQuotationStatus, addToast } = useApp();
+    const { quotations, deleteQuotation, updateQuotationStatus, addToast, isFavorite, toggleFavorite } = useApp();
+    const { isDark } = useTheme();
     const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
@@ -153,6 +159,8 @@ export const QuotationsPage: React.FC = () => {
     const [dateRange, setDateRange] = useState<DateRange>('all');
     const [isModelsOpen, setIsModelsOpen] = useState(false);
     const [view, setView] = useState<ViewMode>('grid');
+    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+    const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
     const dateRangeLabel = DATE_RANGE_OPTIONS.find(o => o.value === dateRange)?.label ?? '';
 
@@ -176,12 +184,36 @@ export const QuotationsPage: React.FC = () => {
             || q.clientName.toLowerCase().includes(search.toLowerCase());
         const matchStatus = filterStatus === 'all' || q.status === filterStatus;
         const matchDate = isWithinDateRange(q.date, dateRange);
-        return matchSearch && matchStatus && matchDate;
+        const matchFav = !showFavoritesOnly || isFavorite(q.id);
+        return matchSearch && matchStatus && matchDate && matchFav;
+    });
+
+    const handleDeleteSelected = () => {
+        selectedIds.forEach(id => deleteQuotation(id));
+        addToast(`${selectedIds.size} orçamento(s) excluído(s)`, 'success');
+        setSelectedIds(new Set());
+    };
+
+    const handleExport = (format: 'pdf' | 'json' | 'xml') => {
+        addToast(`Exportação em ${format.toUpperCase()} em breve!`, 'info');
+    };
+
+    const sortedFiltered = [...filtered].sort((a, b) => {
+        const af = isFavorite(a.id) ? 0 : 1;
+        const bf = isFavorite(b.id) ? 0 : 1;
+        return af - bf;
     });
 
     const handleDelete = (id: string) => {
         deleteQuotation(id);
         addToast(t('quotations.deleted'), 'success');
+    };
+
+    const toggleSelection = (id: string) => {
+        const next = new Set(selectedIds);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        setSelectedIds(next);
     };
 
     const formatCurrency = (v: number) =>
@@ -289,23 +321,32 @@ export const QuotationsPage: React.FC = () => {
                     </div>
                 }
                 viewToggle={<HubViewToggle view={view} onChange={setView} />}
+                showFavoritesOnly={showFavoritesOnly}
+                onToggleFavoritesOnly={() => setShowFavoritesOnly(p => !p)}
+                selectionCount={selectedIds.size}
+                onClearSelection={() => setSelectedIds(new Set())}
+                onDeleteSelected={handleDeleteSelected}
+                onExport={handleExport}
             />
 
             {/* Content */}
             {filtered.length > 0 ? (
                 view === 'grid' ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filtered.map(q => (
+                        {sortedFiltered.map(q => (
                             <HubGridCard
                                 key={q.id}
                                 name={q.title}
-                                coverFixedHeight="120px"
-                                coverIcon={<Receipt size={28} style={{ color: 'rgba(255,255,255,0.25)' }} />}
+                                coverAspectRatio="4/3"
                                 statusText={statusLabel(q)}
                                 statusVariant={quotationStatusVariant(q.status)}
                                 onEdit={() => navigate(`/orcamentos/${q.id}/editar`)}
                                 onPreview={() => navigate(`/orcamentos/${q.id}/preview`)}
                                 onDelete={() => handleDelete(q.id)}
+                                selected={selectedIds.has(q.id)}
+                                onToggleSelect={() => toggleSelection(q.id)}
+                                pinned={isFavorite(q.id)}
+                                onTogglePin={() => toggleFavorite(q.id)}
                                 infoSlot={
                                     <>
                                         {q.clientName && (
@@ -345,6 +386,7 @@ export const QuotationsPage: React.FC = () => {
                         onDelete={id => handleDelete(id)}
                         onStatusChange={(q, next) => updateQuotationStatus(q.id, next as QuotationStatus)}
                         t={t}
+                        isDark={isDark}
                     />
                 )
             ) : quotations.length === 0 ? (

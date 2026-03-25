@@ -37,7 +37,10 @@ export const SettingsPage: React.FC = () => {
                     <h2 className="text-sm font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-widest mb-5 flex items-center gap-2">
                         <Building2 size={14} />
                         {t('settings.company')}
-                        <HintButton hint={t('hints.company')} />
+                        <HintButton 
+                            title={t('settings.company')} 
+                            hint={t('hints.company')} 
+                        />
                     </h2>
                     <div className="space-y-4">
                         <div>
@@ -92,7 +95,10 @@ export const SettingsPage: React.FC = () => {
                         <div>
                             <div className="flex items-center gap-1.5 mb-2">
                                 <p className="text-xs font-semibold text-slate-500 dark:text-neutral-400">{t('settings.primaryColor')}</p>
-                                <HintButton hint={t('hints.primaryColor')} />
+                                <HintButton 
+                                    title={t('settings.primaryColor')} 
+                                    hint={t('hints.primaryColor')} 
+                                />
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {UI_THEMES.map(theme => (
@@ -165,7 +171,10 @@ export const SettingsPage: React.FC = () => {
                     <h2 className="text-sm font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-widest mb-1 flex items-center gap-2">
                         <Zap size={14} />
                         {t('settings.advanced')}
-                        <HintButton hint={t('hints.advancedMode')} />
+                        <HintButton 
+                            title={t('settings.advanced')} 
+                            hint={t('hints.advancedMode')} 
+                        />
                     </h2>
                     <p className="text-xs mb-5" style={{ color: 'var(--ink-2)' }}>{t('settings.advancedDesc')}</p>
                     <label className="flex items-center gap-3 cursor-pointer select-none w-fit">

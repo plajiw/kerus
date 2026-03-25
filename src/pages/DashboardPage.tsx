@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
 import { useApp } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 import { HubHeader } from '../components/ui/hub/HubHeader';
 import { HubStatsGrid } from '../components/ui/hub/HubStatsGrid';
 import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../components/ui/hub/HubDateFilter';
@@ -15,6 +16,7 @@ import { getCoverGradient } from '../utils/coverGradient';
 export const DashboardPage: React.FC = () => {
     const { t, locale } = useI18n();
     const { history, quotations } = useApp();
+    const { isDark } = useTheme();
     const navigate = useNavigate();
 
     const [dateRange, setDateRange] = useState<DateRange>('all');
@@ -135,8 +137,11 @@ export const DashboardPage: React.FC = () => {
                                 >
                                     {/* Mini cover */}
                                     <div
-                                        className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-black text-white select-none"
-                                        style={{ background: getCoverGradient(recipe.nome_formula) }}
+                                        className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-black select-none"
+                                        style={{ 
+                                            background: getCoverGradient(recipe.nome_formula, isDark),
+                                            color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
+                                        }}
                                     >
                                         {recipe.nome_formula.charAt(0).toUpperCase()}
                                     </div>

@@ -4,6 +4,7 @@ import { useHistory } from '../hooks/useHistory';
 import { useRecipeManager } from '../hooks/useRecipeManager';
 import { useQuotations } from '../hooks/useQuotations';
 import { usePaymentModels } from '../hooks/usePaymentModels';
+import { useFavorites } from '../hooks/useFavorites';
 import { Recipe, Quotation, QuotationStatus, PaymentModel } from '../types';
 
 interface AppContextValue {
@@ -26,6 +27,9 @@ interface AppContextValue {
     paymentModels: PaymentModel[];
     savePaymentModel: (model: PaymentModel) => void;
     deletePaymentModel: (id: string) => void;
+    favoriteIds: Set<string>;
+    toggleFavorite: (id: string) => void;
+    isFavorite: (id: string) => boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -46,6 +50,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const recipeManager = useRecipeManager();
     const { quotations, saveQuotation, deleteQuotation, updateStatus: updateQuotationStatus } = useQuotations();
     const { paymentModels, savePaymentModel, deletePaymentModel } = usePaymentModels();
+    const { favoriteIds, toggleFavorite, isFavorite } = useFavorites();
 
     return (
         <AppContext.Provider value={{
@@ -56,6 +61,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             recipeManager,
             quotations, saveQuotation, deleteQuotation, updateQuotationStatus,
             paymentModels, savePaymentModel, deletePaymentModel,
+            favoriteIds, toggleFavorite, isFavorite,
         }}>
             {children}
         </AppContext.Provider>

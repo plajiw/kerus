@@ -304,6 +304,9 @@ Todos os controles interativos compartilham tokens de altura para alinhamento ó
 height: var(--h-control);
 ```
 
+#### Containers Segmentados (View Toggles / Grupos)
+Componentes que agrupam múltiplos controles (ex: `HubViewToggle`) devem fixar sua altura externa no token `--h-control` e usar padding interno sutil (ex: `2px`) para garantir que o container não exceda a altura padrão da linha. Isso evita saltos verticais quando a toolbar alterna entre modos (ex: seleção vs normal).
+
 ---
 
 ## 7. Componentes

@@ -9,28 +9,31 @@ interface HubViewToggleProps {
 }
 
 export const HubViewToggle: React.FC<HubViewToggleProps> = ({ view, onChange }) => (
-    <div className="flex items-center rounded-xl p-1 flex-shrink-0" style={{ background: 'var(--surface-3)' }}>
+    <div
+        className="flex items-center rounded-xl flex-shrink-0 p-1"
+        style={{ background: 'var(--surface-3)', height: 'var(--h-control)' }}
+    >
         <button
             onClick={() => onChange('grid')}
             title="Visualização em grid"
-            className="w-8 h-8 flex items-center justify-center rounded-lg transition-all"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
             style={view === 'grid'
                 ? { background: 'var(--primary)', color: '#180800' }
                 : { color: 'var(--ink-2)' }
             }
         >
-            <LayoutGrid size={14} />
+            <LayoutGrid size={13} />
         </button>
         <button
             onClick={() => onChange('table')}
             title="Visualização em tabela"
-            className="w-8 h-8 flex items-center justify-center rounded-lg transition-all"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
             style={view === 'table'
                 ? { background: 'var(--primary)', color: '#180800' }
                 : { color: 'var(--ink-2)' }
             }
         >
-            <List size={14} />
+            <List size={13} />
         </button>
     </div>
 );

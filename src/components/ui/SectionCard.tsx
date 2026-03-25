@@ -40,7 +40,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
                     <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
                         {title}
                     </span>
-                    {hint && <HintButton hint={hint} />}
+                    {hint && <HintButton hint={hint} title={title} />}
                     {badge}
                 </div>
                 <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
