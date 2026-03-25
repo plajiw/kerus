@@ -4,6 +4,7 @@ import { useI18n } from '../../../i18n/i18n.tsx';
 import { useAdvancedMode } from '../../../hooks/useAdvancedMode';
 import { toISODate } from '../../../utils/dateUtils';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
+import { SectionCard } from '../../ui/SectionCard';
 
 interface MetadataSectionProps {
     nomeFormula: string;
@@ -39,19 +40,11 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
     const r = manager.currentRecipe;
 
     return (
-        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
-
-            {/* Header */}
-            <div
-                className="flex items-center gap-2 px-5 py-3.5"
-                style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}
-            >
-                <FileText size={14} style={{ color: 'var(--primary)' }} />
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
-                    {t('editor.mainData')}
-                </span>
-            </div>
-
+        <SectionCard
+            title={t('editor.mainData')}
+            icon={<FileText size={14} />}
+            collapsible={false}
+        >
             {/* Basic fields */}
             <div className="p-5 space-y-4">
                 <div>
@@ -225,6 +218,6 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
                     </div>
                 )}
             </div>
-        </div>
+        </SectionCard>
     );
 };

@@ -12,6 +12,7 @@ import { useI18n } from '../../../i18n/i18n.tsx';
 import { useAdvancedMode } from '../../../hooks/useAdvancedMode';
 import type { Ingredient, IngredientPhase } from '../../../types';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
+import { SectionCard } from '../../ui/SectionCard';
 
 interface IngredientsSectionProps {
     ingredientes: Ingredient[];
@@ -174,27 +175,19 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
     );
 
     return (
-        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
-
-            {/* Header */}
-            <div
-                className="flex items-center justify-between px-5 py-3.5"
-                style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}
-            >
-                <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
-                        {t('editor.ingredients')}
-                    </span>
-                    <HintButton hint={t('hints.ingredients')} />
-                    {advancedMode && (
-                        <span
-                            className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-md"
-                            style={{ background: 'rgba(var(--primary-rgb,59,130,246),0.1)', color: 'var(--primary)' }}
-                        >
-                            ADV
-                        </span>
-                    )}
-                </div>
+        <SectionCard
+            title={t('editor.ingredients')}
+            hint={t('hints.ingredients')}
+            collapsible={true}
+            badge={advancedMode && (
+                <span
+                    className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-md"
+                    style={{ background: 'rgba(var(--primary-rgb,59,130,246),0.1)', color: 'var(--primary)' }}
+                >
+                    ADV
+                </span>
+            )}
+            actions={
                 <button
                     onClick={manager.addIngredient}
                     className="ds-button"
@@ -202,8 +195,8 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
                 >
                     {t('buttons.addItem')}
                 </button>
-            </div>
-
+            }
+        >
             {/* Warning: total weight zero */}
             {hasFilledIngredients && totalWeight === 0 && (
                 <div className="mx-3 mt-3 flex items-center gap-2 rounded-lg px-3 py-2 text-xs"
@@ -373,6 +366,6 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
                     </p>
                 </div>
             </div>
-        </div>
+        </SectionCard>
     );
 };

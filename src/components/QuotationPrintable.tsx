@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quotation } from '../types';
+import { Quotation, PAYMENT_METHOD_LABELS } from '../types';
 import { useCompanySettings } from '../hooks/useCompanySettings';
 import { isRichTextEmpty, toRenderableRichTextHtml } from '../utils/richTextUtils';
 
@@ -182,7 +182,9 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                             </div>
                             {q.payment.method && (
                                 <div style={{ padding: '10px 16px', background: '#f5f5f5', borderBottom: '1px solid #e8e8e8', fontSize: 10,  color: '#555', display: 'flex', gap: 16 }}>
-                                    <span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Método: {q.payment.method}</span>
+                                    <span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        Método: {PAYMENT_METHOD_LABELS[q.payment.method] || q.payment.method}
+                                    </span>
                                     {(!!q.payment.interestRate || !!q.payment.penaltyFee) && (
                                         <span style={{ color: '#b45309', fontWeight: 600 }}>
                                             Encargos (Atraso): Juros {q.payment.interestRate || 0}% a.m. | Multa {q.payment.penaltyFee || 0}%

@@ -7,6 +7,16 @@ export interface QuotationItem {
 
 export type PaymentMethod = 'pix' | 'credit' | 'debit' | 'boleto' | 'transfer' | 'cash' | 'other';
 
+export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
+  pix: 'Pix',
+  credit: 'Cartão de Crédito',
+  debit: 'Cartão de Débito',
+  boleto: 'Boleto Bancário',
+  transfer: 'Transferência / TED',
+  cash: 'Dinheiro',
+  other: 'Outro'
+};
+
 export interface PaymentModel {
   id: string;
   name: string;

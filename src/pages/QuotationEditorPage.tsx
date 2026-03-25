@@ -22,7 +22,7 @@ import { FormulaPickerDialog } from '../components/modals/FormulaPickerDialog';
 import { QuotationPaymentModal } from '../components/modals/QuotationPaymentModal';
 import { QuotationPrintable } from '../components/QuotationPrintable';
 import { FORMULA_THEMES, FORMULA_FONTS } from '../constants/themes';
-import { QuotationItem, QuotationStatus } from '../types';
+import { QuotationItem, QuotationStatus, PAYMENT_METHOD_LABELS } from '../types';
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; border: string }> = {
     RASCUNHO: { bg: 'rgba(245,158,11,0.12)', color: '#b45309', border: 'rgba(245,158,11,0.4)' },
@@ -450,7 +450,7 @@ export const QuotationEditorPage: React.FC = () => {
                                         <div className="text-xs font-bold uppercase tracking-widest text-[var(--ink-2)]">Resumo da Condição</div>
                                         {q.payment.method && (
                                             <div className="text-[10px] font-bold uppercase tracking-widest bg-[var(--surface-2)] text-[var(--ink-1)] px-2 py-1 rounded-md">
-                                                Método: {q.payment.method}
+                                                Método: {PAYMENT_METHOD_LABELS[q.payment.method] || q.payment.method}
                                             </div>
                                         )}
                                     </div>

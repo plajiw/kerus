@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PaymentMethod } from '../../types';
+import { PaymentMethod, PAYMENT_METHOD_LABELS } from '../../types/quotation';
 import { 
     ChevronDown, 
     ChevronUp, 
@@ -28,12 +28,12 @@ interface Props {
     onNameChange?: (name: string) => void;
 }
 
-const METHODS: { id: PaymentMethod; label: string; Icon: React.ElementType }[] = [
-    { id: 'pix', label: 'Pix', Icon: Zap },
-    { id: 'credit', label: 'Crédito', Icon: CreditCard },
-    { id: 'boleto', label: 'Boleto', Icon: FileText },
-    { id: 'transfer', label: 'Transf.', Icon: Landmark },
-    { id: 'cash', label: 'Dinheiro', Icon: Banknote },
+const METHODS: { id: PaymentMethod; Icon: React.ElementType }[] = [
+    { id: 'pix', Icon: Zap },
+    { id: 'credit', Icon: CreditCard },
+    { id: 'boleto', Icon: FileText },
+    { id: 'transfer', Icon: Landmark },
+    { id: 'cash', Icon: Banknote },
 ];
 
 const parseNumber = (v: string) => {
@@ -52,8 +52,7 @@ export const PaymentConfigPanel: React.FC<Props> = ({
 
     const handleMagicTerms = () => {
         const lines: string[] = [];
-        const methodObj = METHODS.find(m => m.id === value.method);
-        const methodLabel = methodObj?.label || 'A Combinar';
+        const methodLabel = value.method ? PAYMENT_METHOD_LABELS[value.method] : 'A Combinar';
         
         if (value.entryPercentage > 0 && value.entryPercentage < 100) {
             lines.push(`Sinal de ${value.entryPercentage}% para início dos testes laboratoriais ou viabilidade do projeto, saldo de ${100 - value.entryPercentage}% na entrega final ou conclusão da OS.`);
@@ -99,16 +98,17 @@ export const PaymentConfigPanel: React.FC<Props> = ({
                     <div className="flex-1 h-px bg-[var(--border)]" />
                 </div>
                 
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                <div className="flex flex-wrap gap-3">
                     {METHODS.map(m => {
                         const Icon = m.Icon;
+                        const label = PAYMENT_METHOD_LABELS[m.id];
                         const isSelected = value.method === m.id;
                         return (
                             <button
                                 key={m.id}
                                 type="button"
                                 onClick={() => update({ method: m.id })}
-                                className="flex flex-col items-center justify-center gap-3 p-4 rounded-xl border transition-all"
+                                className="flex-1 min-w-[100px] flex flex-col items-center justify-center gap-3 p-4 rounded-xl border transition-all"
                                 style={{
                                     background: isSelected ? 'var(--primary)' : 'var(--surface-0)',
                                     borderColor: isSelected ? 'var(--primary)' : 'var(--border)',
@@ -116,8 +116,8 @@ export const PaymentConfigPanel: React.FC<Props> = ({
                                     boxShadow: isSelected ? '0 4px 12px rgba(99,102,241,0.2)' : 'none',
                                 }}
                             >
-                                <Icon size={26} strokeWidth={isSelected ? 2.5 : 1.5} />
-                                <span className="text-sm font-bold">{m.label}</span>
+                                <Icon size={24} strokeWidth={isSelected ? 2.5 : 1.5} />
+                                <span className="text-[13px] font-bold text-center leading-tight">{label}</span>
                             </button>
                         );
                     })}
@@ -160,7 +160,7 @@ export const PaymentConfigPanel: React.FC<Props> = ({
             <div className="border-t border-[var(--border)] pt-5 text-center">
                 <button 
                     type="button"
-                    className="flex items-center justify-center gap-2 mx-auto text-sm font-bold uppercase tracking-wider transition-colors py-2 px-5 rounded-xl hover:bg-[var(--surface-2)]"
+                    className="flex items-center justify-center gap-2 mx-auto text-[13px] font-bold uppercase tracking-wider transition-colors py-2 px-6 rounded-xl border border-transparent hover:border-[var(--border)] hover:bg-[var(--surface-1)]"
                     style={{ color: showAdvanced ? 'var(--primary)' : 'var(--ink-2)' }}
                     onClick={() => setShowAdvanced(!showAdvanced)}
                 >

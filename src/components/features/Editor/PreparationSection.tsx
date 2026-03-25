@@ -10,6 +10,7 @@ import { SortableItem } from '../../common/SortableItem';
 import { useI18n } from '../../../i18n/i18n.tsx';
 import type { Step } from '../../../types';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
+import { SectionCard } from '../../ui/SectionCard';
 
 interface PreparationSectionProps {
     steps: Step[];
@@ -34,30 +35,24 @@ export const PreparationSection: React.FC<PreparationSectionProps> = ({
     );
 
     return (
-        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
-
-            {/* Header */}
-            <div
-                className="flex items-center justify-between px-5 py-3.5 gap-3 flex-wrap"
-                style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}
-            >
-                <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>
-                        {t('editor.preparation')}
+        <SectionCard
+            title={t('editor.preparation')}
+            collapsible={true}
+            badge={
+                <label className="flex items-center gap-1.5 cursor-pointer ml-3">
+                    <input
+                        type="checkbox"
+                        checked={exibir_modo_preparo ?? true}
+                        onChange={e => manager.handleFieldChange('exibir_modo_preparo', e.target.checked)}
+                        className="w-3.5 h-3.5 rounded cursor-pointer"
+                        style={{ accentColor: 'var(--primary)' }}
+                    />
+                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
+                        {t('editor.showInFile')}
                     </span>
-                    <label className="flex items-center gap-1.5 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            checked={exibir_modo_preparo ?? true}
-                            onChange={e => manager.handleFieldChange('exibir_modo_preparo', e.target.checked)}
-                            className="w-3.5 h-3.5 rounded cursor-pointer"
-                            style={{ accentColor: 'var(--primary)' }}
-                        />
-                        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
-                            {t('editor.showInFile')}
-                        </span>
-                    </label>
-                </div>
+                </label>
+            }
+            actions={
                 <button
                     onClick={manager.addStep}
                     className="ds-button"
@@ -65,8 +60,8 @@ export const PreparationSection: React.FC<PreparationSectionProps> = ({
                 >
                     {t('buttons.addStep')}
                 </button>
-            </div>
-
+            }
+        >
             {/* Step rows */}
             <div className="p-3">
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd} modifiers={[restrictToVerticalAxis]}>
@@ -113,6 +108,6 @@ export const PreparationSection: React.FC<PreparationSectionProps> = ({
                     </p>
                 )}
             </div>
-        </div>
+        </SectionCard>
     );
 };

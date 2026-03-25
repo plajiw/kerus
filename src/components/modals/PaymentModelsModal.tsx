@@ -68,25 +68,25 @@ export const PaymentModelsModal: React.FC<Props> = ({ isOpen, onClose }) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
             <div 
-                className="w-full max-w-2xl rounded-2xl shadow-xl flex flex-col"
+                className="w-full max-w-5xl rounded-2xl shadow-xl flex flex-col"
                 style={{ background: 'var(--surface-0)', border: '1px solid var(--border)', maxHeight: '90vh' }}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border)' }}>
+                <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: 'var(--border)' }}>
                     <div className="flex items-center gap-2">
-                        <CreditCard size={18} style={{ color: 'var(--primary)' }} />
-                        <h2 className="font-bold text-lg leading-none mt-0.5" style={{ color: 'var(--ink-0)' }}>
+                        <CreditCard size={20} style={{ color: 'var(--primary)' }} />
+                        <h2 className="font-bold text-xl leading-none mt-0.5" style={{ color: 'var(--ink-0)' }}>
                             Modelos de Pagamento
                         </h2>
                     </div>
-                    <button onClick={onClose} className="ds-icon-button"><X size={18} /></button>
+                    <button onClick={onClose} className="ds-icon-button"><X size={20} /></button>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-auto p-5 bg-gray-50/50 dark:bg-black/20">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex-1 overflow-auto p-5 sm:p-6 bg-gray-50/50 dark:bg-black/20">
+                    <div className="flex flex-col md:flex-row gap-6 sm:gap-8">
                         {/* List */}
-                        <div className="space-y-3">
+                        <div className="w-full md:w-[320px] shrink-0 space-y-4">
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--ink-2)]">Modelos Salvos</h3>
                                 <button onClick={handleCreateNew} className="text-xs font-bold text-blue-500 hover:text-blue-600 flex items-center gap-1">
@@ -117,9 +117,9 @@ export const PaymentModelsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                             </div>
                                             <button 
                                                 onClick={(e) => handleDelete(m.id, e)}
-                                                className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-red-50 text-[var(--ink-2)] hover:text-red-500 transition-colors"
+                                                className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-50 text-[var(--ink-2)] hover:text-red-500 transition-colors"
                                             >
-                                                <Trash2 size={13} />
+                                                <Trash2 size={16} />
                                             </button>
                                         </div>
                                     ))}
@@ -128,12 +128,15 @@ export const PaymentModelsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         </div>
 
                         {/* Editor */}
-                        <div className="bg-[var(--surface-0)] rounded-xl border border-[var(--border)] p-4 shadow-sm h-min">
+                        <div className="flex-1 bg-[var(--surface-0)] rounded-2xl border border-[var(--border)] p-6 sm:p-8 shadow-sm h-min">
                             {editingId ? (
-                                <div className="space-y-4">
-                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--ink-2)] border-b border-[var(--border)] pb-2 mb-3">
-                                        {editingId === 'new' ? 'Criar Novo Modelo' : 'Editar Modelo'}
-                                    </h3>
+                                <div className="space-y-6">
+                                    <div className="flex items-center gap-3 border-b border-[var(--border)] pb-4 mb-2">
+                                        <Edit2 size={20} className="text-[var(--ink-2)]" />
+                                        <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--ink-0)] mt-0.5">
+                                            {editingId === 'new' ? 'Criar Novo Modelo' : 'Editar Modelo'}
+                                        </h3>
+                                    </div>
                                     
                                     <PaymentConfigPanel 
                                         value={modelData}
@@ -143,22 +146,22 @@ export const PaymentModelsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                         onNameChange={setName}
                                     />
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button onClick={() => setEditingId(null)} className="ds-button flex-1 justify-center">Cancelar</button>
+                                    <div className="flex gap-3 pt-4 border-t border-[var(--border)]">
+                                        <button onClick={() => setEditingId(null)} className="ds-button flex-1 justify-center py-3 text-sm">Cancelar</button>
                                         <button 
                                             onClick={handleSave} 
                                             disabled={!name.trim()}
-                                            className="ds-button-primary flex-1 justify-center disabled:opacity-50"
+                                            className="ds-button-primary flex-1 justify-center py-3 text-sm disabled:opacity-50"
                                         >
-                                            Salvar
+                                            Salvar Modelo
                                         </button>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="h-full min-h-[250px] flex flex-col items-center justify-center text-center opacity-50">
-                                    <Edit2 size={32} className="mb-3 text-[var(--ink-2)]" />
-                                    <p className="text-sm font-semibold text-[var(--ink-1)]">Selecione um modelo</p>
-                                    <p className="text-xs text-[var(--ink-2)]">Ou crie um novo para começar.</p>
+                                <div className="h-full min-h-[400px] flex flex-col items-center justify-center text-center opacity-40">
+                                    <Edit2 size={48} strokeWidth={1.5} className="mb-4 text-[var(--ink-2)]" />
+                                    <p className="text-lg font-bold text-[var(--ink-0)] mb-1">Selecione um modelo</p>
+                                    <p className="text-sm text-[var(--ink-2)] max-w-[250px]">Ou clique em Novo para começar a configurar um padrão de pagamento.</p>
                                 </div>
                             )}
                         </div>
