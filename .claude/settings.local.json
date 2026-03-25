@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(grep -r \"from.*Hub\\\\|from.*Layout\\\\b\\\\|from.*SettingsModal\\\\|from.*QuotationEditor\" C:/Users/plajiw/Documents/formula-generator/src --include=*.tsx --include=*.ts)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Read(//c/Users/PabloRibeiroRamos/OneDrive - INVENT/Documentos/Pessoal/Proj/acervo-de-estudos/00_Base/assets/**)"
     ]
   }
 }

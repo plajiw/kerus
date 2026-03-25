@@ -8,6 +8,71 @@
 
 ---
 
+## 0. Stack de Recursos UI/UX — Fonte Única de Verdade
+
+Esta seção define as bibliotecas e recursos aprovados para o projeto. **Não utilize alternativas sem registro aqui.**
+
+### 0.1 Ícones — Lucide React
+
+| Item           | Valor                                                                             |
+| -------------- | --------------------------------------------------------------------------------- |
+| Biblioteca     | **`lucide-react`**                                                                |
+| Instalação     | `npm install lucide-react` (já incluso no projeto)                                |
+| Uso            | `import { FlaskConical, Settings } from 'lucide-react'`                           |
+| Tamanho padrão | `size={18}` em navegação, `size={14}` em botões/tabelas, `size={20}` em cards KPI |
+
+> **Nota sobre protótipos Stitch:** os arquivos em `docs/stitch/` usam Material Symbols Outlined como referência visual. Esses protótipos representam a intenção de design, **não a implementação**. A biblioteca de ícones implementada no projeto é Lucide React. Qualquer mapeamento de ícone Material → Lucide está na seção 8.
+
+### 0.2 Fontes — Google Fonts (já carregadas no index.html)
+
+| Família               | Papel                        | Carregada via             |
+| --------------------- | ---------------------------- | ------------------------- |
+| **Manrope** (400–800) | Headlines, navegação, labels | `@import` em `index.html` |
+| **Inter** (400–600)   | Body, dados, formulários     | `@import` em `index.html` |
+
+Não adicionar outras fontes sem decisão registrada.
+
+### 0.3 Animações / DnD
+
+| Recurso              | Biblioteca                                 | Uso                                      |
+| -------------------- | ------------------------------------------ | ---------------------------------------- |
+| Drag & drop          | `@dnd-kit/core` + `@dnd-kit/sortable`      | Ingredientes, Etapas, Itens de Orçamento |
+| Animações de entrada | Tailwind `animate-in fade-in duration-300` | Transição de páginas                     |
+
+### 0.4 Componentes UI Prontos do Projeto
+
+Estes componentes já existem e devem ser reutilizados — não recriar do zero:
+
+| Componente        | Caminho                                     | Função                                     |
+| ----------------- | ------------------------------------------- | ------------------------------------------ |
+| `HubButton`       | `src/components/ui/hub/HubButton.tsx`       | Botão que força a regra ícone-ou-texto     |
+| `HubToolbar`      | `src/components/ui/hub/HubToolbar.tsx`      | Barra de ações das páginas de listagem     |
+| `HubGridCard`     | `src/components/ui/hub/HubGridCard.tsx`     | Card de item no modo grid                  |
+| `HubHeader`       | `src/components/ui/hub/HubHeader.tsx`       | Cabeçalho de página com título + subtítulo |
+| `HubStatsGrid`    | `src/components/ui/hub/HubStatsGrid.tsx`    | Grid de KPIs com slot de filtro            |
+| `HubStatusFilter` | `src/components/ui/hub/HubStatusFilter.tsx` | Filtro de status em select                 |
+| `HubDateFilter`   | `src/components/ui/hub/HubDateFilter.tsx`   | Filtro de período em select                |
+| `HubViewToggle`   | `src/components/ui/hub/HubViewToggle.tsx`   | Toggle grid/lista                          |
+| `StatCard`        | `src/components/ui/StatCard.tsx`            | Card KPI com ícone, valor e label          |
+| `SectionCard`     | `src/components/ui/SectionCard.tsx`         | Seção colapsável do editor                 |
+| `StatusToggle`    | `src/components/ui/StatusToggle.tsx`        | Toggle de status semântico                 |
+| `HintButton`      | `src/components/ui/HintButton.tsx`          | Botão "?" com tooltip                      |
+
+### 0.5 Referências Visuais (Stitch)
+
+Arquivos de referência de design em `docs/stitch/`:
+
+| Arquivo                                              | Conteúdo                                                                                 |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `stitch/screen.png`                                  | Visão geral da UI — layout principal, sidebar, toolbar, grid de fórmulas                 |
+| `stitch/DESIGN.md`                                   | Filosofia visual original — "The Obsidian Architect"                                     |
+| `stitch/kerus_dark_ember/DESIGN.md`                  | Estratégia de design — dark amber theme                                                  |
+| `stitch/wiki_de_padr_es_refinados_kerus/screen.png`  | **Padrões de botões, ícones e cards KPI** — usar como referência primária de componentes |
+| `stitch/componentes_de_feedback_kerus/screen.png`    | Formulários, tabelas, toasts, estados de feedback                                        |
+| `stitch/wiki_modais_e_configura_es_kerus/screen.png` | Anatomia de modais e side panels (drawers)                                               |
+
+---
+
 ## 1. North Star: The Obsidian Architect
 
 O Kerus rejeita a estética de "planilha clínica" — grade de caixas cinzas e linhas rígidas que drenam a energia do usuário. A visão é o **Obsidian Architect**: um workspace executivo de vidro escuro onde os dados não são apenas exibidos, são **curados**.
@@ -25,32 +90,32 @@ Princípios centrais:
 
 ### 2.1 Tokens Semânticos (Tailwind / CSS)
 
-| Token | Hex | Papel |
-|---|---|---|
-| `background` / `surface` / `surface-dim` | `#0e0e0e` | Tela base absoluta |
-| `surface-container-lowest` | `#000000` | Sombras, verdadeiro preto |
-| `surface-container-low` | `#131313` | Sidebar, painéis secundários |
-| `surface-container` | `#1a1a1a` | Separadores sutis |
-| `surface-container-high` | `#20201f` | Cards, hover de linha |
-| `surface-container-highest` / `surface-variant` | `#262626` | Inputs, popovers, chips |
-| `surface-bright` | `#2c2c2c` | Popovers flutuantes, dropdowns |
-| `primary` / `surface-tint` | `#ff9f4a` | Laranja marca — CTA, foco, ativo |
-| `primary-container` / `primary-fixed` / `primary-fixed-dim` | `#fd8b00` | Gradiente do primário, hover |
-| `primary-dim` | `#ed8200` | Estado pressionado do primário |
-| `on-primary` | `#532a00` | Texto sobre fundo primário (escuro) |
-| `on-primary-fixed` | `#180800` | Texto sobre botão primário preenchido |
-| `secondary` / `secondary-fixed` / `inverse-surface` | `#e4e2e1` | Texto corpo, não usar branco puro |
-| `secondary-container` | `#474747` | Ícone-container, filtro-chips |
-| `on-secondary-container` | `#d2d0cf` | Texto sobre secondary-container |
-| `on-surface` / `on-background` | `#ffffff` | Texto primário |
-| `on-surface-variant` | `#adaaaa` | Texto metadado, labels, ícones secondários |
-| `outline` | `#767575` | Checkboxes inativos |
-| `outline-variant` | `#484847` | Ghost borders, divisores sutis |
-| `tertiary` | `#ffe393` | AI sparkle, destaque especial |
-| `tertiary-fixed` / `tertiary-container` | `#ffd33a` | Ícone info/update |
-| `error` | `#ff7351` | Estado de erro — texto e bordas |
-| `error-container` | `#b92902` | Background de erro severo |
-| `error-dim` | `#d53d18` | Hover/pressionado de erro |
+| Token                                                       | Hex       | Papel                                      |
+| ----------------------------------------------------------- | --------- | ------------------------------------------ |
+| `background` / `surface` / `surface-dim`                    | `#0e0e0e` | Tela base absoluta                         |
+| `surface-container-lowest`                                  | `#000000` | Sombras, verdadeiro preto                  |
+| `surface-container-low`                                     | `#131313` | Sidebar, painéis secundários               |
+| `surface-container`                                         | `#1a1a1a` | Separadores sutis                          |
+| `surface-container-high`                                    | `#20201f` | Cards, hover de linha                      |
+| `surface-container-highest` / `surface-variant`             | `#262626` | Inputs, popovers, chips                    |
+| `surface-bright`                                            | `#2c2c2c` | Popovers flutuantes, dropdowns             |
+| `primary` / `surface-tint`                                  | `#ff9f4a` | Laranja marca — CTA, foco, ativo           |
+| `primary-container` / `primary-fixed` / `primary-fixed-dim` | `#fd8b00` | Gradiente do primário, hover               |
+| `primary-dim`                                               | `#ed8200` | Estado pressionado do primário             |
+| `on-primary`                                                | `#532a00` | Texto sobre fundo primário (escuro)        |
+| `on-primary-fixed`                                          | `#180800` | Texto sobre botão primário preenchido      |
+| `secondary` / `secondary-fixed` / `inverse-surface`         | `#e4e2e1` | Texto corpo, não usar branco puro          |
+| `secondary-container`                                       | `#474747` | Ícone-container, filtro-chips              |
+| `on-secondary-container`                                    | `#d2d0cf` | Texto sobre secondary-container            |
+| `on-surface` / `on-background`                              | `#ffffff` | Texto primário                             |
+| `on-surface-variant`                                        | `#adaaaa` | Texto metadado, labels, ícones secondários |
+| `outline`                                                   | `#767575` | Checkboxes inativos                        |
+| `outline-variant`                                           | `#484847` | Ghost borders, divisores sutis             |
+| `tertiary`                                                  | `#ffe393` | AI sparkle, destaque especial              |
+| `tertiary-fixed` / `tertiary-container`                     | `#ffd33a` | Ícone info/update                          |
+| `error`                                                     | `#ff7351` | Estado de erro — texto e bordas            |
+| `error-container`                                           | `#b92902` | Background de erro severo                  |
+| `error-dim`                                                 | `#d53d18` | Hover/pressionado de erro                  |
 
 ### 2.2 CSS Custom Properties (Implementação no Projeto)
 
@@ -58,33 +123,33 @@ Existem dois sets de tokens: dark (`:root` da `html.dark`) e light (`:root` padr
 
 #### Modo Escuro (`html.dark`)
 
-| CSS Variable | Papel | Valor |
-|---|---|---|
-| `--surface-0` | Background / Sidebar | `#0e0e0e` |
-| `--surface-1` | Página principal | `#131313` |
-| `--surface-2` | Cards | `#202020` |
-| `--surface-3` | Toolbar / inputs | `#2c2c2c` |
-| `--ink-0` | Texto primário | `#ffffff` |
-| `--ink-1` | Texto secundário | `#e4e2e1` |
-| `--ink-2` | Texto terciário / meta | `#adaaaa` |
-| `--primary` | Accent amber | `#FF8C00` |
-| `--border` | Bordas | `#222222` |
+| CSS Variable  | Papel                  | Valor     |
+| ------------- | ---------------------- | --------- |
+| `--surface-0` | Background / Sidebar   | `#0e0e0e` |
+| `--surface-1` | Página principal       | `#131313` |
+| `--surface-2` | Cards                  | `#202020` |
+| `--surface-3` | Toolbar / inputs       | `#2c2c2c` |
+| `--ink-0`     | Texto primário         | `#ffffff` |
+| `--ink-1`     | Texto secundário       | `#e4e2e1` |
+| `--ink-2`     | Texto terciário / meta | `#adaaaa` |
+| `--primary`   | Accent amber           | `#FF8C00` |
+| `--border`    | Bordas                 | `#222222` |
 
 #### Modo Claro (`:root` padrão) — Paleta Warm-Neutral
 
 A lógica do modo claro segue tonalidades quentes derivadas do amber primário — não cinzas frios. Cada camada deve evocar "papel de alta qualidade" e ser visualmente agradável ao lado do accent amber.
 
-| CSS Variable | Papel | Valor | Nota |
-|---|---|---|---|
-| `--surface-0` | Sidebar | `#EAE6E1` | warm stone |
-| `--surface-1` | Página principal | `#F4F1ED` | warm parchment |
-| `--surface-2` | Cards (elevados) | `#FFFFFF` | crisp white |
-| `--surface-3` | Toolbar / inputs | `#EDE8E3` | warm gray |
-| `--ink-0` | Texto primário | `#1C1714` | near-black warm |
-| `--ink-1` | Texto secundário | `#3D3430` | dark warm brown |
-| `--ink-2` | Texto meta/tertiary | `#7C7370` | medium warm gray |
-| `--primary` | Accent amber | `#E67E00` | |
-| `--border` | Bordas | `#DDD8D2` | warm beige |
+| CSS Variable  | Papel               | Valor     | Nota             |
+| ------------- | ------------------- | --------- | ---------------- |
+| `--surface-0` | Sidebar             | `#EAE6E1` | warm stone       |
+| `--surface-1` | Página principal    | `#F4F1ED` | warm parchment   |
+| `--surface-2` | Cards (elevados)    | `#FFFFFF` | crisp white      |
+| `--surface-3` | Toolbar / inputs    | `#EDE8E3` | warm gray        |
+| `--ink-0`     | Texto primário      | `#1C1714` | near-black warm  |
+| `--ink-1`     | Texto secundário    | `#3D3430` | dark warm brown  |
+| `--ink-2`     | Texto meta/tertiary | `#7C7370` | medium warm gray |
+| `--primary`   | Accent amber        | `#E67E00` |                  |
+| `--border`    | Bordas              | `#DDD8D2` | warm beige       |
 
 **Regra absoluta:** Nunca use cores hardcoded ou classes `dark:` do Tailwind. Use sempre `var(--ink-0)`, `var(--surface-1)`, etc.
 
@@ -100,13 +165,13 @@ className="text-slate-800 dark:text-slate-100"  // ❌
 
 Cores de status são definidas como CSS vars e invertidas automaticamente por tema. **Nunca use valores hex hardcoded para status.**
 
-| Token | Light (texto escuro) | Dark (texto claro) |
-|---|---|---|
-| `--status-success-*` | bg `rgba(22,163,74,.10)` / text `#15803d` | bg `rgba(16,185,129,.15)` / text `#34d399` |
-| `--status-warning-*` | bg `rgba(180,83,9,.10)` / text `#b45309` | bg `rgba(245,158,11,.15)` / text `#fbbf24` |
-| `--status-info-*` | bg `rgba(29,78,216,.10)` / text `#1d4ed8` | bg `rgba(99,102,241,.15)` / text `#818cf8` |
+| Token                | Light (texto escuro)                        | Dark (texto claro)                          |
+| -------------------- | ------------------------------------------- | ------------------------------------------- |
+| `--status-success-*` | bg `rgba(22,163,74,.10)` / text `#15803d`   | bg `rgba(16,185,129,.15)` / text `#34d399`  |
+| `--status-warning-*` | bg `rgba(180,83,9,.10)` / text `#b45309`    | bg `rgba(245,158,11,.15)` / text `#fbbf24`  |
+| `--status-info-*`    | bg `rgba(29,78,216,.10)` / text `#1d4ed8`   | bg `rgba(99,102,241,.15)` / text `#818cf8`  |
 | `--status-neutral-*` | bg `rgba(120,113,108,.10)` / text `#57534e` | bg `rgba(255,255,255,.08)` / text `#adaaaa` |
-| `--status-error-*` | bg `rgba(185,28,28,.10)` / text `#b91c1c` | bg `rgba(239,68,68,.15)` / text `#f87171` |
+| `--status-error-*`   | bg `rgba(185,28,28,.10)` / text `#b91c1c`   | bg `rgba(239,68,68,.15)` / text `#f87171`   |
 
 ```tsx
 // USO CORRETO
@@ -144,10 +209,10 @@ surface-3  → Toolbar, inputs, dropdowns
 
 Sistema dual: autoridade editorial + legibilidade de dados.
 
-| Família | Papel | Tailwind Class |
-|---|---|---|
-| **Manrope** | Display, Headlines, Labels de navegação | `font-headline` |
-| **Inter** | Body, dados, formulários, tabelas | `font-body` / `font-label` |
+| Família     | Papel                                   | Tailwind Class             |
+| ----------- | --------------------------------------- | -------------------------- |
+| **Manrope** | Display, Headlines, Labels de navegação | `font-headline`            |
+| **Inter**   | Body, dados, formulários, tabelas       | `font-body` / `font-label` |
 
 ```html
 <!-- Google Fonts -->
@@ -156,16 +221,16 @@ Sistema dual: autoridade editorial + legibilidade de dados.
 
 ### 3.2 Escala Tipográfica
 
-| Nome | Tamanho | Peso | Fonte | Uso |
-|---|---|---|---|---|
-| Display | 60px / `text-6xl` | 900 `font-black` | Manrope | Hero de página |
-| Headline XL | 48px / `text-5xl` | 900 | Manrope | Títulos de seção principais |
-| Headline LG | 36px / `text-4xl` | 800 | Manrope | Títulos de grupo |
-| Title LG | 20px / `text-xl` | 700 | Manrope | Títulos de card |
-| Title MD | 16px / `text-base` | 700 | Manrope | Subtítulos |
-| Body Base | 14px / `text-sm` | 400 | Inter | Texto geral, tabelas |
-| Body SM | 12px / `text-xs` | 400 | Inter | Metadados, datas |
-| Label | 10px / `text-[10px]` | 700 `uppercase tracking-widest` | Inter | Rótulos de seção, headers de coluna |
+| Nome        | Tamanho              | Peso                            | Fonte   | Uso                                 |
+| ----------- | -------------------- | ------------------------------- | ------- | ----------------------------------- |
+| Display     | 60px / `text-6xl`    | 900 `font-black`                | Manrope | Hero de página                      |
+| Headline XL | 48px / `text-5xl`    | 900                             | Manrope | Títulos de seção principais         |
+| Headline LG | 36px / `text-4xl`    | 800                             | Manrope | Títulos de grupo                    |
+| Title LG    | 20px / `text-xl`     | 700                             | Manrope | Títulos de card                     |
+| Title MD    | 16px / `text-base`   | 700                             | Manrope | Subtítulos                          |
+| Body Base   | 14px / `text-sm`     | 400                             | Inter   | Texto geral, tabelas                |
+| Body SM     | 12px / `text-xs`     | 400                             | Inter   | Metadados, datas                    |
+| Label       | 10px / `text-[10px]` | 700 `uppercase tracking-widest` | Inter   | Rótulos de seção, headers de coluna |
 
 ### 3.3 Hierarquia de Cor no Texto
 
@@ -191,17 +256,17 @@ font-mono
 
 ## 4. Espaçamento (Base 4px)
 
-| Token | Valor | Uso típico |
-|---|---|---|
-| `--space-1` | 4px | Gaps micro |
-| `--space-2` | 8px | Gap inline, ícone-texto |
-| `--space-3` | 12px | Padding horizontal de controle |
-| `--space-4` | 16px | Padding de card compacto |
-| `--space-5` | 20px | Gap entre seções internas |
-| `--space-6` | 24px | Padding de card padrão |
-| `--space-8` | 32px | Padding de canvas, gaps de grid |
-| `--space-12` | 48px | Separação entre seções maiores |
-| `--space-16` | 64px | Major section break — deixa o Obsidian respirar |
+| Token        | Valor | Uso típico                                      |
+| ------------ | ----- | ----------------------------------------------- |
+| `--space-1`  | 4px   | Gaps micro                                      |
+| `--space-2`  | 8px   | Gap inline, ícone-texto                         |
+| `--space-3`  | 12px  | Padding horizontal de controle                  |
+| `--space-4`  | 16px  | Padding de card compacto                        |
+| `--space-5`  | 20px  | Gap entre seções internas                       |
+| `--space-6`  | 24px  | Padding de card padrão                          |
+| `--space-8`  | 32px  | Padding de canvas, gaps de grid                 |
+| `--space-12` | 48px  | Separação entre seções maiores                  |
+| `--space-16` | 64px  | Major section break — deixa o Obsidian respirar |
 
 **Padrão de padding de card:** `p-6` (24px) para cards normais, `p-8` (32px) para cards de detalhe.
 
@@ -228,11 +293,11 @@ rounded-[2rem]: 32px /* Large cards / bento sections */
 
 Todos os controles interativos compartilham tokens de altura para alinhamento óptico uniforme em linha.
 
-| Token | Valor | Uso |
-|---|---|---|
-| `--h-control-sm` | 32px | Filtros compactos, inline |
-| `--h-control` | **36px** | **Padrão — todos os controles** |
-| `--h-control-lg` | 44px | Inputs hero (título de fórmula/orçamento) |
+| Token            | Valor    | Uso                                       |
+| ---------------- | -------- | ----------------------------------------- |
+| `--h-control-sm` | 32px     | Filtros compactos, inline                 |
+| `--h-control`    | **36px** | **Padrão — todos os controles**           |
+| `--h-control-lg` | 44px     | Inputs hero (título de fórmula/orçamento) |
 
 ```css
 /* SEMPRE use o token — nunca hardcode px em controles */
@@ -247,6 +312,24 @@ height: var(--h-control);
 
 #### Regra Absoluta: Ícone OU Texto — nunca os dois
 
+Use o componente **`HubButton`** em todas as barras de ação (HubToolbar) de páginas de listagem. Ele é a única interface aprovada para botões de ação primária/secundária nessas telas — garante a regra em compile time via TypeScript.
+
+```tsx
+import { HubButton } from '../components/ui/hub/HubButton';
+
+// CORRETO — texto apenas (variant primary ou secondary)
+<HubButton variant="primary" label="Nova Ficha" onClick={...} />
+<HubButton variant="secondary" label="Criar com IA" onClick={...} />
+
+// CORRETO — ícone apenas (variant icon, obriga title para acessibilidade)
+<HubButton variant="icon" icon={<ArrowLeft size={14}/>} title="Voltar" onClick={...} />
+
+// ERRADO — nunca misture inline
+<button className="ds-button"><Save size={14}/> Salvar</button>  // ❌
+```
+
+Para botões fora da HubToolbar (editores, modais, etc.) use as classes `ds-*` diretamente, mas mantendo a regra ícone-ou-texto sem exceções:
+
 ```tsx
 // CORRETO — texto apenas
 <button className="ds-button">Salvar</button>
@@ -254,18 +337,15 @@ height: var(--h-control);
 
 // CORRETO — ícone apenas
 <button className="ds-icon-button" title="Voltar"><ArrowLeft size={14}/></button>
-
-// ERRADO — nunca misture
-<button className="ds-button"><Save size={14}/> Salvar</button>  // ❌
 ```
 
 #### Hierarquia de Botões
 
-| Classe | Fundo | Borda | Texto | Uso |
-|---|---|---|---|---|
-| `ds-button-primary` | `var(--primary)` | — | Branco | 1 por header/toolbar. CTA principal. |
-| `ds-button` | Transparente | `var(--border)` | `var(--ink-0)` | Ações secundárias, cancelar, adicionar. |
-| `ds-icon-button` | Transparente | — | `var(--ink-2)` | Back, Close, Delete, Zoom, Toggle. |
+| Classe              | Fundo            | Borda           | Texto          | Uso                                     |
+| ------------------- | ---------------- | --------------- | -------------- | --------------------------------------- |
+| `ds-button-primary` | `var(--primary)` | —               | Branco         | 1 por header/toolbar. CTA principal.    |
+| `ds-button`         | Transparente     | `var(--border)` | `var(--ink-0)` | Ações secundárias, cancelar, adicionar. |
+| `ds-icon-button`    | Transparente     | —               | `var(--ink-2)` | Back, Close, Delete, Zoom, Toggle.      |
 
 **Atenção:** Máximo **1 `ds-button-primary`** por header ou barra de ação.
 
@@ -437,7 +517,18 @@ Padrão único para todos os campos de formulário:
 </div>
 ```
 
-**Ícone em card:** Container `w-12 h-12 rounded-xl` com `bg-primary/10` e ícone na cor semântica do grupo.
+**Ícone em StatCard e módulos:** Container `w-12 h-12 rounded-xl` com **`background: var(--primary)`** e **ícone na cor `#ffffff`** — fundo laranja sólido + ícone branco. Não usar fundo neutro com ícone colorido.
+
+```tsx
+// CORRETO — fundo primário + ícone branco
+<div style={{ background: 'var(--primary)', color: '#ffffff' }}
+     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+  <FlaskConical size={20} />
+</div>
+
+// ERRADO — fundo neutro + ícone colorido (padrão depreciado)
+<div style={{ background: 'var(--surface-3)', color: 'var(--primary)' }}>  {/* ❌ */}
+```
 
 ---
 
@@ -506,49 +597,59 @@ Padrão para linhas arrastáveis (Ingredientes, Etapas, Itens de Orçamento):
 
 ## 8. Iconografia
 
-Biblioteca: **Material Symbols Outlined** (variável).
+Biblioteca implementada: **`lucide-react`** (ver seção 0.1).
 
-```html
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" />
-<style>
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-</style>
+> Os protótipos em `docs/stitch/` referenciam Material Symbols Outlined. Esses nomes são de referência visual apenas — use os equivalentes Lucide na implementação.
+
+```tsx
+import { FlaskConical, LayoutDashboard, Settings } from 'lucide-react';
+
+// Tamanho padrão por contexto
+<FlaskConical size={18} />   // Sidebar nav
+<Settings size={14} />       // Botões, tabelas, ações
+<Receipt size={20} />        // Cards KPI (StatCard)
 ```
 
 ### 8.1 Coloring Funcional
 
 | Tier | Cor | Quando usar |
-|---|---|---|
-| **Row A — Primary Nav** | `text-primary` (#ff9f4a) | Destinos core do produto: Dashboard, Fórmulas, Orçamentos |
-| **Row B — Utility** | `text-on-surface-variant` (#adaaaa) | Ações secundárias: Settings, Help, Logout |
-| **Row C — AI** | `text-tertiary` (#ffe393) | Ações de IA: auto_awesome, psychology |
-| **Row D — Destructive** | `text-error` (#ff7351) | Delete, remove, ações irreversíveis |
+| --- | --- | --- |
+| **Row A — Primary Nav** | `color: 'var(--primary)'` | Destinos core: Dashboard, Fórmulas, Orçamentos |
+| **Row B — Utility** | `color: 'var(--ink-2)'` | Ações secundárias: Settings, Docs |
+| **Row C — AI** | `color: '#ffe393'` (tertiary) | Ações de IA |
+| **Row D — Destructive** | `color: '#ff7351'` (error) | Delete, ações irreversíveis |
 
-### 8.2 Ícones por Seção do Kerus
+### 8.2 Mapeamento Material Symbols → Lucide React
 
-| Seção | Ícone Material |
-|---|---|
-| Dashboard | `dashboard` |
-| Fórmulas | `functions` |
-| Orçamentos | `account_balance_wallet` |
-| Configurações | `settings` |
-| Ajuda | `help_center` |
-| Criar com IA | `auto_awesome` |
-| Sair | `logout` |
+| Seção | Ícone Material (referência) | Lucide implementado |
+| --- | --- | --- |
+| Dashboard | `dashboard` | `LayoutDashboard` |
+| Fórmulas | `functions` | `FlaskConical` |
+| Orçamentos | `account_balance_wallet` | `Receipt` |
+| Configurações | `settings` | `Settings` |
+| Ajuda / Docs | `help_center` | `BookOpen` |
+| Criar com IA | `auto_awesome` | `Wand2` |
+| Ingredientes | `science` | `FlaskConical` |
+| Estoque | `inventory_2` | `Package` |
+| Editar | `edit` | `Edit3` |
+| Visualizar | `visibility` | `Eye` |
+| Excluir / Fechar | `close` | `X` |
+| Arrastar | `drag_indicator` | `GripVertical` |
+| Voltar | `arrow_back` | `ArrowLeft` |
 
-### 8.3 Ícone filled vs outlined
+### 8.3 Filled vs Outlined (Lucide)
 
-- `'FILL' 0` (outlined): estado inativo, itens de lista, ações secundárias
-- `'FILL' 1` (filled): item ativo/selecionado na navegação, estados ON
+Lucide não tem variante "filled" nativa. Simule o estado ativo/inativo via:
 
-```html
-<!-- Ativo na sidebar -->
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+- **Ativo na sidebar:** ícone com `color: primaryColor` (passado por prop via `useTheme`)
+- **Inativo:** `color: 'var(--ink-2)'`
 
-<!-- Inativo -->
-<span class="material-symbols-outlined">dashboard</span>
+```tsx
+// Ativo — via item selecionado na NavItem
+style={isActive ? { backgroundColor: primaryColor } : undefined}
+
+// Ícone sempre `var(--ink-0)` quando sobre fundo primário (ativo)
+// Ícone `var(--ink-1)` quando inativo
 ```
 
 ---
@@ -665,11 +766,11 @@ Padding: px-8
 
 ### 10.2 Tamanhos de Modal
 
-| Tamanho | Largura | Uso |
-|---|---|---|
-| **SM** | 400px | Confirmações, alertas simples |
-| **MD** | 640px | Fluxos de tarefa padrão (formulários) |
-| **LG** | 800px | Configurações complexas, importação |
+| Tamanho | Largura | Uso                                   |
+| ------- | ------- | ------------------------------------- |
+| **SM**  | 400px   | Confirmações, alertas simples         |
+| **MD**  | 640px   | Fluxos de tarefa padrão (formulários) |
+| **LG**  | 800px   | Configurações complexas, importação   |
 
 ### 10.3 Side Panel (Drawer)
 
@@ -787,12 +888,12 @@ Para configurações de alta densidade — **não-bloqueante**, mantém contexto
 
 ### 11.4 Status de Linha (Tabela)
 
-| Estado | Indicador | Cor |
-|---|---|---|
-| Ativo | `w-2 h-2 rounded-full bg-primary` | #ff9f4a |
-| Arquivado | `w-2 h-2 rounded-full bg-outline` | #767575 |
+| Estado           | Indicador                                | Cor     |
+| ---------------- | ---------------------------------------- | ------- |
+| Ativo            | `w-2 h-2 rounded-full bg-primary`        | #ff9f4a |
+| Arquivado        | `w-2 h-2 rounded-full bg-outline`        | #767575 |
 | Revisão Pendente | `w-2 h-2 rounded-full bg-tertiary-fixed` | #ffd33a |
-| Erro / Rejeitado | `w-2 h-2 rounded-full bg-error` | #ff7351 |
+| Erro / Rejeitado | `w-2 h-2 rounded-full bg-error`          | #ff7351 |
 
 ---
 
@@ -856,14 +957,14 @@ background: linear-gradient(135deg, #ff9f4a, #fd8b00);
 
 ## 14. Transições & Animações
 
-| Ação | Duração | Easing |
-|---|---|---|
-| Hover de cor | 200ms | ease |
-| Hover de elevação | 200ms | ease-out |
-| Active / press | instantâneo (`scale-[0.98]`) | — |
-| Fade de overlay | 200ms | ease |
-| Slide de modal | 300ms | ease-out |
-| Skeleton pulse | 1500ms | linear (infinite) |
+| Ação              | Duração                      | Easing            |
+| ----------------- | ---------------------------- | ----------------- |
+| Hover de cor      | 200ms                        | ease              |
+| Hover de elevação | 200ms                        | ease-out          |
+| Active / press    | instantâneo (`scale-[0.98]`) | —                 |
+| Fade de overlay   | 200ms                        | ease              |
+| Slide de modal    | 300ms                        | ease-out          |
+| Skeleton pulse    | 1500ms                       | linear (infinite) |
 
 ```css
 /* Hover padrão */
@@ -945,16 +1046,16 @@ Nunca use `<hr>` puro. Use o padrão linha-label-linha:
 
 ## 19. Referências Internas
 
-| Arquivo | Conteúdo |
-|---|---|
-| `index.html` | CSS custom properties (design tokens do projeto) |
-| `src/components/ui/` | `ds-*` classes implementadas |
-| `src/components/features/Editor/` | Layouts de editor (Formula, Quotation) |
-| `src/types/` | Tipos TypeScript — fonte de verdade para DTOs |
-| `docs/stitch/kerus_dark_ember/DESIGN.md` | Filosofia visual original |
-| `docs/stitch/componentes_de_feedback_kerus/` | Referência visual: feedback e estruturas |
-| `docs/stitch/wiki_de_padr_es_refinados_kerus/` | Referência visual: ícones, botões, padrões |
-| `docs/stitch/wiki_modais_e_configura_es_kerus/` | Referência visual: modais e drawers |
+| Arquivo                                         | Conteúdo                                         |
+| ----------------------------------------------- | ------------------------------------------------ |
+| `index.html`                                    | CSS custom properties (design tokens do projeto) |
+| `src/components/ui/`                            | `ds-*` classes implementadas                     |
+| `src/components/features/Editor/`               | Layouts de editor (Formula, Quotation)           |
+| `src/types/`                                    | Tipos TypeScript — fonte de verdade para DTOs    |
+| `docs/stitch/kerus_dark_ember/DESIGN.md`        | Filosofia visual original                        |
+| `docs/stitch/componentes_de_feedback_kerus/`    | Referência visual: feedback e estruturas         |
+| `docs/stitch/wiki_de_padr_es_refinados_kerus/`  | Referência visual: ícones, botões, padrões       |
+| `docs/stitch/wiki_modais_e_configura_es_kerus/` | Referência visual: modais e drawers              |
 
 ---
 

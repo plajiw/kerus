@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
-    Wand2, FileInput, FileJson, X, FlaskConical,
+    FileInput, FileJson, X, FlaskConical,
     Eye, Edit3, Search, ChevronDown, CheckCircle2, Clock,
 } from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
@@ -14,6 +14,7 @@ import { HubHeader } from '../components/ui/hub/HubHeader';
 import { HubStatsGrid } from '../components/ui/hub/HubStatsGrid';
 import { HubToolbar } from '../components/ui/hub/HubToolbar';
 import { HubViewToggle, ViewMode } from '../components/ui/hub/HubViewToggle';
+import { HubButton } from '../components/ui/hub/HubButton';
 import { HubGridCard, CoverStatusVariant } from '../components/ui/hub/HubGridCard';
 import { HubStatusFilter } from '../components/ui/hub/HubStatusFilter';
 import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../components/ui/hub/HubDateFilter';
@@ -286,16 +287,11 @@ export const FormulasPage: React.FC = () => {
             {/* Toolbar */}
             <HubToolbar
                 primaryAction={
-                    <button onClick={() => navigate('/formulas/nova')} className="ds-button-primary">
-                        Nova Ficha
-                    </button>
+                    <HubButton variant="primary" label="Nova Ficha" onClick={() => navigate('/formulas/nova')} />
                 }
                 secondaryActions={
                     <>
-                        <button onClick={openWizard} className="ds-button text-xs">
-                            <Wand2 size={14} />
-                            Criar com IA
-                        </button>
+                        <HubButton variant="secondary" label="Criar com IA" onClick={openWizard} />
                         <ImportDropdown onSelect={type => setImportType(type)} />
                     </>
                 }

@@ -19,7 +19,6 @@ export const HubToolbar: React.FC<HubToolbarProps> = ({
         className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 p-4 mb-8 w-full"
         style={{
             background: 'var(--surface-2)',
-        boxShadow: 'var(--shadow-1)',
             borderRadius: '16px',
         }}
     >

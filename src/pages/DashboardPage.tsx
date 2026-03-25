@@ -210,7 +210,7 @@ export const DashboardPage: React.FC = () => {
                         >
                             <div
                                 className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                                style={{ background: 'var(--surface-3)', color: mod.color }}
+                                style={{ background: mod.color, color: '#ffffff' }}
                             >
                                 {mod.icon}
                             </div>

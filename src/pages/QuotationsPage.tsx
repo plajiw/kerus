@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Receipt, Plus, Wand2, Search, X, Eye, Edit3,
+    Receipt, Search, X, Eye, Edit3,
     FileEdit, Send, TrendingUp,
 } from 'lucide-react';
 import { useI18n } from '../i18n/i18n.tsx';
@@ -12,6 +12,7 @@ import { HubHeader } from '../components/ui/hub/HubHeader';
 import { HubStatsGrid } from '../components/ui/hub/HubStatsGrid';
 import { HubToolbar } from '../components/ui/hub/HubToolbar';
 import { HubViewToggle, ViewMode } from '../components/ui/hub/HubViewToggle';
+import { HubButton } from '../components/ui/hub/HubButton';
 import { HubGridCard, CoverStatusVariant } from '../components/ui/hub/HubGridCard';
 import { HubStatusFilter } from '../components/ui/hub/HubStatusFilter';
 import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../components/ui/hub/HubDateFilter';
@@ -246,27 +247,24 @@ export const QuotationsPage: React.FC = () => {
             {/* Toolbar */}
             <HubToolbar
                 primaryAction={
-                    <button
+                    <HubButton
+                        variant="primary"
+                        label={t('quotations.newQuotation')}
                         onClick={() => navigate('/orcamentos/novo')}
-                        className="ds-button-primary flex items-center gap-1.5"
-                    >
-                        <Plus size={14} /> {t('quotations.newQuotation')}
-                    </button>
+                    />
                 }
                 secondaryActions={
                     <>
-                        <button
+                        <HubButton
+                            variant="secondary"
+                            label="Assistente de IA"
                             onClick={() => addToast('Geração de orçamentos por IA em breve!', 'info')}
-                            className="ds-button text-xs flex items-center gap-1.5"
-                        >
-                            <Wand2 size={14} /> Assistente de IA
-                        </button>
-                        <button
+                        />
+                        <HubButton
+                            variant="secondary"
+                            label="Modelos de Pagamento"
                             onClick={() => setIsModelsOpen(true)}
-                            className="ds-button text-xs"
-                        >
-                            Modelos de Pagamento
-                        </button>
+                        />
                     </>
                 }
                 searchVariant={
@@ -357,9 +355,7 @@ export const QuotationsPage: React.FC = () => {
                     <Receipt size={40} className="mb-4 opacity-20" style={{ color: 'var(--ink-1)' }} />
                     <p className="font-semibold mb-1" style={{ color: 'var(--ink-1)' }}>{t('quotations.emptyTitle')}</p>
                     <p className="text-sm mb-5" style={{ color: 'var(--ink-2)' }}>{t('quotations.emptyDesc')}</p>
-                    <button onClick={() => navigate('/orcamentos/novo')} className="ds-button-primary flex items-center gap-2">
-                        <Plus size={14} /> {t('quotations.newQuotation')}
-                    </button>
+                    <HubButton variant="primary" label={t('quotations.newQuotation')} onClick={() => navigate('/orcamentos/novo')} />
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-16 text-center">

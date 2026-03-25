@@ -22,7 +22,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon
         <div className="flex items-start justify-between">
             <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'var(--surface-3)', color: 'var(--primary)' }}
+                style={{ background: 'var(--primary)', color: '#ffffff' }}
             >
                 {icon}
             </div>

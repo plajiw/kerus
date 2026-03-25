@@ -134,8 +134,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                     {mainNav.map(item => <NavItemComponent key={item.to} item={item} />)}
                 </nav>
 
-                {/* Bottom section */}
-                <div className="p-2 space-y-0.5" style={{ borderTop: '1px solid var(--border)' }}>
+                {/* Bottom section — Sistema + Preferências */}
+                <div className="p-2" style={{ borderTop: '1px solid var(--border)' }}>
+                    {/* Section label */}
+                    <p className={`text-[10px] font-bold text-[var(--ink-2)] uppercase tracking-widest px-3 pt-2 pb-1.5 ${collapsed ? 'lg:hidden' : ''}`}>
+                        Sistema
+                    </p>
+
                     {/* Settings */}
                     <NavLink to="/configuracoes" title={collapsed ? t('nav.settings') : undefined}>
                         <div className={`
@@ -148,7 +153,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                         </div>
                     </NavLink>
 
-                    {/* Documentation — always at bottom, well placed */}
+                    {/* Documentation */}
                     <NavLink to="/docs" title={collapsed ? 'Documentação' : undefined}>
                         <div className={`
                             flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
@@ -159,6 +164,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                             <span className={`text-sm font-semibold ${collapsed ? 'lg:hidden' : ''}`}>Documentação</span>
                         </div>
                     </NavLink>
+
+                    {/* Divider */}
+                    <div className="my-1.5 mx-3" style={{ borderTop: '1px solid var(--border)' }} />
 
                     {/* Dark mode toggle */}
                     <button
