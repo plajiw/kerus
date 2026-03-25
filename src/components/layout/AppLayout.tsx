@@ -69,7 +69,7 @@ export const AppLayout: React.FC = () => {
 
             <main
                 className="flex-1 min-w-0 overflow-y-auto"
-                style={{ backgroundColor: 'var(--surface-1)' }}
+                style={{ background: 'var(--surface-bg-gradient)' }}
             >
                 <Outlet context={{ openWizard: wizard.open } as AppOutletContext} />
             </main>

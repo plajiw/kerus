@@ -1,4 +1,4 @@
-# ✅ CHECKLIST FINAL - Ficha Técnica Pro v1.0.0
+# ✅ CHECKLIST FINAL — Kerus v1.0.0
 
 **Data**: 29 de janeiro de 2026
 **Status**: ✅ **100% COMPLETO**
@@ -429,8 +429,8 @@ Qualidade Final: 5/5 ⭐⭐⭐⭐⭐
 
 ## ✅ SIGN-OFF
 
-**Projeto**: Ficha Técnica Pro
-**Versão**: v1.0.0-stable
+**Projeto**: Kerus
+**Versão**: alpha-1.0.2
 **Data**: 29 de janeiro de 2026
 **Status**: ✅ **COMPLETO E VALIDADO**
 

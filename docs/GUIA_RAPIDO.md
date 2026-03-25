@@ -1,6 +1,6 @@
 # 🚀 Guia Rápido - Melhorias Implementadas
 
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Data**: 29 de janeiro de 2026
 
 ---
@@ -433,7 +433,7 @@ index.html              ← Estilos globais
 ---
 
 **Status**: ✅ Todas as melhorias implementadas e documentadas
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Data**: 29/01/2026
 
 **Projeto pronto para MVP com design moderno! 🎉**

@@ -83,24 +83,27 @@
             --radius-md: 8px;
             --radius-sm: 6px;
 
-            /* ── Light mode surfaces (warm-neutral paper tones) ─── */
-            --surface-0: #EAE6E1; /* Sidebar — warm stone              */
-            --surface-1: #F4F1ED; /* Page background — warm parchment  */
-            --surface-2: #FFFFFF; /* Cards — crisp white, elevated      */
-            --surface-3: #EDE8E3; /* Toolbar / inputs / popovers        */
+            /* ── Light mode surfaces (vivid, high-contrast slate) ────── */
+            --surface-0: #F8FAFC; /* Sidebar — slate-50                 */
+            --surface-1: #F1F5F9; /* Page background — slate-100         */
+            --surface-2: #FFFFFF; /* Cards — pure white, high-contrast   */
+            --surface-3: #E2E8F0; /* Toolbar / inputs / popovers         */
 
-            --border: #DDD8D2;
-            --shadow-1: 0 1px 4px rgba(20, 15, 10, 0.06), 0 2px 10px rgba(20, 15, 10, 0.04);
-            --shadow-ambient: 0 8px 28px -4px rgba(20, 15, 10, 0.14);
+            --surface-bg-gradient: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
+            --surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 60%, #F9FAFB 100%);
 
-            --primary: #E67E00;
-            --primary-rgb: 230, 126, 0;
-            --primary-container: #cc7000;
+            --border: #E2E8F0;
+            --shadow-1: 0 1px 4px rgba(0, 0, 0, 0.05), 0 2px 12px rgba(0, 0, 0, 0.04);
+            --shadow-ambient: 0 10px 30px -4px rgba(0, 0, 0, 0.12);
 
-            /* ── Light mode ink (warm dark tones) ─────────────────  */
-            --ink-0: #1C1714;  /* near-black warm     */
-            --ink-1: #3D3430;  /* dark warm brown-gray */
-            --ink-2: #7C7370;  /* medium warm gray    */
+            --primary: #FF8C00;   /* Vibrant orange matching dark theme */
+            --primary-rgb: 255, 140, 0;
+            --primary-container: #fd8b00;
+
+            /* ── Light mode ink (clean slate-grays) ─────────────── */
+            --ink-0: #0F172A;  /* slate-900           */
+            --ink-1: #334155;  /* slate-700           */
+            --ink-2: #64748B;  /* slate-500           */
 
             /* ── Semantic status tokens — light mode ──────────────
                Text colors are dark (700-level) for legibility
@@ -149,6 +152,9 @@
             --border: #222222;
             --shadow-1: 0 10px 22px rgba(0, 0, 0, 0.4);
             --shadow-ambient: 0 20px 60px -5px rgba(0, 0, 0, 0.4);
+
+            --surface-bg-gradient: var(--surface-1);
+            --surface-card-gradient: var(--surface-2);
 
             --primary: #FF8C00;
             --primary-rgb: 255, 140, 0;

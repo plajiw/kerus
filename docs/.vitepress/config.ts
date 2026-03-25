@@ -34,6 +34,7 @@ export default defineConfig({
         items: [
           { text: 'O que é o Kerus?', link: '/guide/' },
           { text: 'Primeiros Passos', link: '/guide/getting-started' },
+          { text: 'Atualizações', link: '/guide/updates' },
         ]
       },
       {
@@ -46,7 +47,7 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/invent-software/formula-generator' }
+      { icon: 'github', link: 'https://github.com/invent-software/kerus' }
     ],
     footer: {
       message: 'Lançado sob a Licença MIT.',

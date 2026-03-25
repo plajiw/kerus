@@ -1,4 +1,4 @@
-# 🎨 Resumo das Melhorias - Ficha Técnica Pro
+# 🎨 Resumo das Melhorias — Kerus
 
 **Data**: 29 de janeiro de 2026
 **Implementadas**: ✅ TODAS AS SOLICITAÇÕES
@@ -361,6 +361,6 @@ Para dúvidas sobre as melhorias implementadas:
 
 **Status**: ✅ TODAS AS SOLICITAÇÕES IMPLEMENTADAS
 **Data**: 29/01/2026
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 
 *Projeto está pronto para MVP com design moderno e profissional!* 🎉

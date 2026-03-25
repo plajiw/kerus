@@ -157,7 +157,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                     <a href="/docs/" title={collapsed ? 'Documentação' : undefined}>
                         <div className={`
                             flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150
-                            text-[var(--ink-2)] hover:text-[var(--ink-1)] hover:bg-[var(--surface-2)]
+                            text-[var(--ink-1)] hover:bg-[var(--surface-2)]
                             ${collapsed ? 'lg:justify-center' : ''}
                         `}>
                             <BookOpen size={18} className="flex-shrink-0" />

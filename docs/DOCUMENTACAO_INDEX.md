@@ -1,6 +1,6 @@
-# 📚 ÍNDICE DE DOCUMENTAÇÃO - Ficha Técnica Pro
+# 📚 ÍNDICE DE DOCUMENTAÇÃO — Kerus
 
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Data**: 29 de janeiro de 2026
 
 ---

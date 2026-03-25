@@ -1,11 +1,11 @@
-# 🎉 RESUMO FINAL - Ficha Técnica Pro v1.0.0
+# 🎉 RESUMO FINAL — Kerus v1.0.0
 
 ---
 
 ## ✅ STATUS: PROJETO COMPLETO
 
 **Data**: 29 de janeiro de 2026
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Qualidade**: ⭐⭐⭐⭐⭐ (5/5)
 
 ---
@@ -262,7 +262,7 @@ Você agora tem:
 ---
 
 **Data**: 29/01/2026
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Status**: ✅ COMPLETO
 
 *Projeto desenvolvido por GitHub Copilot para Pablo Ribeiro Ramos*

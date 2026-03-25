@@ -1,15 +1,15 @@
 # Documentacao Funcional do Sistema
 
-## 1. Visao geral do sistema
-Este sistema organiza fichas tecnicas de formulacao industrial para uso pessoal. Ele prioriza controle, previsibilidade e clareza, com uma IA deliberadamente nao-criativa.
+## 1. Visão Geral do Sistema
+O **Kerus** é um ecossistema digital para organização de fichas técnicas de formulação industrial (Cosméticos, Farmácia e Alimentos). Ele prioriza controle, previsibilidade e clareza técnica, utilizando uma IA deliberadamente técnica e não-criativa.
 
-Problema que resolve:
-- Centralizar fichas tecnicas com estrutura consistente.
-- Garantir visualizacao A4 previsivel (preview e PDF).
-- Reduzir retrabalho ao extrair dados via IA sem perder controle humano.
+### Problemas que Resolve:
+- **Centralização Técnica**: Reúne fichas complexas sob uma estrutura consistente.
+- **Rigor Documental**: Garante que o documento final (A4/PDF) seja imutável e profissional.
+- **Eficiência de Extração**: Conversão imediata de anotações informais em dados estruturados via IA assistida.
 
-Para quem existe:
-- Uso pessoal, com foco em consistencia e confianca do documento final.
+### Público-Alvo:
+Engenheiros de alimentos, formuladores cosméticos, laboratórios de P&D e cozinhas profissionais que exigem padronização absoluta.
 
 O que o sistema NAO pretende ser:
 - Um gerador criativo de receitas ou de conteudo.

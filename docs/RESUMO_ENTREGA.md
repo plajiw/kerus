@@ -1,8 +1,8 @@
-# 📊 RESUMO EXECUTIVO - MELHORIAS FICHA TÉCNICA PRO
+# 📊 RESUMO EXECUTIVO — Melhorias Kerus
 
 **Data**: 29 de janeiro de 2026
 **Status**: ✅ **COMPLETO**
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 
 ---
 
@@ -297,7 +297,7 @@
 
 ## 🎯 CONCLUSÃO
 
-O **Ficha Técnica Pro** foi transformado de um MVP rascunho para um **produto com design profissional e roadmap claro**.
+O **Kerus** foi transformado de um MVP rascunho para um **produto com design profissional e roadmap claro**.
 
 ### Status Atual
 ✅ **MVP Visualmente Polido**
@@ -340,9 +340,9 @@ Para dúvidas sobre as melhorias:
 **Status**: ✅ PROJETO COMPLETO E ENTREGUE
 
 **Data**: 29/01/2026
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Qualidade**: ⭐⭐⭐⭐⭐ (Production Ready)
 
 ---
 
-*Desenvolvido por GitHub Copilot - Ficha Técnica Pro v1.0.0*
+*Desenvolvido por GitHub Copilot — Kerus v1.0.0*

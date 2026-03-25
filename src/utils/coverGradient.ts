@@ -10,14 +10,14 @@ const COVERS_DARK = [
 ];
 
 const COVERS_LIGHT = [
-    'linear-gradient(135deg, #FAD6B4, #FCE3D0)', // Soft Orange - Warm
-    'linear-gradient(135deg, #E9C6A5, #F4DBBF)', // Soft Bronze / Sand
-    'linear-gradient(135deg, #C1DBC1, #D8EAD8)', // Soft Sage Green
-    'linear-gradient(135deg, #B9D0DF, #D1E2ED)', // Soft Slate
-    'linear-gradient(135deg, #D9C3E6, #EBDDF2)', // Soft Lavender
-    'linear-gradient(135deg, #E7B8C4, #F3D2D9)', // Soft Rose
-    'linear-gradient(135deg, #7bc8acff, #CDECE1)', // Soft Mint
-    'linear-gradient(135deg, #C7CDEF, #DEE2F5)', // Soft Blue
+    'linear-gradient(135deg, #FFB861, #FFD0A1)', // Vivid Orange
+    'linear-gradient(135deg, #F87171, #FCA5A5)', // Vivid Rose
+    'linear-gradient(135deg, #34D399, #6EE7B7)', // Vivid Emerald
+    'linear-gradient(135deg, #38BDF8, #7DD3FC)', // Vivid Sky
+    'linear-gradient(135deg, #818CF8, #A5B4FC)', // Vivid Indigo
+    'linear-gradient(135deg, #A78BFA, #C4B5FD)', // Vivid Violet
+    'linear-gradient(135deg, #2DD4BF, #5EEAD4)', // Vivid Teal
+    'linear-gradient(135deg, #FBBF24, #FCD34D)', // Vivid Amber
 ];
 
 /**

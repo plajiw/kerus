@@ -23,7 +23,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
     return (
         <div
             className={`rounded-2xl overflow-hidden ${className}`}
-            style={{ border: '1px solid var(--border)', background: 'var(--surface-2)' }}
+            style={{ border: '1px solid var(--border)', background: 'var(--surface-card-gradient)' }}
         >
             {/* Header */}
             <div
@@ -48,7 +48,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
                     {collapsible && (
                         <button
                             onClick={e => { e.stopPropagation(); setOpen(p => !p); }}
-                            className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--surface-2)]"
+                            className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--surface-1)]"
                             style={{ color: 'var(--ink-2)' }}
                         >
                             {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

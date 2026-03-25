@@ -1,14 +1,14 @@
-# Análise e Recomendações - Ficha Técnica Pro
+# Análise e Recomendações — Kerus
 
 **Data**: 29 de janeiro de 2026
-**Versão**: v1.0.0-stable
+**Versão**: alpha-1.0.2
 **Status**: MVP Rascunho com potencial de produção
 
 ---
 
 ## 📋 Resumo Executivo
 
-O **Ficha Técnica Pro** é uma aplicação industrial de padronização de fichas técnicas com foco em funcionalidade robusta. Possui:
+O **Kerus** é uma aplicação industrial de padronização de fichas técnicas com foco em funcionalidade robusta. Possui:
 
 ✅ **Pontos Fortes**:
 - Arquitetura bem estruturada com componentes modulares
@@ -451,7 +451,7 @@ test('User can create and export recipe', async ({ page }) => {
 
 ## 📝 Conclusão
 
-O **Ficha Técnica Pro** é um MVP sólido com:
+O **Kerus** é um MVP sólido com:
 - ✅ Funcionalidade robusta
 - ✅ UX/Design melhorado
 - ✅ Potencial de escala

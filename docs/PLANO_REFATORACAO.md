@@ -1,4 +1,4 @@
-# 🔧 PLANO DE REFATORAÇÃO COMPLETA - Ficha Técnica Pro
+# 🔧 PLANO DE REFATORAÇÃO COMPLETA — Kerus
 
 **Data**: 29 de janeiro de 2026
 **Status**: 🎯 Em Planejamento

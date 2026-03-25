@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: "Kerus"
-  text: "Gerador de Fórmulas e Orçamentos"
-  tagline: "Software especializado de alta performance para formulação de precisão."
+  text: "Gestão de Fórmulas e Orçamentos"
+  tagline: "Software especializado para indústrias de Cosméticos e Alimentos. Transforme notas em Fichas Técnicas profissionais."
   image:
     src: /logo.svg
     alt: Logo Kerus
@@ -14,15 +14,15 @@ hero:
       link: /guide/
     - theme: alt
       text: Ver Projeto
-      link: https://github.com/invent-software/formula-generator
+      link: https://github.com/invent-software/kerus
 
 features:
-  - title: UI Premium
-    details: Interface limpa e elegante em modo claro/escuro, projetada com o sistema Obsidian Architect.
-  - title: Formulação Complexa
-    details: Suporte a padrões das indústrias cosmética e alimentícia com precisão em nível de ingrediente.
-  - title: Orçamentos Inteligentes
-    details: Geração automática de orçamentos vinculados às suas fórmulas com gestão profissional de pagamentos.
-  - title: Pronto para Offline
-    details: Construído com React e armazenamento local, garantindo que seus dados fiquem seguros e acessíveis.
+  - title: Precisão em Formulação
+    details: Suporte nativo para fases, nomenclaturas INCI e cálculos automáticos de porcentagem e custo.
+  - title: IA Especializada
+    details: Assistente inteligente (Gemini) treinado para extrair dados técnicos de fotos ou textos com alta fidelidade.
+  - title: Orçamentos Estruturados
+    details: Gere propostas comerciais profissionais vinculadas às suas fórmulas, garantindo clareza e lucratividade.
+  - title: Segurança e Offline
+    details: Seus dados técnicos são patrimônio seu. Armazenamento 100% local com exportação em PDF, JSON e XML.
 ---

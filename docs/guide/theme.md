@@ -1,11 +1,13 @@
-# Tema Escuro (Dark Mode)
+# Experiência Visual e Tema
 
-Trabalhe de forma confortável com o design "Obsidian Architect".
+O Kerus foi construído sobre o sistema de design **Obsidian Architect**, focado em uma estética industrial, limpa e de alta performance.
 
-## Como Ativar
-Você pode alternar entre o modo claro e escuro a qualquer momento através do ícone de engrenagem (Configurações) no cabeçalho da aplicação.
+## Modos de Visualização
+- **Modo Claro (Vivid White)**: Uma interface solar de alto contraste, ideal para ambientes bem iluminados, com gradientes suaves que evocam papel premium.
+- **Modo Escuro (Deep Slate)**: Projetado para reduzir a fadiga ocular em longas sessões de formulação, destacando os dados técnicos com elegância.
 
-## Vantagens
-- **Redução da Fadiga Ocular**: Ideal para longas sessões de trabalho.
-- **Foco em Dados**: O contraste otimizado destaca o que é importante.
-- **Estética Profissional**: Visual moderno e executivo.
+## Personalização Profissional
+Além da interface, você pode personalizar como sua Ficha Técnica exportada se apresenta para o mundo:
+- **Paleta de Marca**: Ajuste as cores de destaque para alinhar com a identidade da sua empresa.
+- **Legibilidade de Precisão**: Fontes selecionadas especificamente para garantir que decimais e nomenclaturas técnicas sejam legíveis em qualquer formato.
+- **Layout Padrão A4**: O preview dinâmico garante que seu documento impresso será exatamente o que você vê na tela.

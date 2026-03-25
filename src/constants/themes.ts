@@ -1,14 +1,14 @@
 import { Recipe } from '../types';
 
 export const UI_THEMES = [
-    { nameKey: 'themes.safetyOrange', color: '#F28C28' },
+    { nameKey: 'themes.safetyOrange', color: '#FF8C00' },
     { nameKey: 'themes.royalBlue', color: '#2563EB' },
     { nameKey: 'themes.emeraldGreen', color: '#10B981' },
     { nameKey: 'themes.slateDark', color: '#475569' },
 ];
 
 export const FORMULA_THEMES = [
-    { nameKey: 'themes.safetyOrange', color: '#F28C28' },
+    { nameKey: 'themes.safetyOrange', color: '#FF8C00' },
     { nameKey: 'themes.royalBlue', color: '#2563EB' },
     { nameKey: 'themes.emeraldGreen', color: '#10B981' },
     { nameKey: 'themes.roseRed', color: '#E11D48' },

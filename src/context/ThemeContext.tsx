@@ -58,7 +58,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 if (parsed.primaryColor) return parsed.primaryColor;
             }
         } catch {}
-        return '#F28C28';
+        return '#FF8C00';
     });
 
     const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(true);

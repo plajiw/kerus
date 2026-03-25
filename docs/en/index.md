@@ -14,7 +14,7 @@ hero:
       link: /en/guide/
     - theme: alt
       text: View Project
-      link: https://github.com/invent-software/formula-generator
+      link: https://github.com/invent-software/kerus
 
 features:
   - title: Premium UI

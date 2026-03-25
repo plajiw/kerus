@@ -20,7 +20,7 @@ Future: C# REST API backend (`kerus-api`) to replace localStorage persistence.
 ## Directory Structure
 
 ```
-formula-generator/
+kerus/
 ├── docs/               # All project documentation
 ├── public/             # Static assets
 ├── src/

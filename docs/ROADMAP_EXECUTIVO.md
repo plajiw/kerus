@@ -1,4 +1,4 @@
-# Roadmap Executivo - Ficha Técnica Pro
+# Roadmap Executivo — Kerus
 
 **Horizonte**: 6 meses
 **Objetivo**: MVP → Produção
@@ -437,7 +437,7 @@ Contrato/freelancer:
 
 ## Conclusão
 
-O **Ficha Técnica Pro** tem potencial de ser um produto profissional de sucesso. Com execução disciplinada das 5 fases, é possível alcançar:
+O **Kerus** tem potencial de ser um produto profissional de sucesso. Com execução disciplinada das 5 fases, é possível alcançar:
 
 ✅ **Abril 2026**: MVP em produção com autenticação
 ✅ **Junho 2026**: Colaboração em tempo real

@@ -60,7 +60,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
             className={`group relative overflow-hidden rounded-2xl transition-all duration-150 ${
                 selected ? 'ring-2 ring-[var(--primary)]' : 'hover:-translate-y-0.5'
             }`}
-            style={{ background: 'var(--surface-2)' }}
+            style={{ background: 'var(--surface-card-gradient)' }}
         >
             {/* Cover */}
             <div
@@ -102,7 +102,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
                             border: 'none',
                         } : {
                             background: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.3)',
-                            border: `2px solid ${isDark ? '#767575' : '#7C7370'}`, // #767575 is the outline token
+                            border: `2px solid ${isDark ? '#767575' : 'var(--ink-2)'}`, // #767575 is the outline token
                             color: 'transparent',
                             backdropFilter: 'blur(4px)',
                         }}
