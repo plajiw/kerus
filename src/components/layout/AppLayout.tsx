@@ -54,16 +54,15 @@ export const AppLayout: React.FC = () => {
                 >
                     <Menu size={18} />
                 </button>
-                <div className="flex items-center gap-2">
-                    <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-white flex-shrink-0"
-                        style={{ backgroundColor: primaryColor }}
-                    >
-                        <FlaskConical size={13} />
+                <div className="flex items-center gap-2 px-1">
+                    <div className="flex flex-col">
+                        <span className="font-extrabold text-sm uppercase tracking-[0.05em] leading-none" style={{ color: 'var(--ink-0)' }}>
+                            Kerus
+                        </span>
+                        <span className="text-[8px] font-mono opacity-50 uppercase tracking-widest mt-0.5" style={{ color: 'var(--ink-2)' }}>
+                            alpha-1.0.0
+                        </span>
                     </div>
-                    <span className="font-black text-sm uppercase tracking-tight" style={{ color: 'var(--ink-0)' }}>
-                        Kerus
-                    </span>
                 </div>
             </div>
 

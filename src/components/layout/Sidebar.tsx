@@ -34,7 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
         { to: '/estoque', icon: <Package size={18} />, label: t('nav.stock'), badge: t('nav.soon'), disabled: true },
     ];
 
-    const NavItemComponent = ({ item }: { item: NavItem }) => {
+    const NavItemComponent = ({ item }: { item: NavItem; key?: string }) => {
         const isActive = item.to === '/'
             ? location.pathname === '/'
             : location.pathname.startsWith(item.to);
@@ -104,18 +104,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
             >
                 {/* Logo */}
                 <div
-                    className={`flex items-center gap-2.5 h-14 px-3 flex-shrink-0 ${collapsed ? 'lg:justify-center' : ''}`}
+                    className={`flex items-center gap-2.5 h-14 px-4 flex-shrink-0 ${collapsed ? 'lg:justify-center' : ''}`}
                     style={{ borderBottom: '1px solid var(--border)' }}
                 >
-                    <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0"
-                        style={{ backgroundColor: primaryColor }}
-                    >
-                        <FlaskConical size={15} />
+                    <div className="flex flex-col">
+                        <span className={`font-extrabold text-[var(--ink-0)] text-sm uppercase tracking-[0.05em] leading-none ${collapsed ? 'lg:hidden' : ''}`}>
+                            Kerus
+                        </span>
+                        <span className={`text-[8px] font-mono text-[var(--ink-2)] opacity-60 uppercase tracking-widest mt-1 ${collapsed ? 'lg:hidden' : ''}`}>
+                            alpha-1.0.0
+                        </span>
                     </div>
-                    <span className={`font-black text-[var(--ink-0)] text-sm uppercase tracking-tight leading-tight ${collapsed ? 'lg:hidden' : ''}`}>
-                        Kerus
-                    </span>
                     {/* Close button — mobile only */}
                     <button
                         onClick={onClose}
@@ -131,7 +130,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
                     <p className={`text-[10px] font-bold text-[var(--ink-2)] uppercase tracking-widest px-3 pt-3 pb-1.5 ${collapsed ? 'lg:hidden' : ''}`}>
                         {t('nav.modules')}
                     </p>
-                    {mainNav.map(item => <NavItemComponent key={item.to} item={item} />)}
+                    {mainNav.map(item => (
+                        <NavItemComponent key={item.to} item={item} />
+                    ))}
                 </nav>
 
                 {/* Bottom section — Sistema + Preferências */}
