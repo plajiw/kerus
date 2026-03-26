@@ -83,25 +83,25 @@
             --radius-md: 8px;
             --radius-sm: 6px;
 
-            /* ── Light mode surfaces (vivid, high-contrast slate) ────── */
-            --surface-0: #F8FAFC; /* Sidebar — slate-50                 */
-            --surface-1: #F1F5F9; /* Page background — slate-100         */
-            --surface-2: #FFFFFF; /* Cards — pure white, high-contrast   */
-            --surface-3: #E2E8F0; /* Toolbar / inputs / popovers         */
+            /* ── Light mode surfaces (Warm-Neutral / Obsidian Architect) ───── */
+            --surface-0: #EAE6E1; /* Sidebar — warm stone                    */
+            --surface-1: #F4F1ED; /* Page background — warm parchment        */
+            --surface-2: #FFFFFF; /* Cards — crisp white, high-contrast      */
+            --surface-3: #EDE8E3; /* Toolbar / inputs / popovers — warm gray */
 
-            --surface-bg-gradient: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
-            --surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 60%, #F9FAFB 100%);
+            --surface-bg-gradient: linear-gradient(180deg, #FBF9F7 0%, #F4F1ED 100%);
+            --surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 60%, #FBF9F7 100%);
 
-            --border: #E2E8F0;
+            --border: #DDD8D2;    /* warm beige border                       */
 
-            --primary: #FF8C00;   /* Vibrant orange matching dark theme */
-            --primary-rgb: 255, 140, 0;
+            --primary: #E67E00;   /* Doc-aligned amber accent                */
+            --primary-rgb: 230, 126, 0;
             --primary-container: #fd8b00;
 
-            /* ── Light mode ink (clean slate-grays) ─────────────── */
-            --ink-0: #0F172A;  /* slate-900           */
-            --ink-1: #334155;  /* slate-700           */
-            --ink-2: #64748B;  /* slate-500           */
+            /* ── Light mode ink (Professional Editorial - Warm Browns) ────── */
+            --ink-0: #1C1714;  /* near-black warm                            */
+            --ink-1: #3D3430;  /* dark warm brown                            */
+            --ink-2: #7C7370;  /* medium warm gray                           */
 
             /* ── Semantic status tokens — light mode ──────────────
                Text colors are dark (700-level) for legibility
@@ -204,7 +204,7 @@
         .ds-select,
         .ds-textarea {
             border-radius: var(--radius-md);
-            border: 1px solid rgba(255, 255, 255, 0.05); /* Ghost border */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Ghost border — Dark mode */
             background: var(--surface-2);
             color: var(--ink-0);
             outline: none;
@@ -214,7 +214,7 @@
         html:not(.dark) .ds-input,
         html:not(.dark) .ds-select,
         html:not(.dark) .ds-textarea {
-            border: 1px solid var(--border);
+            border: 1px solid rgba(28, 23, 20, 0.1); /* Ghost border — Light mode */
             background: var(--surface-2);
         }
 
@@ -273,7 +273,7 @@
         /* ── Button (ghost / secondary) ───────────────────────── */
         .ds-button {
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             background: transparent;
             color: var(--ink-1);
             height: var(--h-control);
@@ -288,6 +288,10 @@
             line-height: normal;
             transition: all 0.2s ease;
             cursor: pointer;
+        }
+
+        html:not(.dark) .ds-button {
+            border: 1px solid rgba(28, 23, 20, 0.1);
         }
 
         .ds-button:hover {
@@ -334,12 +338,16 @@
             align-items: center;
             justify-content: center;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             background: transparent;
             color: var(--ink-1);
             transition: all 0.2s ease;
             cursor: pointer;
             flex-shrink: 0;
+        }
+
+        html:not(.dark) .ds-icon-button {
+            border: 1px solid rgba(28, 23, 20, 0.1);
         }
 
         .ds-icon-button:hover {
@@ -443,23 +451,25 @@
         }
 
         html:not(.dark) .border-slate-200 {
-            border-color: #cbd5e1;
+            border-color: var(--border);
         }
 
         html:not(.dark) .border-slate-200\/70 {
-            border-color: rgba(203, 213, 225, 0.9);
+            border-color: var(--border);
+            opacity: 0.7;
         }
 
         html:not(.dark) .border-slate-200\/80 {
-            border-color: rgba(203, 213, 225, 0.95);
+            border-color: var(--border);
+            opacity: 0.8;
         }
 
         html:not(.dark) .text-slate-400 {
-            color: #64748b;
+            color: var(--ink-2);
         }
 
         html:not(.dark) .text-slate-500 {
-            color: #475569;
+            color: var(--ink-1);
         }
 
         .print-pages {
