@@ -71,7 +71,6 @@ export const HubDateFilter: React.FC<HubDateFilterProps> = ({ value, onChange })
                     className="absolute top-full right-0 mt-1.5 w-44 rounded-xl py-1 z-50"
                     style={{
                         background: 'var(--surface-2)',
-                        boxShadow: 'var(--shadow-ambient)',
                         border: '1px solid var(--border)',
                     }}
                 >

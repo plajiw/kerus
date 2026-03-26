@@ -47,7 +47,7 @@ const ImportDropdown: React.FC<{ onSelect: (type: ImportType) => void }> = ({ on
             </button>
             {open && (
                 <div
-                    className="absolute top-full left-0 mt-1.5 w-44 rounded-xl shadow-lg z-50 overflow-hidden py-1"
+                    className="absolute top-full left-0 mt-1.5 w-44 rounded-xl z-50 overflow-hidden py-1"
                     style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
                 >
                     <button
@@ -120,7 +120,7 @@ const FormulaTable: React.FC<FormulaTableProps> = ({
                             <div className="flex items-center gap-3">
                                 <div
                                     className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none"
-                                    style={{ 
+                                    style={{
                                         background: getCoverGradient(recipe.nome_formula, isDark),
                                         color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
                                     }}
@@ -311,7 +311,7 @@ export const FormulasPage: React.FC = () => {
                         title="Atualizadas Recente"
                         value={stats.recent}
                         icon={<Clock size={20} />}
-                        subtitle="Últimos 7 dias"
+                        dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                     />
                 </HubStatsGrid>
             )}

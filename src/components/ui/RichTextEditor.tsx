@@ -102,7 +102,6 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             className="rounded-xl overflow-hidden transition-all"
             style={{
                 border: `1px solid ${focused ? 'var(--primary)' : 'var(--border)'}`,
-                boxShadow: focused ? '0 0 0 3px rgba(var(--primary-rgb,59,130,246),0.1)' : 'none',
                 background: 'var(--surface-1)',
             }}
         >

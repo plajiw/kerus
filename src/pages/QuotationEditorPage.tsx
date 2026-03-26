@@ -60,8 +60,7 @@ const SortableItemRow: React.FC<SortableItemRowProps> = ({
                 className="flex items-center gap-2 px-3 py-2.5 rounded-xl transition-colors"
                 style={{
                     background: 'var(--surface-1)',
-                    border: `1px solid ${isNew ? 'var(--primary)' : 'var(--border)'}`,
-                    boxShadow: isNew ? '0 0 0 3px rgba(var(--primary-rgb,0,0,0),0.08)' : 'none',
+                    border: isNew ? '2px solid var(--primary)' : '1px solid var(--border)',
                 }}
             >
                 <div
@@ -334,9 +333,8 @@ export const QuotationEditorPage: React.FC = () => {
                         onClick={() => setActiveTab(tab.key as 'content' | 'style')}
                         className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all"
                         style={{
-                            background: activeTab === tab.key ? 'var(--surface-0)' : 'transparent',
+                            background: activeTab === tab.key ? 'var(--surface-2)' : 'transparent',
                             color: activeTab === tab.key ? 'var(--primary)' : 'var(--ink-2)',
-                            boxShadow: activeTab === tab.key ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
                         }}
                     >
                         {tab.icon} {tab.label}

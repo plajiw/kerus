@@ -145,7 +145,6 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className =
                 padding: '14px 16px',
                 background: 'var(--surface-2)',
                 border: '1px solid var(--border)',
-                boxShadow: '0 12px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06)',
                 pointerEvents: 'auto',
             }}
         >

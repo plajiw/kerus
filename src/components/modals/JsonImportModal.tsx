@@ -69,7 +69,7 @@ export const JsonImportModal: React.FC<JsonImportModalProps> = ({
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                 onClick={onClose}
             />
-            <div className="absolute left-1/2 top-1/2 w-[min(720px,92vw)] -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-2xl shadow-2xl p-6">
+            <div className="absolute left-1/2 top-1/2 w-[min(720px,92vw)] -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('buttons.importJson')}</h2>
                     <button onClick={onClose} className="ds-icon-button">

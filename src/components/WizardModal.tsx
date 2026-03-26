@@ -29,7 +29,7 @@ export const WizardModal: React.FC<WizardModalProps> = ({ wizard, animationsEnab
                 {/* Header */}
                 <div className="p-6 border-b border-slate-100 dark:border-neutral-800 flex justify-between items-center bg-slate-50 dark:bg-neutral-900">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-[var(--primary)] flex items-center justify-center text-white shadow-lg shadow-[var(--primary)]/30">
+                        <div className="w-10 h-10 rounded-lg bg-[var(--primary)] flex items-center justify-center text-white">
                             <Sparkles size={18} />
                         </div>
                         <div>
@@ -145,7 +145,7 @@ export const WizardModal: React.FC<WizardModalProps> = ({ wizard, animationsEnab
                         <button
                             onClick={wizard.processWizard}
                             disabled={(!wizard.inputText && !wizard.selectedFile) || wizard.isProcessing}
-                            className={`px-6 py-2.5 ds-button-primary shadow-lg shadow-[var(--primary)]/20 flex items-center gap-2 transition-all ${(!wizard.inputText && !wizard.selectedFile) || wizard.isProcessing ? 'bg-slate-300 dark:bg-neutral-800 cursor-not-allowed opacity-70 border-transparent' : 'hover:shadow-[var(--primary)]/40 hover:-translate-y-0.5 active:translate-y-0'}`}
+                            className={`px-6 py-2.5 ds-button-primary flex items-center gap-2 transition-all ${(!wizard.inputText && !wizard.selectedFile) || wizard.isProcessing ? 'bg-slate-300 dark:bg-neutral-800 cursor-not-allowed opacity-70 border-transparent' : 'hover:-translate-y-0.5 active:translate-y-0'}`}
                         >
                             {wizard.isProcessing ? (
                                 <>

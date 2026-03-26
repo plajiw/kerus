@@ -60,7 +60,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
             className={`group relative overflow-hidden rounded-2xl transition-all duration-150 ${
                 selected ? 'ring-2 ring-[var(--primary)]' : 'hover:-translate-y-0.5'
             }`}
-            style={{ background: 'var(--surface-card-gradient)' }}
+            style={{ background: 'var(--surface-2)' }}
         >
             {/* Cover */}
             <div
@@ -90,7 +90,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
                 {onToggleSelect && (
                     <button
                         onClick={(e) => { e.stopPropagation(); onToggleSelect(); }}
-                        className={`absolute top-3 left-3 w-6 h-6 flex items-center justify-center rounded-lg transition-all z-10 shadow-sm
+                        className={`absolute top-3 left-3 w-6 h-6 flex items-center justify-center rounded-lg transition-all z-10
                             ${selected 
                                 ? 'opacity-100 scale-100' 
                                 : 'opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100'
@@ -138,7 +138,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
                     <div className="absolute bottom-3 right-3 flex items-center gap-2 pointer-events-auto">
                         <button
                             onClick={(e) => { e.stopPropagation(); onEdit(); }}
-                            className="w-9 h-9 flex items-center justify-center rounded-xl transition-transform hover:scale-105 shadow-sm"
+                            className="w-9 h-9 flex items-center justify-center rounded-xl transition-transform hover:scale-105"
                             style={{
                                 background: isDark ? 'rgba(255,255,255,0.15)' : 'var(--surface-2)',
                                 border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'var(--border)'}`,
@@ -151,7 +151,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
                         </button>
                         <button
                             onClick={(e) => { e.stopPropagation(); onPreview(); }}
-                            className="w-9 h-9 flex items-center justify-center rounded-xl transition-transform hover:scale-105 shadow-md"
+                            className="w-9 h-9 flex items-center justify-center rounded-xl transition-transform hover:scale-105"
                             style={{
                                 background: 'var(--primary)',
                                 color: isDark ? '#180800' : '#ffffff',

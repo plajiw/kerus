@@ -31,8 +31,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({ id, children, newlyA
                 className={`flex gap-2 px-3 py-2.5 rounded-xl transition-colors ${align === 'start' ? 'items-start' : 'items-center'}`}
                 style={{
                     background: 'var(--surface-1)',
-                    border: `1px solid ${isNew ? 'var(--primary)' : 'var(--border)'}`,
-                    boxShadow: isNew ? '0 0 0 3px rgba(var(--primary-rgb,0,0,0),0.08)' : 'none',
+                    border: isNew ? '2px solid var(--primary)' : '1px solid var(--border)',
                 }}
             >
                 <div

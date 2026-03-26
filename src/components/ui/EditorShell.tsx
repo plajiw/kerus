@@ -190,7 +190,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({
                             style={{ maxWidth: '210mm', aspectRatio: '210 / 297' }}
                         >
                             <div
-                                className="absolute top-0 left-0 origin-top-left shadow-xl"
+                                className="absolute top-0 left-0 origin-top-left"
                                 style={{
                                     transform: `scale(${previewScale * zoomFactor})`,
                                     width: pageSize.width || undefined,
@@ -208,7 +208,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({
             {!showPreview && (
                 <button
                     onClick={() => setShowPreview(true)}
-                    className="hidden lg:flex fixed bottom-6 right-6 ds-icon-button shadow-lg z-50"
+                    className="hidden lg:flex fixed bottom-6 right-6 ds-icon-button z-50"
                     title="Mostrar preview"
                     style={{ width: 44, height: 44, background: 'var(--primary)', borderColor: 'var(--primary)', color: '#fff' }}
                 >

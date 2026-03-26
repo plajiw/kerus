@@ -130,8 +130,8 @@ export const DashboardPage: React.FC = () => {
 
                 {/* Recent Activity — 8/12 */}
                 <div
-                    className="lg:col-span-8 rounded-2xl overflow-hidden shadow-sm pt-4"
-                    style={{ background: 'var(--surface-card-gradient)' }}
+                    className="lg:col-span-8 rounded-2xl overflow-hidden pt-4"
+                    style={{ background: 'var(--surface-2)' }}
                 >
                     {/* Header */}
                     <div className="px-6 py-5 flex items-center justify-between">
@@ -251,8 +251,8 @@ export const DashboardPage: React.FC = () => {
                         <button
                             key={mod.to}
                             onClick={() => navigate(mod.to)}
-                            className="group flex items-center gap-4 p-4 rounded-2xl text-left transition-all duration-150 hover:-translate-y-0.5 shadow-sm"
-                            style={{ background: 'var(--surface-card-gradient)' }}
+                            className="group flex items-center gap-4 p-4 rounded-2xl text-left transition-all duration-150 hover:-translate-y-0.5"
+                            style={{ background: 'var(--surface-2)' }}
                         >
                             <div
                                 className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"

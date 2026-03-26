@@ -23,7 +23,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
     return (
         <div
             className={`rounded-2xl overflow-hidden ${className}`}
-            style={{ border: '1px solid var(--border)', background: 'var(--surface-card-gradient)' }}
+            style={{ background: 'var(--surface-2)' }}
         >
             {/* Header */}
             <div

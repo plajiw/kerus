@@ -85,7 +85,7 @@ export const EditorSkeleton: React.FC = () => (
             style={{ width: '45%', background: 'var(--surface-2)' }}
         >
             <div className="p-4 flex justify-center">
-                <div className="rounded-xl w-full max-w-[210mm] space-y-4" style={{ background: 'var(--surface-0)', padding: 32, boxShadow: '0 4px 20px rgba(0,0,0,0.12)' }}>
+                <div className="rounded-xl w-full max-w-[210mm] space-y-4" style={{ background: 'var(--surface-0)', padding: 32, border: '1px solid var(--border)' }}>
                     <Skeleton width="70%" height={24} />
                     <Skeleton width="45%" height={12} />
                     <div style={{ marginTop: 24 }}>

@@ -122,9 +122,8 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({
                         onClick={() => setActiveTab(tab.key as 'content' | 'style')}
                         className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all"
                         style={{
-                            background: activeTab === tab.key ? 'var(--surface-0)' : 'transparent',
+                            background: activeTab === tab.key ? 'var(--surface-2)' : 'transparent',
                             color:      activeTab === tab.key ? 'var(--primary)'   : 'var(--ink-2)',
-                            boxShadow:  activeTab === tab.key ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
                         }}
                     >
                         {tab.icon} {tab.label}

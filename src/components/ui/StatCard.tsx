@@ -16,7 +16,7 @@ interface StatCardProps {
 export const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, trend, dateRangeLabel }) => (
     <div
         className="p-6 rounded-2xl flex flex-col gap-4 transition-transform duration-200 hover:-translate-y-0.5 cursor-default"
-        style={{ background: 'var(--surface-card-gradient)' }}
+        style={{ background: 'var(--surface-2)' }}
     >
         {/* Top row: icon + optional trend */}
         <div className="flex items-start justify-between">

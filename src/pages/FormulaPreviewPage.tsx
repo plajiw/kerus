@@ -171,7 +171,7 @@ export const FormulaPreviewPage: React.FC = () => {
             )}
 
             {/* Preview card */}
-            <div className="w-full rounded-2xl border overflow-hidden shadow-sm" style={{ borderColor: 'var(--border)' }}>
+            <div className="w-full rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
                 <div ref={previewRef}>
                     <RecipePrintable recipe={recipe} mode="print" />
                 </div>

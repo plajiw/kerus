@@ -38,7 +38,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove
                 return (
                     <div
                         key={toast.id}
-                        className={`flex items-start gap-3 p-4 rounded-xl border shadow-lg pointer-events-auto animate-in slide-in-from-right-4 duration-300 ${STYLES[toast.type]}`}
+                        className={`flex items-start gap-3 p-4 rounded-xl border pointer-events-auto animate-in slide-in-from-right-4 duration-300 ${STYLES[toast.type]}`}
                     >
                         <Icon size={16} className={`mt-0.5 flex-shrink-0 ${ICON_COLORS[toast.type]}`} />
                         <p className="text-sm font-medium flex-1 leading-snug">{toast.message}</p>

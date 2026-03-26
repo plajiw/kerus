@@ -162,8 +162,8 @@ export const ImportModal: React.FC<ImportModalProps> = ({
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={handleClose} />
 
             <div
-                className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl shadow-2xl overflow-hidden"
-                style={{ background: 'var(--surface-0)', border: '1px solid var(--border)' }}
+                className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl overflow-hidden"
+                style={{ background: 'var(--surface-0)' }}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border)' }}>

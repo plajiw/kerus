@@ -22,8 +22,10 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
+          '@': path.resolve(__dirname, 'src'), // alias now points to src directory
         }
-      }
+      },
+      // Ensure the app works when deployed to a subpath or Vercel fallback
+      base: '/',
     };
 });

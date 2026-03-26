@@ -66,10 +66,9 @@ export const FormulaPickerDialog: React.FC<FormulaPickerDialogProps> = ({
 
             {/* Dialog */}
             <div
-                className="fixed z-[310] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-2xl flex flex-col"
+                className="fixed z-[310] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl flex flex-col"
                 style={{
                     background: 'var(--surface-0)',
-                    border: '1px solid var(--border)',
                     width: 'min(520px, calc(100vw - 2rem))',
                     maxHeight: 'min(560px, calc(100vh - 4rem))',
                 }}

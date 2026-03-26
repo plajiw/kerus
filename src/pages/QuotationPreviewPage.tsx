@@ -130,7 +130,7 @@ export const QuotationPreviewPage: React.FC = () => {
             </div>
 
             {/* Preview card */}
-            <div className="w-full rounded-2xl border overflow-hidden shadow-sm" style={{ borderColor: 'var(--border)' }}>
+            <div className="w-full rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
                 <div ref={previewRef}>
                     <QuotationPrintable quotation={quotation} mode="print" />
                 </div>

@@ -22,7 +22,7 @@ export const QuotationPaymentModal: React.FC<Props> = ({ isOpen, onClose, value,
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
             <div 
-                className="w-full max-w-2xl rounded-2xl shadow-xl flex flex-col"
+                className="w-full max-w-2xl rounded-2xl flex flex-col"
                 style={{ background: 'var(--surface-0)', border: '1px solid var(--border)', maxHeight: '90vh' }}
             >
                 <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border)' }}>

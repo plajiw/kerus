@@ -113,7 +113,7 @@ export const PaymentConfigPanel: React.FC<Props> = ({
                                     background: isSelected ? 'var(--primary)' : 'var(--surface-0)',
                                     borderColor: isSelected ? 'var(--primary)' : 'var(--border)',
                                     color: isSelected ? '#FFFFFF' : 'var(--ink-1)',
-                                    boxShadow: isSelected ? '0 4px 12px rgba(99,102,241,0.2)' : 'none',
+                                    border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border)',
                                 }}
                             >
                                 <Icon size={24} strokeWidth={isSelected ? 2.5 : 1.5} />

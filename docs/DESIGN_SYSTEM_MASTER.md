@@ -189,17 +189,12 @@ surface-2  → Cards (elevados sobre a página)
 surface-3  → Toolbar, inputs, dropdowns
 ```
 
-### 2.5 Sombras (Ambient Shadows)
+### 2.5 Sombras (PROIBIDO)
 
-```css
-/* Light mode — sombras quentes e sutis */
---shadow-1: 0 1px 4px rgba(20,15,10,0.06), 0 2px 10px rgba(20,15,10,0.04);
---shadow-ambient: 0 8px 28px -4px rgba(20,15,10,0.14);
+> [!IMPORTANT]
+> O Kerus não utiliza sombras em seus componentes (`box-shadow` ou classes `shadow-*`). A hierarquia visual é definida exclusivamente por **mudança de superfície** (`surface-0` a `surface-3`) e **bordas ghost** sutis. 
 
-/* Dark mode — sombras opacas profundas */
---shadow-1: 0 10px 22px rgba(0,0,0,0.4);
---shadow-ambient: 0 20px 60px -5px rgba(0,0,0,0.4);
-```
+Não adicione sombras a novos componentes para manter a estética **Obsidian Architect**.
 
 ---
 

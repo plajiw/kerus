@@ -59,7 +59,7 @@ const ExportDropdown: React.FC<{
 
             {open && (
                 <div
-                    className={`absolute z-50 mt-1.5 w-52 rounded-xl shadow-lg overflow-hidden py-1 ${
+                    className={`absolute z-50 mt-1.5 w-52 rounded-xl overflow-hidden py-1 ${
                         alignRight ? 'right-0' : 'left-0'
                     }`}
                     style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
@@ -112,7 +112,7 @@ const MobileActionsDropdown: React.FC<{
 
             {open && (
                 <div
-                    className="absolute right-0 mt-1.5 w-56 rounded-xl shadow-lg z-50 overflow-hidden py-1"
+                    className="absolute right-0 mt-1.5 w-56 rounded-xl z-50 overflow-hidden py-1"
                     style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
                 >
                     <button
