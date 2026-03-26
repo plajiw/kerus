@@ -87,6 +87,8 @@
     "subtitle": "Defina os parâmetros industriais da formulação.",
     "mainData": "Dados Principais",
     "productName": "Nome do Produto",
+    "sheetTitle": "Título da Ficha",
+    "sheetSubtitle": "Subtítulo da Ficha",
     "company": "Empresa / Responsável",
     "creationDate": "Data de Criação",
     "composition": "Composição",

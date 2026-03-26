@@ -87,6 +87,8 @@
     "subtitle": "Define the industrial formulation parameters.",
     "mainData": "Main Data",
     "productName": "Product Name",
+    "sheetTitle": "Sheet Title",
+    "sheetSubtitle": "Sheet Subtitle",
     "company": "Company / Responsible",
     "creationDate": "Creation Date",
     "composition": "Composition",

@@ -179,8 +179,15 @@ export const RecipePrintable: React.FC<Props> = ({ recipe, mode = 'preview' }) =
   const renderHeader = () => (
     <div className="print-header flex justify-between items-start border-b-2 border-[var(--primary)] pb-4 mb-6">
       <div>
-        <h2 className="text-[var(--primary)] font-bold text-[1.3em] tracking-wider">{t('printable.title')}</h2>
-        <p className="text-gray-500 text-[0.9em]">{t('printable.subtitle')}</p>
+        <h2 className="text-[var(--primary)] font-bold text-[1.3em] tracking-wider">
+          {recipe.titulo_ficha || t('printable.title')}
+        </h2>
+        {recipe.subtitulo_ficha && (
+          <p className="text-gray-500 text-[0.9em]">{recipe.subtitulo_ficha}</p>
+        )}
+        {!recipe.subtitulo_ficha && (
+          <p className="text-gray-500 text-[0.9em]">{t('printable.subtitle')}</p>
+        )}
         {recipe.nome_empresa && (
           <p className="text-gray-800 font-bold uppercase text-[0.8em] mt-1">{recipe.nome_empresa}</p>
         )}

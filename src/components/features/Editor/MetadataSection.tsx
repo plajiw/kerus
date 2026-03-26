@@ -10,6 +10,8 @@ interface MetadataSectionProps {
     nomeFormula: string;
     nomeEmpresa: string;
     data: string;
+    tituloFicha?: string;
+    subtituloFicha?: string;
     manager: ReturnType<typeof useRecipeManager>;
 }
 
@@ -33,6 +35,8 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
     nomeFormula,
     nomeEmpresa,
     data,
+    tituloFicha,
+    subtituloFicha,
     manager,
 }) => {
     const { t } = useI18n();
@@ -56,6 +60,28 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
                         value={nomeFormula}
                         onChange={e => manager.handleFieldChange('nome_formula', e.target.value)}
                     />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <FieldLabel>{t('editor.sheetTitle')}</FieldLabel>
+                        <input
+                            className="ds-input w-full"
+                            placeholder="Formulação Técnica"
+                            value={tituloFicha || ''}
+                            onChange={e => manager.handleFieldChange('titulo_ficha', e.target.value)}
+                        />
+                    </div>
+
+                    <div>
+                        <FieldLabel>{t('editor.sheetSubtitle')}</FieldLabel>
+                        <input
+                            className="ds-input w-full"
+                            placeholder={t('editor.optionalHint')}
+                            value={subtituloFicha || ''}
+                            onChange={e => manager.handleFieldChange('subtitulo_ficha', e.target.value)}
+                        />
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

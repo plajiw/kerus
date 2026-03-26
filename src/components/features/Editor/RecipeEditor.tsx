@@ -108,6 +108,8 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({
                 nomeFormula={currentRecipe.nome_formula}
                 nomeEmpresa={currentRecipe.nome_empresa || ''}
                 data={currentRecipe.data}
+                tituloFicha={currentRecipe.titulo_ficha}
+                subtituloFicha={currentRecipe.subtitulo_ficha}
                 manager={manager}
             />
 

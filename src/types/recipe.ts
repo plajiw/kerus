@@ -53,4 +53,8 @@ export interface Recipe {
     formula_version?: string;
     /** Viscosity profile (advanced mode): fluido, loção, creme, gel */
     viscosity?: string;
+    /** Sheet title (replaces default "Formulação Técnica") */
+    titulo_ficha?: string;
+    /** Sheet subtitle */
+    subtitulo_ficha?: string;
 }
