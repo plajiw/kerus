@@ -10,7 +10,13 @@
       "Bash(grep -E \"\\\\.md$\")",
       "Read(//c/Users/plajiw/Documents/kerus/**)",
       "Bash(rm -f design-system.md DESIGN_SYSTEM.md DOCUMENTACAO_INDEX.md)",
-      "Bash(ls -1 *.md)"
+      "Bash(ls -1 *.md)",
+      "Bash(mkdir -p internal guides design reference archive)",
+      "Bash(ls -d */)",
+      "Bash(__NEW_LINE_dd33e0424daa1867__ tree:*)",
+      "Read(//c/Users/plajiw/Documents/kerus/docs/{if\\(NR>1\\) printf \"\"\"\"\"\"\"\"%-3s/**)",
+      "Bash(__NEW_LINE_35f6322ecfc3948d__ echo:*)",
+      "Bash(__NEW_LINE_83462ff6e1be2295__ cd:*)"
     ]
   }
 }

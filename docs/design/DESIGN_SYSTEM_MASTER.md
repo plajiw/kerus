@@ -192,7 +192,7 @@ surface-3  → Toolbar, inputs, dropdowns
 ### 2.5 Sombras (PROIBIDO)
 
 > [!IMPORTANT]
-> O Kerus não utiliza sombras em seus componentes (`box-shadow` ou classes `shadow-*`). A hierarquia visual é definida exclusivamente por **mudança de superfície** (`surface-0` a `surface-3`) e **bordas ghost** sutis. 
+> O Kerus não utiliza sombras em seus componentes (`box-shadow` ou classes `shadow-*`). A hierarquia visual é definida exclusivamente por **mudança de superfície** (`surface-0` a `surface-3`) e **bordas ghost** sutis.
 
 Não adicione sombras a novos componentes para manter a estética **Obsidian Architect**.
 
@@ -300,6 +300,7 @@ height: var(--h-control);
 ```
 
 #### Containers Segmentados (View Toggles / Grupos)
+
 Componentes que agrupam múltiplos controles (ex: `HubViewToggle`) devem fixar sua altura externa no token `--h-control` e usar padding interno sutil (ex: `2px`) para garantir que o container não exceda a altura padrão da linha. Isso evita saltos verticais quando a toolbar alterna entre modos (ex: seleção vs normal).
 
 ---
@@ -431,6 +432,7 @@ Tratado como "Global Utility" — ancora AI no sistema.
 ```
 
 **Estados:**
+
 - **Normal:** border `outline-variant @ 15%` (Ghost Border — sentida, não vista)
 - **Focus:** border `primary` @ 100%, ring `rgba(255,159,74,0.1)`
 - **Error:** border `error` (#ff7351), background mantém `surface-container-highest` (não "semáforo")
@@ -552,6 +554,7 @@ Padrão único para todos os campos de formulário:
 ```
 
 **Regras de tabela:**
+
 - Sem divisores horizontais visíveis — use `divide-outline-variant/10` (quase invisível)
 - Hover de linha: `surface-container-low` (shift de superfície, não cor)
 - Headers: `text-[10px] font-black uppercase tracking-widest text-on-surface-variant`
@@ -663,6 +666,7 @@ Shadow: 40px 0 60px -5px rgba(0,0,0,0.4)
 ```
 
 **Item ativo:**
+
 ```html
 <a class="flex items-center gap-3 px-4 py-3 rounded-xl
           bg-surface-container-high text-primary font-bold font-headline text-sm">
@@ -672,6 +676,7 @@ Shadow: 40px 0 60px -5px rgba(0,0,0,0.4)
 ```
 
 **Item inativo:**
+
 ```html
 <a class="flex items-center gap-3 px-4 py-3 rounded-xl
           text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface
@@ -732,6 +737,7 @@ Padding: px-8
 ```
 
 **Regras:**
+
 1. Ação primária sempre no canto inferior direito (F-pattern scan).
 2. Sem bordas entre header/content/footer — use espaçamento vertical e surface-shift.
 3. Overlay: `bg-background/60 backdrop-blur-sm`.
@@ -947,6 +953,7 @@ Para cards e seções de IA — premium, não para uso geral.
 ```
 
 Gradiente do botão de IA:
+
 ```css
 background: linear-gradient(135deg, #ff9f4a, #fd8b00);
 ```
@@ -1045,6 +1052,7 @@ Nunca use `<hr>` puro. Use o padrão linha-label-linha:
 ## 20. Responsive Patterns (Mobile First)
 
 ### 20.1 Organic Two-Line Row (DnD)
+
 Para componentes de lista densa (Ingredientes, Etapas), utilize o padrão **Organic Two-Line** em telas menores que `640px`.
 
 - **Hierarquia Visual:**

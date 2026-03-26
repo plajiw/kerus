@@ -1,6 +1,9 @@
 /** Formulation phase — cosmetics industry standard order-of-addition */
 export type IngredientPhase = 'A' | 'B' | 'C' | 'D' | 'E';
 
+/** Sheet type for categorization */
+export type SheetType = 'FORMULA' | 'INGREDIENT' | 'PROCESS' | 'CUSTOM';
+
 export interface Ingredient {
     id: string;
     nome: string;
@@ -22,8 +25,9 @@ export interface Step {
     text: string;
 }
 
-export interface Recipe {
+export interface Sheet {
     id: string;
+    type?: SheetType;
     nome_formula: string;
     data: string;
     status?: 'RASCUNHO' | 'FINAL';
@@ -58,3 +62,6 @@ export interface Recipe {
     /** Sheet subtitle */
     subtitulo_ficha?: string;
 }
+
+/** Backwards compatibility alias (Phase 1) */
+export type Recipe = Sheet;

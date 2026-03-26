@@ -1,7 +1,7 @@
-import { Recipe } from '../types/recipe';
+import { Sheet } from '../types/sheet';
 import { Quotation } from '../types/quotation';
 
-export const SAMPLE_RECIPES: Recipe[] = [
+export const SAMPLE_RECIPES: Sheet[] = [
     {
         id: 'sample-formula-pimenta',
         nome_formula: 'Molho de Pimenta Habanero Defumado',
