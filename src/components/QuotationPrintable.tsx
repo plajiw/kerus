@@ -135,7 +135,7 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                 {q.items.length > 0 && (
                     <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888', marginBottom: 8 }}>
-                            Fórmulas / Itens Incluídos
+                            Fichas / Itens Incluídos
                         </div>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead>
@@ -157,10 +157,10 @@ export const QuotationPrintable: React.FC<Props> = ({ quotation: q, mode = 'prin
                                                 fontWeight: 700,
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.06em',
-                                                background: item.type === 'formula' ? '#fef3c7' : '#f3f4f6',
-                                                color: item.type === 'formula' ? '#92400e' : '#6b7280',
+                                                background: item.type === 'sheet' ? '#fef3c7' : '#f3f4f6',
+                                                color: item.type === 'sheet' ? '#92400e' : '#6b7280',
                                             }}>
-                                                {item.type === 'formula' ? 'Fórmula' : 'Serviço'}
+                                                {item.type === 'sheet' ? 'Ficha' : 'Serviço'}
                                             </span>
                                         </td>
                                     </tr>

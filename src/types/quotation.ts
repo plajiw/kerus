@@ -1,7 +1,7 @@
 export interface QuotationItem {
   id: string;
   name: string;
-  type: 'formula' | 'service' | 'other';
+  type: 'sheet' | 'service' | 'other';
   linkedFormulaId?: string;
 }
 

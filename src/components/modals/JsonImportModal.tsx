@@ -80,7 +80,7 @@ export const JsonImportModal: React.FC<JsonImportModalProps> = ({
                     {t('messages.jsonImportHelp')}
                 </p>
                 <textarea
-                    className="w-full h-64 ds-textarea font-mono text-sm focus:border-[var(--primary)]"
+                    className="w-full h-64 ds-textarea font-mono text-sm"
                     value={jsonText}
                     onChange={(e) => setJsonText(e.target.value)}
                     placeholder={t('placeholders.jsonImportSample')}

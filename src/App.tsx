@@ -7,14 +7,14 @@ import { PageSkeleton, EditorSkeleton } from './components/ui/PageSkeleton';
 // ─── Lazy page chunks ──────────────────────────────────────────
 // Each page is a separate JS chunk loaded on first navigation.
 // Subsequent visits are instant (cached by the browser).
-const DashboardPage        = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
-const FormulasPage         = lazy(() => import('./pages/FormulasPage').then(m => ({ default: m.FormulasPage })));
-const FormulaEditorPage    = lazy(() => import('./pages/FormulaEditorPage').then(m => ({ default: m.FormulaEditorPage })));
-const FormulaPreviewPage   = lazy(() => import('./pages/FormulaPreviewPage').then(m => ({ default: m.FormulaPreviewPage })));
-const QuotationsPage       = lazy(() => import('./pages/QuotationsPage').then(m => ({ default: m.QuotationsPage })));
-const QuotationEditorPage  = lazy(() => import('./pages/QuotationEditorPage').then(m => ({ default: m.QuotationEditorPage })));
-const QuotationPreviewPage = lazy(() => import('./pages/QuotationPreviewPage').then(m => ({ default: m.QuotationPreviewPage })));
-const SettingsPage         = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const DashboardPage        = lazy(() => import('./pages/dashboard/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const SheetsPage           = lazy(() => import('./pages/sheets/SheetsPage').then(m => ({ default: m.SheetsPage })));
+const SheetEditorPage      = lazy(() => import('./pages/sheets/SheetEditorPage').then(m => ({ default: m.SheetEditorPage })));
+const SheetPreviewPage     = lazy(() => import('./pages/sheets/SheetPreviewPage').then(m => ({ default: m.SheetPreviewPage })));
+const QuotationsPage       = lazy(() => import('./pages/quotations/QuotationsPage').then(m => ({ default: m.QuotationsPage })));
+const QuotationEditorPage  = lazy(() => import('./pages/quotations/QuotationEditorPage').then(m => ({ default: m.QuotationEditorPage })));
+const QuotationPreviewPage = lazy(() => import('./pages/quotations/QuotationPreviewPage').then(m => ({ default: m.QuotationPreviewPage })));
+const SettingsPage         = lazy(() => import('./pages/settings/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 // ─── Suspense wrappers ─────────────────────────────────────────
 const PageFallback: React.FC = () => <PageSkeleton />;
@@ -38,29 +38,29 @@ const App: React.FC = () => {
                     </Suspense>
                 } />
 
-                {/* Formulas — list */}
-                <Route path="formulas" element={
+                {/* Sheets — list */}
+                <Route path="fichas-tecnicas" element={
                     <Suspense fallback={<PageFallback />}>
-                        <FormulasPage />
+                        <SheetsPage />
                     </Suspense>
                 } />
 
-                {/* Formulas — editor (create / edit) */}
-                <Route path="formulas/nova" element={
+                {/* Sheets — editor (create / edit) */}
+                <Route path="fichas-tecnicas/nova" element={
                     <Suspense fallback={<EditorFallback />}>
-                        <FormulaEditorPage />
+                        <SheetEditorPage />
                     </Suspense>
                 } />
-                <Route path="formulas/:id/editar" element={
+                <Route path="fichas-tecnicas/:id/editar" element={
                     <Suspense fallback={<EditorFallback />}>
-                        <FormulaEditorPage />
+                        <SheetEditorPage />
                     </Suspense>
                 } />
 
-                {/* Formulas — preview */}
-                <Route path="formulas/:id/preview" element={
+                {/* Sheets — preview */}
+                <Route path="fichas-tecnicas/:id/preview" element={
                     <Suspense fallback={<PageFallback />}>
-                        <FormulaPreviewPage />
+                        <SheetPreviewPage />
                     </Suspense>
                 } />
 

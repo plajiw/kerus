@@ -3,7 +3,7 @@ import { DragEndEvent } from '@dnd-kit/core';
 import { AlertCircle, Calculator, Settings2, ArrowLeft } from 'lucide-react';
 
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
-import { RecipePrintable } from '../../RecipePrintable';
+import { SheetPrintable } from '../../SheetPrintable';
 import { useI18n } from '../../../i18n/i18n.tsx';
 import { EditorShell } from '../../ui/EditorShell';
 
@@ -13,13 +13,12 @@ import { PreparationSection } from './PreparationSection';
 import { ObservationsSection } from './ObservationsSection';
 import { StyleSection } from './StyleSection';
 
-interface RecipeEditorProps {
+interface SheetEditorProps {
     manager: ReturnType<typeof useRecipeManager>;
     onCancel: () => void;
     onPreview: () => void;
     onFinalize: () => void;
     animationsEnabled: boolean;
-    primaryColor: string;
 }
 
 const FORMULA_STATUS_STYLES: Record<string, { color: string; bg: string; border: string }> = {
@@ -27,11 +26,10 @@ const FORMULA_STATUS_STYLES: Record<string, { color: string; bg: string; border:
     FINAL:    { color: '#047857', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.4)' },
 };
 
-export const RecipeEditor: React.FC<RecipeEditorProps> = ({
+export const SheetEditor: React.FC<SheetEditorProps> = ({
     manager,
     onCancel,
     onFinalize,
-    primaryColor,
 }) => {
     const { t } = useI18n();
     const { currentRecipe, newlyAddedId, validationErrors } = manager;
@@ -161,7 +159,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({
             {/* ── Appearance tab ────────────────────────────────── */}
             {activeTab === 'style' && (
                 <StyleSection
-                    accentColor={currentRecipe.accentColor || primaryColor}
+                    accentColor={currentRecipe.accentColor || 'var(--primary)'}
                     fontFamily={currentRecipe.fontFamily || ''}
                     stripedRows={currentRecipe.stripedRows ?? true}
                     manager={manager}
@@ -172,7 +170,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({
 
     return (
         <EditorShell
-            preview={<RecipePrintable recipe={currentRecipe} />}
+            preview={<SheetPrintable recipe={currentRecipe} />}
             mobilePreviewLabel={t('common.preview')}
         >
             {formContent}

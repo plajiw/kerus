@@ -1,26 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
-    FileInput, FileJson, X, FlaskConical,
-    Eye, Edit3, Search, ChevronDown, CheckCircle2, Clock,
+    FileInput, FileJson, FlaskConical,
+    Edit3, Search, ChevronDown, CheckCircle2, Clock,
 } from 'lucide-react';
-import { useI18n } from '../i18n/i18n.tsx';
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
-import { AppOutletContext } from '../components/layout/AppLayout';
-import { ImportModal, ImportType } from '../components/modals/ImportModal';
-import { StatCard } from '../components/ui/StatCard';
-import { StatusToggle, FORMULA_STATUS_CONFIGS } from '../components/ui/StatusToggle';
-import { HubHeader } from '../components/ui/hub/HubHeader';
-import { HubStatsGrid } from '../components/ui/hub/HubStatsGrid';
-import { HubToolbar } from '../components/ui/hub/HubToolbar';
-import { HubViewToggle, ViewMode } from '../components/ui/hub/HubViewToggle';
-import { HubButton } from '../components/ui/hub/HubButton';
-import { HubGridCard, CoverStatusVariant } from '../components/ui/hub/HubGridCard';
-import { HubStatusFilter } from '../components/ui/hub/HubStatusFilter';
-import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../components/ui/hub/HubDateFilter';
-import { getCoverGradient } from '../utils/coverGradient';
-import { Recipe } from '../types';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useApp } from '../../context/AppContext.tsx';
+import { AppOutletContext } from '../../components/layout/AppLayout.tsx';
+import { SheetTable } from '../../components/features/Sheets/SheetTable.tsx';
+import { ImportModal, ImportType } from '../../components/modals/ImportModal.tsx';
+import { StatCard } from '../../components/ui/StatCard.tsx';
+import { StatusToggle, FORMULA_STATUS_CONFIGS } from '../../components/ui/StatusToggle.tsx';
+import { HubHeader } from '../../components/ui/hub/HubHeader.tsx';
+import { HubStatsGrid } from '../../components/ui/hub/HubStatsGrid.tsx';
+import { HubToolbar } from '../../components/ui/hub/HubToolbar.tsx';
+import { HubViewToggle, ViewMode } from '../../components/ui/hub/HubViewToggle.tsx';
+import { usePreferences } from '../../hooks/usePreferences.ts';
+import { HubButton } from '../../components/ui/hub/HubButton.tsx';
+import { HubGridCard, CoverStatusVariant } from '../../components/ui/hub/HubGridCard.tsx';
+import { HubStatusFilter } from '../../components/ui/hub/HubStatusFilter.tsx';
+import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../../components/ui/hub/HubDateFilter.tsx';
+import { Recipe } from '../../types/index.ts';
 
 type FilterStatus = 'all' | 'FINAL' | 'RASCUNHO';
 
@@ -72,104 +72,6 @@ const ImportDropdown: React.FC<{ onSelect: (type: ImportType) => void }> = ({ on
     );
 };
 
-// ─── Table view ───────────────────────────────────────────────
-interface FormulaTableProps {
-    recipes: Recipe[];
-    locale: string;
-    statusConfigs: ReturnType<typeof FORMULA_STATUS_CONFIGS>;
-    onEdit: (id: string) => void;
-    onPreview: (id: string) => void;
-    onDelete: (id: string) => void;
-    onStatusChange: (recipe: Recipe, next: string) => void;
-    t: (k: string) => string;
-    isDark: boolean;
-}
-
-const FormulaTable: React.FC<FormulaTableProps> = ({
-    recipes, locale, statusConfigs, onEdit, onPreview, onDelete, onStatusChange, t, isDark
-}) => (
-    <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
-        <table className="w-full text-left border-collapse">
-            <thead>
-                <tr style={{ background: 'var(--surface-3)' }}>
-                    <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
-                        Fórmula
-                    </th>
-                    <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
-                        Status
-                    </th>
-                    <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest hidden md:table-cell" style={{ color: 'var(--ink-2)' }}>
-                        Ingredientes
-                    </th>
-                    <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest hidden lg:table-cell" style={{ color: 'var(--ink-2)' }}>
-                        Data
-                    </th>
-                    <th className="px-5 py-4 text-[10px] font-black uppercase tracking-widest text-right" style={{ color: 'var(--ink-2)' }}>
-                        Ações
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {recipes.map((recipe) => (
-                    <tr
-                        key={recipe.id}
-                        className="group border-t transition-colors hover:bg-[var(--surface-3)]"
-                        style={{ borderColor: 'rgba(72,72,71,0.15)' }}
-                    >
-                        <td className="px-5 py-4">
-                            <div className="flex items-center gap-3">
-                                <div
-                                    className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none"
-                                    style={{
-                                        background: getCoverGradient(recipe.nome_formula, isDark),
-                                        color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
-                                    }}
-                                >
-                                    {recipe.nome_formula.charAt(0).toUpperCase()}
-                                </div>
-                                <span className="font-semibold text-sm" style={{ color: 'var(--ink-0)' }}>
-                                    {recipe.nome_formula}
-                                </span>
-                            </div>
-                        </td>
-                        <td className="px-5 py-4">
-                            <StatusToggle
-                                value={recipe.status ?? 'RASCUNHO'}
-                                configs={statusConfigs}
-                                size="sm"
-                                onChange={(next) => onStatusChange(recipe, next)}
-                            />
-                        </td>
-                        <td className="px-5 py-4 hidden md:table-cell">
-                            <span className="text-sm" style={{ color: 'var(--ink-2)' }}>
-                                {recipe.ingredientes.length} itens
-                            </span>
-                        </td>
-                        <td className="px-5 py-4 hidden lg:table-cell">
-                            <span className="text-sm font-mono" style={{ color: 'var(--ink-2)' }}>
-                                {new Intl.DateTimeFormat(locale).format(new Date(recipe.data))}
-                            </span>
-                        </td>
-                        <td className="px-5 py-4">
-                            <div className="flex items-center justify-end gap-1">
-                                <button onClick={() => onEdit(recipe.id)} className="ds-icon-button" title={t('common.edit')}>
-                                    <Edit3 size={14} />
-                                </button>
-                                <button onClick={() => onPreview(recipe.id)} className="ds-icon-button" style={{ color: 'var(--primary)' }} title={t('common.preview')}>
-                                    <Eye size={14} />
-                                </button>
-                                <button onClick={() => onDelete(recipe.id)} className="ds-icon-button" style={{ color: 'var(--ink-2)' }} title="Excluir">
-                                    <X size={14} />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
-);
-
 // ─── Empty states ─────────────────────────────────────────────
 const EmptyCreate: React.FC<{ label: string; desc: string; btnLabel: string; onAction: () => void }> = ({
     label, desc, btnLabel, onAction,
@@ -188,31 +90,32 @@ const EmptyCreate: React.FC<{ label: string; desc: string; btnLabel: string; onA
 const EmptySearch: React.FC<{ onClear: () => void; t: (k: string) => string }> = ({ onClear, t }) => (
     <div className="flex flex-col items-center justify-center py-16 text-center">
         <Search size={32} className="mb-3 opacity-20" style={{ color: 'var(--ink-1)' }} />
-        <p className="text-sm" style={{ color: 'var(--ink-2)' }}>{t('formulas.noResults')}</p>
+        <p className="text-sm" style={{ color: 'var(--ink-2)' }}>{t('sheets.noResults')}</p>
         <button onClick={onClear} className="mt-2 text-sm font-bold hover:underline" style={{ color: 'var(--primary)' }}>
-            {t('formulas.clearFilter')}
+            {t('sheets.clearFilter')}
         </button>
     </div>
 );
 
 // ─── Status variant helper ────────────────────────────────────
-function formulaStatusVariant(status: string | undefined): CoverStatusVariant {
+function sheetStatusVariant(status: string | undefined): CoverStatusVariant {
     return status === 'FINAL' ? 'green' : 'gray';
 }
 
 // ─── Main page ────────────────────────────────────────────────
-export const FormulasPage: React.FC = () => {
+export const SheetsPage: React.FC = () => {
     const { t, locale } = useI18n();
     const { history, deleteRecipe, recipeManager, addToast, saveToHistory, isFavorite, toggleFavorite } = useApp();
     const { openWizard } = useOutletContext<AppOutletContext>();
-    const { isDark } = useTheme();
     const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
     const [dateRange, setDateRange] = useState<DateRange>('all');
     const [importType, setImportType] = useState<ImportType | null>(null);
-    const [view, setView] = useState<ViewMode>('grid');
+    const { prefs, updatePrefs } = usePreferences();
+    const view = prefs.sheetsView as ViewMode;
+    const setView = (v: ViewMode) => updatePrefs({ sheetsView: v });
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
@@ -237,7 +140,7 @@ export const FormulasPage: React.FC = () => {
 
     const handleDeleteSelected = () => {
         selectedIds.forEach(id => deleteRecipe(id));
-        addToast(`${selectedIds.size} fórmula(s) excluída(s)`, 'success');
+        addToast(`${selectedIds.size} ficha(s) excluída(s)`, 'success');
         setSelectedIds(new Set());
     };
 
@@ -251,9 +154,9 @@ export const FormulasPage: React.FC = () => {
     });
 
     const statusFilterOptions: { value: FilterStatus; label: string }[] = [
-        { value: 'all', label: t('formulas.filterAll') },
-        { value: 'FINAL', label: t('formulas.filterFinal') },
-        { value: 'RASCUNHO', label: t('formulas.filterDraft') },
+        { value: 'all', label: t('sheets.filterAll') },
+        { value: 'FINAL', label: t('sheets.filterFinal') },
+        { value: 'RASCUNHO', label: t('sheets.filterDraft') },
     ];
 
     const sortedFiltered = [...filtered].sort((a, b) => {
@@ -278,8 +181,8 @@ export const FormulasPage: React.FC = () => {
         <div className="p-6 lg:p-8 animate-in fade-in duration-300">
 
             <HubHeader
-                title={t('nav.formulas')}
-                subtitle={`${history.length} ${history.length === 1 ? 'fórmula cadastrada' : 'fórmulas cadastradas'}`}
+                title={t('nav.sheets')}
+                subtitle={`${history.length} ${history.length === 1 ? 'ficha cadastrada' : 'fichas cadastradas'}`}
             />
 
             {/* KPIs */}
@@ -290,13 +193,13 @@ export const FormulasPage: React.FC = () => {
                     }
                 >
                     <StatCard
-                        title="Total de Fórmulas"
+                        title="Total de Fichas"
                         value={stats.total}
                         icon={<FlaskConical size={20} />}
                         dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                     />
                     <StatCard
-                        title="Fórmulas Finais"
+                        title="Fichas Finais"
                         value={stats.final}
                         icon={<CheckCircle2 size={20} />}
                         dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
@@ -319,7 +222,7 @@ export const FormulasPage: React.FC = () => {
             {/* Toolbar */}
             <HubToolbar
                 primaryAction={
-                    <HubButton variant="primary" label="Nova Ficha" onClick={() => navigate('/formulas/nova')} />
+                    <HubButton variant="primary" label="Nova Ficha" onClick={() => navigate('/fichas-tecnicas/nova')} />
                 }
                 secondaryActions={
                     <>
@@ -332,7 +235,7 @@ export const FormulasPage: React.FC = () => {
                         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--ink-2)' }} />
                         <input
                             className="ds-input w-full pl-9"
-                            placeholder={t('formulas.searchPlaceholder')}
+                            placeholder={t('sheets.searchPlaceholder')}
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                         />
@@ -366,10 +269,11 @@ export const FormulasPage: React.FC = () => {
                                 key={recipe.id}
                                 name={recipe.nome_formula}
                                 coverAspectRatio="4/3"
+                                coverColor={recipe.accentColor}
                                 statusText={recipe.status === 'FINAL' ? t('status.final') : t('status.draft')}
-                                statusVariant={formulaStatusVariant(recipe.status)}
-                                onEdit={() => navigate(`/formulas/${recipe.id}/editar`)}
-                                onPreview={() => navigate(`/formulas/${recipe.id}/preview`)}
+                                statusVariant={sheetStatusVariant(recipe.status)}
+                                onEdit={() => navigate(`/fichas-tecnicas/${recipe.id}/editar`)}
+                                onPreview={() => navigate(`/fichas-tecnicas/${recipe.id}/preview`)}
                                 onDelete={() => deleteRecipe(recipe.id)}
                                 selected={selectedIds.has(recipe.id)}
                                 onToggleSelect={() => toggleSelection(recipe.id)}
@@ -393,24 +297,27 @@ export const FormulasPage: React.FC = () => {
                         ))}
                     </div>
                 ) : (
-                    <FormulaTable
+                    <SheetTable
                         recipes={filtered}
                         locale={locale}
                         statusConfigs={statusConfigs}
-                        onEdit={id => navigate(`/formulas/${id}/editar`)}
-                        onPreview={id => navigate(`/formulas/${id}/preview`)}
+                        selectedIds={selectedIds}
+                        onToggleSelect={toggleSelection}
+                        onEdit={id => navigate(`/fichas-tecnicas/${id}/editar`)}
+                        onPreview={id => navigate(`/fichas-tecnicas/${id}/preview`)}
                         onDelete={id => deleteRecipe(id)}
                         onStatusChange={(recipe, next) => saveToHistory({ ...recipe, status: next as any })}
+                        isFavorite={isFavorite}
+                        onTogglePin={toggleFavorite}
                         t={t}
-                        isDark={isDark}
                     />
                 )
             ) : history.length === 0 ? (
                 <EmptyCreate
-                    label={t('formulas.emptyTitle')}
-                    desc={t('formulas.emptyDesc')}
+                    label={t('sheets.emptyTitle')}
+                    desc={t('sheets.emptyDesc')}
                     btnLabel={t('buttons.newSheet')}
-                    onAction={() => navigate('/formulas/nova')}
+                    onAction={() => navigate('/fichas-tecnicas/nova')}
                 />
             ) : (
                 <EmptySearch onClear={() => { setSearch(''); setFilterStatus('all'); setDateRange('all'); }} t={t} />
@@ -424,7 +331,7 @@ export const FormulasPage: React.FC = () => {
                     onClose={() => setImportType(null)}
                     onSuccess={(recipe) => {
                         saveToHistory(recipe);
-                        navigate(`/formulas/${recipe.id}/preview`);
+                        navigate(`/fichas-tecnicas/${recipe.id}/preview`);
                     }}
                     onError={() => addToast(t('messages.invalidJson'), 'error')}
                     sanitizeRecipe={recipeManager.sanitizeRecipe}

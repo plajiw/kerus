@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
-import { UI_THEMES } from '../constants/themes';
-
-type ThemeMode = 'light' | 'dark' | 'system';
-
-const PREFS_KEY = 'ficha_tecnica_prefs';
+import { PRIMARY_COLOR } from '../constants/appConfig';
+import { getPrefs, setPrefs, ThemeMode } from '../services/localStorageService';
 
 const resolveIsDark = (mode: ThemeMode): boolean => {
     if (mode === 'dark') return true;
@@ -11,116 +8,60 @@ const resolveIsDark = (mode: ThemeMode): boolean => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
-const applyDark = (dark: boolean) => {
+const applyTheme = (dark: boolean, mode: ThemeMode = 'light') => {
+    // [data-theme] attribute — used by tokens.css and components.css
+    const themeAttr = dark ? 'dark' : (mode !== 'system' ? mode : 'light');
+    document.documentElement.setAttribute('data-theme', themeAttr);
+    // .dark class — kept for Tailwind dark: utility compatibility
     document.documentElement.classList.toggle('dark', dark);
     document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
 };
 
 interface ThemeContextValue {
-    primaryColor: string;
-    setPrimaryColor: (color: string) => void;
     animationsEnabled: boolean;
     setAnimationsEnabled: (v: boolean) => void;
     themeMode: ThemeMode;
     setThemeMode: (mode: ThemeMode) => void;
     isDark: boolean;
     toggleDark: () => void;
-    UI_THEMES: typeof UI_THEMES;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    // Initialize isDark synchronously from localStorage and apply immediately
     const [isDark, setIsDark] = useState<boolean>(() => {
-        try {
-            const raw = localStorage.getItem(PREFS_KEY);
-            if (raw) {
-                const parsed = JSON.parse(raw);
-                const mode: ThemeMode = parsed.themeMode === 'light' || parsed.themeMode === 'dark'
-                    ? parsed.themeMode
-                    : 'system';
-                const dark = resolveIsDark(mode);
-                applyDark(dark);
-                return dark;
-            }
-        } catch {}
-        const dark = resolveIsDark('light');
-        applyDark(dark);
+        const { themeMode } = getPrefs();
+        const dark = resolveIsDark(themeMode);
+        applyTheme(dark, themeMode);
         return dark;
     });
 
-    const [primaryColor, setPrimaryColorState] = useState<string>(() => {
-        try {
-            const raw = localStorage.getItem(PREFS_KEY);
-            if (raw) {
-                const parsed = JSON.parse(raw);
-                if (parsed.primaryColor) return parsed.primaryColor;
-            }
-        } catch {}
-        return '#FF8C00';
-    });
+    const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(() => getPrefs().animationsEnabled);
+    const [themeMode, setThemeModeState] = useState<ThemeMode>(() => getPrefs().themeMode);
 
-    const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(true);
-
-    const [themeMode, setThemeModeState] = useState<ThemeMode>(() => {
-        try {
-            const raw = localStorage.getItem(PREFS_KEY);
-            if (raw) {
-                const parsed = JSON.parse(raw);
-                if (parsed.themeMode === 'light' || parsed.themeMode === 'dark') return parsed.themeMode;
-            }
-        } catch {}
-        return 'light';
-    });
-
-    // Apply dark class on every isDark change (single source of truth)
+    // Apply fixed brand color once on mount
     useEffect(() => {
-        applyDark(isDark);
-    }, [isDark]);
-
-    // Apply primary color CSS var
-    useEffect(() => {
-        document.documentElement.style.setProperty('--primary', primaryColor);
-    }, [primaryColor]);
-
-    // Persist all prefs to localStorage
-    useEffect(() => {
-        try {
-            const raw = localStorage.getItem(PREFS_KEY);
-            const prev = raw ? JSON.parse(raw) : {};
-            localStorage.setItem(PREFS_KEY, JSON.stringify({
-                ...prev, primaryColor, animationsEnabled, themeMode
-            }));
-        } catch {}
-    }, [primaryColor, animationsEnabled, themeMode]);
-
-    // Load animationsEnabled (not needed for initial render, so async is fine)
-    useEffect(() => {
-        try {
-            const raw = localStorage.getItem(PREFS_KEY);
-            if (!raw) return;
-            const parsed = JSON.parse(raw);
-            if (typeof parsed.animationsEnabled === 'boolean') {
-                setAnimationsEnabledState(parsed.animationsEnabled);
-            }
-        } catch {}
+        document.documentElement.style.setProperty('--primary', PRIMARY_COLOR);
     }, []);
 
-    // System theme listener — only when mode is 'system'
+    // Apply theme attribute and dark class whenever isDark/themeMode changes
+    useEffect(() => { applyTheme(isDark, themeMode); }, [isDark, themeMode]);
+
+    // Persist preferences
+    useEffect(() => {
+        setPrefs({ animationsEnabled, themeMode });
+    }, [animationsEnabled, themeMode]);
+
+    // System theme listener
     useEffect(() => {
         if (themeMode !== 'system') return;
         const media = window.matchMedia('(prefers-color-scheme: dark)');
-        const onchange = () => {
-            setIsDark(media.matches);
-        };
-        // Sync immediately in case it drifted
+        const onchange = () => setIsDark(media.matches);
         setIsDark(media.matches);
         media.addEventListener('change', onchange);
         return () => media.removeEventListener('change', onchange);
     }, [themeMode]);
 
-    const setPrimaryColor = useCallback((color: string) => setPrimaryColorState(color), []);
     const setAnimationsEnabled = useCallback((v: boolean) => setAnimationsEnabledState(v), []);
 
     const setThemeMode = useCallback((mode: ThemeMode) => {
@@ -134,11 +75,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     return (
         <ThemeContext.Provider value={{
-            primaryColor, setPrimaryColor,
             animationsEnabled, setAnimationsEnabled,
             themeMode, setThemeMode,
             isDark, toggleDark,
-            UI_THEMES,
         }}>
             {children}
         </ThemeContext.Provider>

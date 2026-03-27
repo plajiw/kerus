@@ -12,17 +12,17 @@ import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalList
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 
-import { useI18n } from '../i18n/i18n.tsx';
-import { useApp } from '../context/AppContext';
-import { useQuotationManager } from '../hooks/useQuotationManager';
-import { RichTextSection } from '../components/common/RichTextSection';
-import { SectionCard } from '../components/ui/SectionCard';
-import { EditorShell } from '../components/ui/EditorShell';
-import { FormulaPickerDialog } from '../components/modals/FormulaPickerDialog';
-import { QuotationPaymentModal } from '../components/modals/QuotationPaymentModal';
-import { QuotationPrintable } from '../components/QuotationPrintable';
-import { FORMULA_THEMES, FORMULA_FONTS } from '../constants/themes';
-import { QuotationItem, QuotationStatus, PAYMENT_METHOD_LABELS } from '../types';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useApp } from '../../context/AppContext.tsx';
+import { useQuotationManager } from '../../hooks/useQuotationManager.ts';
+import { RichTextSection } from '../../components/common/RichTextSection.tsx';
+import { SectionCard } from '../../components/ui/SectionCard.tsx';
+import { EditorShell } from '../../components/ui/EditorShell.tsx';
+import { FormulaPickerDialog } from '../../components/modals/FormulaPickerDialog.tsx';
+import { QuotationPaymentModal } from '../../components/modals/QuotationPaymentModal.tsx';
+import { QuotationPrintable } from '../../components/QuotationPrintable.tsx';
+import { FORMULA_THEMES, FORMULA_FONTS } from '../../constants/themes.ts';
+import { QuotationItem, QuotationStatus, PAYMENT_METHOD_LABELS } from '../../types/index.ts';
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; border: string }> = {
     RASCUNHO: { bg: 'rgba(245,158,11,0.12)', color: '#b45309', border: 'rgba(245,158,11,0.4)' },
@@ -72,7 +72,7 @@ const SortableItemRow: React.FC<SortableItemRowProps> = ({
                     <GripVertical size={15} />
                 </div>
 
-                {item.type === 'formula'
+                {item.type === 'sheet'
                     ? <FlaskConical size={14} className="flex-shrink-0" style={{ color: 'var(--primary)' }} />
                     : <div className="w-3.5 h-3.5 rounded border-2 flex-shrink-0" style={{ borderColor: 'var(--ink-2)' }} />
                 }
@@ -88,17 +88,17 @@ const SortableItemRow: React.FC<SortableItemRowProps> = ({
                 <button
                     onClick={onOpenPicker}
                     className="flex-shrink-0 ds-icon-button"
-                    style={{ color: item.type === 'formula' ? 'var(--primary)' : 'var(--ink-2)' }}
-                    title={item.type === 'formula' ? t('quotations.changeFormula') : t('quotations.linkFormula')}
+                    style={{ color: item.type === 'sheet' ? 'var(--primary)' : 'var(--ink-2)' }}
+                    title={item.type === 'sheet' ? t('quotations.changeSheet') : t('quotations.linkSheet')}
                 >
                     <Link2 size={13} />
                 </button>
 
-                {item.type === 'formula' && (
+                {item.type === 'sheet' && (
                     <button
                         onClick={onUnlink}
                         className="flex-shrink-0 ds-icon-button opacity-50 hover:opacity-100 hover:text-red-500"
-                        title={t('quotations.unlinkFormula')}
+                        title={t('quotations.unlinkSheet')}
                     >
                         <Link2Off size={13} />
                     </button>
@@ -345,7 +345,7 @@ export const QuotationEditorPage: React.FC = () => {
             {activeTab === 'content' && (
                 <div className="space-y-5">
                     <SectionCard
-                        title={t('quotations.linkedFormulas')}
+                        title={t('quotations.linkedSheets')}
                         icon={<FlaskConical size={14} />}
                         hint={t('hints.quotationLink')}
                         actions={(
@@ -357,7 +357,7 @@ export const QuotationEditorPage: React.FC = () => {
                         <div className="p-4 space-y-2">
                             {q.items.length === 0 ? (
                                 <p className="text-center py-6 text-sm" style={{ color: 'var(--ink-2)' }}>
-                                    {t('quotations.noFormulasLinked')}
+                                    {t('quotations.noSheetsLinked')}
                                 </p>
                             ) : (
                                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd} modifiers={[restrictToVerticalAxis]}>

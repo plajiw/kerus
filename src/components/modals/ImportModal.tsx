@@ -239,7 +239,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
                                 {t('import.pasteCode')}
                             </label>
                             <textarea
-                                className="w-full h-52 rounded-xl p-4 font-mono text-xs resize-none outline-none focus:ring-2"
+                                className="w-full h-52 rounded-xl p-4 font-mono text-xs resize-none outline-none"
                                 style={{
                                     background: '#0f172a',
                                     color: '#e2e8f0',

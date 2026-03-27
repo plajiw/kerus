@@ -42,8 +42,8 @@ export function StatusToggle<T extends string>({
     );
 }
 
-// ─── Preset config: Formula status ────────────────────────────
-export const FORMULA_STATUS_CONFIGS = (labels: { draft: string; final: string }) => [
+// ─── Preset config: Sheet status ─────────────────────────────
+export const SHEET_STATUS_CONFIGS = (labels: { draft: string; final: string }) => [
     {
         value: 'RASCUNHO' as const,
         label: labels.draft,
@@ -59,6 +59,9 @@ export const FORMULA_STATUS_CONFIGS = (labels: { draft: string; final: string })
         next: 'RASCUNHO' as const,
     },
 ];
+
+// ─── Backwards compatibility alias ────────────────────────────
+export const FORMULA_STATUS_CONFIGS = SHEET_STATUS_CONFIGS;
 
 // ─── Preset config: Quotation status ──────────────────────────
 export const QUOTATION_STATUS_CONFIGS = (labels: {

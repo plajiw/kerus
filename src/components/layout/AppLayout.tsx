@@ -18,7 +18,7 @@ export type AppOutletContext = {
 export const AppLayout: React.FC = () => {
     const { toasts, removeToast, recipeManager } = useApp();
     const { locale } = useI18n();
-    const { animationsEnabled, primaryColor } = useTheme();
+    const { animationsEnabled } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,7 +30,7 @@ export const AppLayout: React.FC = () => {
 
     const handleAiGenerated = (recipe: Recipe) => {
         recipeManager.loadRecipe(recipeManager.sanitizeRecipe(recipe));
-        navigate('/formulas/nova');
+        navigate('/sheets/nova');
     };
 
     const wizard = useAIWizard(handleAiGenerated, locale);

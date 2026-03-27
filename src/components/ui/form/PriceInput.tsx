@@ -33,11 +33,11 @@ export const PriceInput: React.FC<PriceInputProps> = ({
 
   return (
     <div className="flex flex-col gap-1 w-full">
-      <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+      <label className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--ink-2)' }}>
         {label}
       </label>
       <div className="relative flex items-center">
-        <div className="absolute left-3 flex items-center gap-1 text-slate-500 dark:text-slate-400">
+        <div className="absolute left-3 flex items-center gap-1 pointer-events-none" style={{ color: 'var(--ink-2)' }}>
           <DollarSign size={14} />
           <span className="text-xs font-bold">{currency}</span>
         </div>
@@ -45,7 +45,7 @@ export const PriceInput: React.FC<PriceInputProps> = ({
           type="button"
           onClick={handleDecrement}
           disabled={disabled || value <= 0}
-          className="absolute left-16 h-8 w-8 flex items-center justify-center rounded text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="absolute left-16 h-8 w-8 flex items-center justify-center rounded ds-icon-button disabled:opacity-50 disabled:cursor-not-allowed"
         >
           −
         </button>
@@ -56,30 +56,19 @@ export const PriceInput: React.FC<PriceInputProps> = ({
           step="0.01"
           min="0"
           disabled={disabled}
-          className={`
-            w-full h-10 rounded-lg border-2 transition-all duration-200
-            bg-white dark:bg-slate-800
-            border-slate-200 dark:border-slate-700
-            text-right font-mono text-base
-            text-slate-900 dark:text-white
-            focus:border-blue-500 dark:focus:border-blue-400
-            focus:outline-none
-            disabled:opacity-50 disabled:cursor-not-allowed
-            pl-20 pr-10
-            ${error ? 'border-red-500 dark:border-red-500' : ''}
-          `}
+          className={`ds-input w-full text-right font-mono pl-20 pr-10 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
         />
         <button
           type="button"
           onClick={handleIncrement}
           disabled={disabled}
-          className="absolute right-2 h-8 w-8 flex items-center justify-center rounded text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="absolute right-2 h-8 w-8 flex items-center justify-center rounded ds-icon-button disabled:opacity-50 disabled:cursor-not-allowed"
         >
           +
         </button>
       </div>
       {error && (
-        <p className="text-xs text-red-600 dark:text-red-400 mt-0.5">
+        <p className="text-xs mt-0.5" style={{ color: 'var(--status-error-text)' }}>
           ⚠️ {error}
         </p>
       )}

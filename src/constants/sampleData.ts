@@ -52,7 +52,7 @@ export const SAMPLE_QUOTATIONS: Quotation[] = [
         deliveryFormat: 'Caixas com 12 unidades de 150ml (Total 500 frascos)',
         accentColor: '#FF4500',
         items: [
-            { id: 'pqi1', name: 'Molho de Pimenta Habanero Defumado (150ml)', type: 'formula', linkedFormulaId: 'sample-formula-pimenta' },
+            { id: 'pqi1', name: 'Molho de Pimenta Habanero Defumado (150ml)', type: 'sheet', linkedFormulaId: 'sample-formula-pimenta' },
             { id: 'pqi2', name: 'Personalização de Rótulos (Private Label)', type: 'service' },
             { id: 'pqi3', name: 'Frete Logística Expressa', type: 'other' }
         ],

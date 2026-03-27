@@ -59,7 +59,7 @@ export const WizardModal: React.FC<WizardModalProps> = ({ wizard, animationsEnab
                             {t('wizard.label')}
                         </label>
                         <textarea
-                            className="w-full h-32 ds-textarea text-sm font-normal focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all resize-none placeholder-slate-400"
+                            className="w-full h-32 ds-textarea text-sm font-normal resize-none"
                             placeholder={t('wizard.placeholder')}
                             value={wizard.inputText}
                             onChange={(e) => wizard.setInputText(e.target.value)}

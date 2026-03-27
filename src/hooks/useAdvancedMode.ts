@@ -1,15 +1,12 @@
 import { useState, useCallback } from 'react';
-
-const KEY = 'kerus_advanced_mode';
+import { getPrefs, setPrefs } from '../services/localStorageService';
 
 export const useAdvancedMode = () => {
-    const [enabled, setEnabledState] = useState<boolean>(() => {
-        try { return localStorage.getItem(KEY) === 'true'; } catch { return false; }
-    });
+    const [enabled, setEnabledState] = useState<boolean>(() => getPrefs().advancedMode);
 
     const setEnabled = useCallback((v: boolean) => {
         setEnabledState(v);
-        try { localStorage.setItem(KEY, String(v)); } catch {}
+        setPrefs({ advancedMode: v });
     }, []);
 
     return { advancedMode: enabled, setAdvancedMode: setEnabled };

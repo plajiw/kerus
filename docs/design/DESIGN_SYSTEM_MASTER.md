@@ -135,21 +135,21 @@ Existem dois sets de tokens: dark (`:root` da `html.dark`) e light (`:root` padr
 | `--primary`   | Accent amber           | `#FF8C00` |
 | `--border`    | Bordas                 | `#222222` |
 
-#### Modo Claro (`:root` padrão) — Paleta Warm-Neutral
+#### Modo Claro (`:root` padrão) — Paleta Neutral Gray
 
-A lógica do modo claro segue tonalidades quentes derivadas do amber primário — não cinzas frios. Cada camada deve evocar "papel de alta qualidade" e ser visualmente agradável ao lado do accent amber.
+No modo claro a hierarquia é definida por tons de cinza neutro com texto quente. `--border` é `transparent` — a separação entre componentes é feita exclusivamente por mudança de superfície (No-Line Philosophy).
 
-| CSS Variable  | Papel               | Valor     | Nota             |
-| ------------- | ------------------- | --------- | ---------------- |
-| `--surface-0` | Sidebar             | `#EAE6E1` | warm stone       |
-| `--surface-1` | Página principal    | `#F4F1ED` | warm parchment   |
-| `--surface-2` | Cards (elevados)    | `#FFFFFF` | crisp white      |
-| `--surface-3` | Toolbar / inputs    | `#EDE8E3` | warm gray        |
-| `--ink-0`     | Texto primário      | `#1C1714` | near-black warm  |
-| `--ink-1`     | Texto secundário    | `#3D3430` | dark warm brown  |
-| `--ink-2`     | Texto meta/tertiary | `#7C7370` | medium warm gray |
-| `--primary`   | Accent amber        | `#E67E00` |                  |
-| `--border`    | Bordas              | `#DDD8D2` | warm beige       |
+| CSS Variable  | Papel               | Valor       | Nota                          |
+| ------------- | ------------------- | ----------- | ----------------------------- |
+| `--surface-0` | Sidebar             | `#EBEBEB`   | cinza médio — mais escuro     |
+| `--surface-1` | Página principal    | `#F3F3F3`   | cinza claro                   |
+| `--surface-2` | Cards (elevados)    | `#FFFFFF`   | branco puro — mais elevado    |
+| `--surface-3` | Toolbar / inputs    | `#ECECEC`   | cinza toolbar                 |
+| `--ink-0`     | Texto primário      | `#1C1714`   | near-black warm               |
+| `--ink-1`     | Texto secundário    | `#3D3430`   | dark warm brown               |
+| `--ink-2`     | Texto meta/tertiary | `#7C7370`   | medium warm gray              |
+| `--primary`   | Accent amber        | `#E67E00`   | ligeiramente mais escuro que dark |
+| `--border`    | Bordas              | `transparent` | **No-Line** — sem bordas visíveis |
 
 **Regra absoluta:** Nunca use cores hardcoded ou classes `dark:` do Tailwind. Use sempre `var(--ink-0)`, `var(--surface-1)`, etc.
 
@@ -189,12 +189,58 @@ surface-2  → Cards (elevados sobre a página)
 surface-3  → Toolbar, inputs, dropdowns
 ```
 
-### 2.5 Sombras (PROIBIDO)
+### 2.5 No-Line Philosophy (REGRA ABSOLUTA)
 
 > [!IMPORTANT]
-> O Kerus não utiliza sombras em seus componentes (`box-shadow` ou classes `shadow-*`). A hierarquia visual é definida exclusivamente por **mudança de superfície** (`surface-0` a `surface-3`) e **bordas ghost** sutis.
+> O Kerus não utiliza bordas visíveis entre componentes nem sombras. **Hierarquia é definida exclusivamente por mudança de superfície.**
 
-Não adicione sombras a novos componentes para manter a estética **Obsidian Architect**.
+#### Proibido em ambos os temas
+
+- `box-shadow` / classes `shadow-*` em qualquer componente
+- `border: 1px solid` para separar cards, seções ou layouts
+- Classes `divide-*` do Tailwind entre itens de lista
+
+#### `--border` por tema
+
+- **Escuro:** `#222222` — usado apenas em elementos específicos como scrollbars e spinners, não em cards
+- **Claro:** `transparent` — nenhuma borda visível; toda separação é por contraste de superfície
+
+#### Hierarquia correta no tema claro
+
+A lógica de elevação no tema claro é: quanto mais claro, mais elevado.
+
+```
+surface-0 (#EBEBEB)  →  Sidebar — mais fundida
+surface-1 (#F3F3F3)  →  Página / workspace
+surface-2 (#FFFFFF)  →  Cards, modais — mais elevados
+surface-3 (#ECECEC)  →  Toolbar, headers de seção, inputs
+```
+
+> **Atenção:** `surface-3` é mais escuro que `surface-1` — é usado para elementos "afundados" como toolbars e headers de card, não como elevação.
+
+#### Hover
+
+- Use `--surface-2` para hover de itens de navegação e botões sobre `surface-0` ou `surface-1`
+- **Nunca** use `surface-3` para hover quando o fundo já é `surface-0` (as cores são quase idênticas no tema claro)
+
+#### Focus / inputs
+
+- Inputs em repouso: `background: var(--surface-3); border: none`
+- Inputs em foco: `border: 2px solid var(--primary)` — o único caso onde uma borda aparece no tema claro
+- Isso comunica interatividade sem quebrar a filosofia No-Line (é marcação semântica, não separação estrutural)
+
+#### Botões — regra universal (ambos os temas)
+
+Botões nunca usam `border` ou `background: transparent`. A distinção é feita por **elevação de superfície**:
+
+| Tema | Fundo da página | `ds-button` (padrão) | Hover |
+|---|---|---|---|
+| Escuro | `surface-1` `#131313` | `surface-3` `#2c2c2c` | `filter: brightness(1.2)` |
+| Claro | `surface-1` `#F3F3F3` | `surface-2` `#FFFFFF` | `surface-3` `#ECECEC` |
+
+- **Nunca** use `border` em `ds-button` — hierarquia vem da diferença de surface, não de linha
+- **Nunca** use `background: transparent` em botões — ficam invisíveis sobre fundos escuros ou claros
+- `ds-button-primary`: `background: var(--primary); border: none` — sempre sem borda, a cor já é âncora suficiente
 
 ---
 

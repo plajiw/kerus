@@ -1,16 +1,16 @@
 import React, { useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, FileDown, Printer, FileCode2, Edit3 } from 'lucide-react';
-import { useI18n } from '../i18n/i18n.tsx';
-import { useApp } from '../context/AppContext';
-import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { RecipePrintable } from '../components/RecipePrintable';
-import { HintButton } from '../components/ui/HintButton';
-import { StatusToggle, FORMULA_STATUS_CONFIGS } from '../components/ui/StatusToggle';
-import { exportToXML } from '../services/xmlService';
-import { isoToday } from '../utils/dateUtils';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useApp } from '../../context/AppContext.tsx';
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts.ts';
+import { SheetPrintable } from '../../components/SheetPrintable.tsx';
+import { HintButton } from '../../components/ui/HintButton.tsx';
+import { StatusToggle, FORMULA_STATUS_CONFIGS } from '../../components/ui/StatusToggle.tsx';
+import { exportToXML } from '../../services/xmlService.ts';
+import { isoToday } from '../../utils/dateUtils.ts';
 
-export const FormulaPreviewPage: React.FC = () => {
+export const SheetPreviewPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { t } = useI18n();
     const { history, saveToHistory, addToast } = useApp();
@@ -75,7 +75,7 @@ export const FormulaPreviewPage: React.FC = () => {
         onAddIngredient: () => {},
         onSave: () => {},
         onPreview: () => {},
-        onEscape: () => navigate(id ? `/formulas/${id}/editar` : '/formulas'),
+        onEscape: () => navigate(id ? `/fichas-tecnicas/${id}/editar` : '/fichas-tecnicas'),
         isEditor: false,
         isPreview: true,
         hasModalOpen: false,
@@ -85,8 +85,8 @@ export const FormulaPreviewPage: React.FC = () => {
         return (
             <div className="flex flex-col items-center justify-center py-24 text-center p-6">
                 <p className="text-sm mb-4" style={{ color: 'var(--ink-2)' }}>{t('preview.noRecipe')}</p>
-                <button onClick={() => navigate('/formulas')} className="ds-button-primary">
-                    {t('nav.formulas')}
+                <button onClick={() => navigate('/fichas-tecnicas')} className="ds-button-primary">
+                    {t('nav.sheets')}
                 </button>
             </div>
         );
@@ -104,7 +104,7 @@ export const FormulaPreviewPage: React.FC = () => {
             <div className="w-full no-print mb-5">
                 <div className="flex items-center gap-3 mb-3">
                     <button
-                        onClick={() => navigate(`/formulas/${recipe.id}/editar`)}
+                        onClick={() => navigate(`/fichas-tecnicas/${recipe.id}/editar`)}
                         className="ds-icon-button"
                         title={t('common.edit')}
                     >
@@ -127,7 +127,7 @@ export const FormulaPreviewPage: React.FC = () => {
 
                 <div className="flex flex-wrap items-center gap-2">
                     <button
-                        onClick={() => navigate(`/formulas/${recipe.id}/editar`)}
+                        onClick={() => navigate(`/fichas-tecnicas/${recipe.id}/editar`)}
                         className="ds-button flex items-center gap-1.5 text-sm"
                     >
                         <Edit3 size={13} /> {t('common.edit')}
@@ -173,7 +173,7 @@ export const FormulaPreviewPage: React.FC = () => {
             {/* Preview card */}
             <div className="w-full rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
                 <div ref={previewRef}>
-                    <RecipePrintable recipe={recipe} mode="print" />
+                    <SheetPrintable recipe={recipe} mode="print" />
                 </div>
             </div>
         </div>

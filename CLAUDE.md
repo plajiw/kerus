@@ -2,16 +2,16 @@
 
 ## Project Overview
 
-**Kerus** is a React + TypeScript SPA for cosmetics formulators.
-Core modules: Formula editor, Quotation editor, Dashboard, Settings.
-Future: C# REST API backend (`kerus-api`) to replace localStorage persistence.
+**Kerus** is a React + TypeScript SPA for creating technical sheets (fichas técnicas) in cosmetics, food, and industrial formulations.
+Core modules: Sheet editor (fichas), Quotation editor, Dashboard, Settings.
+Future: C# .NET 9 REST API backend to replace localStorage persistence and add multi-user support.
 
 ## Stack
 
 | Layer | Technology |
 |---|---|
 | UI | React 19, TypeScript, Tailwind CDN (class dark mode) |
-| Routing | React Router v6 (file-based route pages) |
+| Routing | React Router v6 (file-based route pages: `/fichas-tecnicas`, `/orcamentos`) |
 | Drag & Drop | @dnd-kit/core + @dnd-kit/sortable |
 | AI | @google/genai (Gemini) |
 | Build | Vite 6 |
@@ -27,18 +27,22 @@ kerus/
 │   ├── components/
 │   │   ├── common/     # Pure UI primitives (no business logic)
 │   │   ├── features/   # Feature-specific components (Editor sections, etc.)
-│   │   │   └── Editor/ # Formula editor sub-components
+│   │   │   └── Editor/ # Sheet editor sub-components
 │   │   ├── layout/     # AppLayout, Sidebar
 │   │   ├── modals/     # Modal dialogs (ImportModal, PresetsModal, WizardModal)
 │   │   └── ui/         # Shared UI components (HintButton, StatusToggle, SectionCard)
 │   ├── constants/      # Static data: presets, themes
 │   ├── context/        # React Context: AppContext, ThemeContext
-│   ├── hooks/          # Custom hooks: useRecipeManager, useQuotationManager, useHistory, etc.
+│   ├── hooks/          # Custom hooks: useSheetManager, useQuotationManager, useSheets, etc.
 │   ├── i18n/           # Translations: pt-BR, en, es
-│   ├── pages/          # Route-level page components
+│   ├── pages/          # Route-level page components (organized by module)
+│   │   ├── sheets/     # Sheet pages (list, create/edit, preview)
+│   │   ├── quotations/ # Quotation pages (list, create/edit, preview)
+│   │   ├── dashboard/  # Dashboard page
+│   │   └── settings/   # Settings page
 │   ├── services/       # External integrations: geminiService, xmlService
 │   ├── types/          # TypeScript type definitions
-│   │   ├── recipe.ts   # Recipe, Ingredient, Step
+│   │   ├── sheet.ts    # Sheet (formerly Recipe), Ingredient, Step
 │   │   ├── quotation.ts # Quotation, QuotationItem, QuotationPayment
 │   │   └── index.ts    # Re-exports all types
 │   └── utils/          # Pure utility functions
@@ -49,29 +53,54 @@ kerus/
 
 ## Design System
 
-CSS custom properties defined in `index.html`, toggled via `html.dark` class:
+CSS custom properties defined in `index.html`, toggled via `html.dark` class.
+Full reference: `docs/design/DESIGN_SYSTEM_MASTER.md`.
 
-```
---surface-0/1/2/3   background layers (lightest → darkest)
---ink-0/1/2         text (high → low contrast)
---border            border color
---primary           brand color
-```
+### Tokens
 
-Design tokens classes: `ds-card`, `ds-button`, `ds-button-primary`, `ds-input`, `ds-select`, `ds-textarea`, `ds-icon-button`.
+| Token | Dark | Light |
+|---|---|---|
+| `--surface-0` | `#0e0e0e` | `#EBEBEB` |
+| `--surface-1` | `#131313` | `#F3F3F3` |
+| `--surface-2` | `#202020` | `#FFFFFF` |
+| `--surface-3` | `#2c2c2c` | `#ECECEC` |
+| `--ink-0` | `#ffffff` | `#1C1714` |
+| `--ink-1` | `#e4e2e1` | `#3D3430` |
+| `--ink-2` | `#adaaaa` | `#7C7370` |
+| `--primary` | `#FF8C00` | `#E67E00` |
+| `--border` | `#222222` | `transparent` |
+
+`--primary` is a constant (`#FF8C00` dark / `#E67E00` light). It is **not user-configurable**. Source: `src/constants/appConfig.ts`.
+
+### No-Line Philosophy
+
+Hierarchy is defined by **surface changes only** — never by 1px borders or shadows.
+
+- `box-shadow` and `shadow-*` are **prohibited** on all components
+- `--border: transparent` in light mode — no visible borders between components
+- **Hover** must use `--surface-2`, not `--surface-3` (surface-3 ≈ surface-0 in light mode, invisible)
+- **Inputs at rest**: `background: surface-3; border: none`
+- **Inputs focused**: `border: 2px solid var(--primary)` — the only visible border allowed in light mode
+- **Buttons in light mode**: `background: var(--surface-2)` so they elevate above surface-3 headers
+
+### Design token classes
+
+`ds-card`, `ds-button`, `ds-button-primary`, `ds-input`, `ds-select`, `ds-textarea`, `ds-icon-button`
+
+**Never** use hardcoded hex colors or Tailwind `dark:` classes. Always use `var(--ink-0)`, `var(--surface-1)`, etc.
 
 ## Key Patterns
 
 ### Route structure
-- `/formulas` — list page
-- `/formulas/nova` — create (FormulaEditorPage with no `:id`)
-- `/formulas/:id/editar` — edit (FormulaEditorPage loads from `history` by id)
-- `/formulas/:id/preview` — read-only preview + export
-- Same pattern for `/orcamentos`
+- `/fichas-tecnicas` — list page (sheets/fichas técnicas)
+- `/fichas-tecnicas/nova` — create (SheetEditorPage with no `:id`)
+- `/fichas-tecnicas/:id/editar` — edit (SheetEditorPage loads from `sheets` by id)
+- `/fichas-tecnicas/:id/preview` — read-only preview + export
+- Same pattern for `/orcamentos` (quotations)
 
 ### State management
-- `AppContext` — global state: `history`, `quotations`, CRUD actions
-- `useRecipeManager` — mutable state for the formula being edited
+- `AppContext` — global state: `sheets`, `quotations`, CRUD actions
+- `useSheetManager` — mutable state for the sheet being edited (formerly useRecipeManager)
 - `useQuotationManager` — mutable state for the quotation being edited
 - Both managers are stateless between route changes; pages load from AppContext arrays by `:id`
 

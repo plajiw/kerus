@@ -4,14 +4,14 @@ import {
     FlaskConical, Receipt, Package, CheckCircle2, FileEdit,
     Clock, ArrowRight, TrendingUp,
 } from 'lucide-react';
-import { useI18n } from '../i18n/i18n.tsx';
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../context/ThemeContext';
-import { HubHeader } from '../components/ui/hub/HubHeader';
-import { HubStatsGrid } from '../components/ui/hub/HubStatsGrid';
-import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../components/ui/hub/HubDateFilter';
-import { StatCard } from '../components/ui/StatCard';
-import { getCoverGradient } from '../utils/coverGradient';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useApp } from '../../context/AppContext';
+import { useTheme } from '../../context/ThemeContext';
+import { HubHeader } from '../../components/ui/hub/HubHeader';
+import { HubStatsGrid } from '../../components/ui/hub/HubStatsGrid';
+import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../../components/ui/hub/HubDateFilter';
+import { StatCard } from '../../components/ui/StatCard';
+import { getCoverGradient } from '../../utils/coverGradient';
 
 export const DashboardPage: React.FC = () => {
     const { t, locale } = useI18n();
@@ -23,23 +23,24 @@ export const DashboardPage: React.FC = () => {
     const dateRangeLabel = DATE_RANGE_OPTIONS.find(o => o.value === dateRange)?.label ?? '';
 
     const statsBase = history.filter(r => isWithinDateRange(r.data, dateRange));
-    const totalFormulas = statsBase.length;
-    const finalFormulas = statsBase.filter(r => r.status === 'FINAL').length;
-    const draftFormulas = statsBase.filter(r => r.status !== 'FINAL').length;
+    const totalSheets = statsBase.length;
+    const finalSheets = statsBase.filter(r => r.status === 'FINAL').length;
+    const draftSheets = statsBase.filter(r => r.status !== 'FINAL').length;
     const quotationsInRange = quotations.filter(q => isWithinDateRange(q.date, dateRange));
 
     const allActivities = [
         ...history.map(r => ({
             id: r.id,
-            type: 'formula' as const,
+            type: 'sheet' as const,
             title: r.nome_formula,
             date: new Date(r.data),
             subtitle: `${r.ingredientes.length} ${t('editor.item')}`,
             status: r.status,
             statusLabel: r.status === 'FINAL' ? t('status.final') : t('status.draft'),
             isFinal: r.status === 'FINAL',
-            path: `/formulas/${r.id}/preview`,
+            path: `/fichas-tecnicas/${r.id}/preview`,
             color: 'var(--primary)',
+            accentColor: r.accentColor,
         })),
         ...quotations.map(q => ({
             id: q.id,
@@ -52,6 +53,7 @@ export const DashboardPage: React.FC = () => {
             isFinal: q.status === 'APROVADO' || q.status === 'ENVIADO',
             path: `/orcamentos`,
             color: '#6366f1',
+            accentColor: q.accentColor,
         }))
     ].sort((a, b) => b.date.getTime() - a.date.getTime());
 
@@ -63,12 +65,12 @@ export const DashboardPage: React.FC = () => {
 
     const modules = [
         {
-            to: '/formulas',
+            to: '/fichas-tecnicas',
             icon: <FlaskConical size={20} />,
             color: 'var(--primary)',
-            label: t('nav.formulas'),
-            desc: t('dashboard.formulasModuleDesc'),
-            count: totalFormulas,
+            label: t('nav.sheets'),
+            desc: t('dashboard.sheetsModuleDesc'),
+            count: totalSheets,
         },
         {
             to: '/orcamentos',
@@ -101,19 +103,19 @@ export const DashboardPage: React.FC = () => {
             >
                 <StatCard
                     title={t('dashboard.totalFormulas')}
-                    value={totalFormulas}
+                    value={totalSheets}
                     icon={<FlaskConical size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
                 <StatCard
                     title={t('dashboard.finalFormulas')}
-                    value={finalFormulas}
+                    value={finalSheets}
                     icon={<CheckCircle2 size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
                 <StatCard
                     title={t('dashboard.drafts')}
-                    value={draftFormulas}
+                    value={draftSheets}
                     icon={<FileEdit size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
@@ -145,7 +147,7 @@ export const DashboardPage: React.FC = () => {
                             </h2>
                         </div>
                         <button
-                            onClick={() => navigate('/formulas')}
+                            onClick={() => navigate('/fichas-tecnicas')}
                             className="text-xs font-bold transition-colors hover:underline"
                             style={{ color: 'var(--primary)' }}
                         >
@@ -165,12 +167,14 @@ export const DashboardPage: React.FC = () => {
                                     {/* Mini cover / Icon container */}
                                     <div
                                         className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-black select-none relative overflow-hidden"
-                                        style={{ 
-                                            background: getCoverGradient(act.title, isDark),
+                                        style={{
+                                            background: act.accentColor
+                                                ? `linear-gradient(135deg, ${act.accentColor}${isDark ? 'cc' : '99'}, ${act.accentColor}${isDark ? '88' : '55'})`
+                                                : getCoverGradient(act.title, isDark),
                                             color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
                                         }}
                                     >
-                                        {act.type === 'formula' ? (
+                                        {act.type === 'sheet' ? (
                                             act.title.charAt(0).toUpperCase()
                                         ) : (
                                             <Receipt size={16} />
@@ -228,7 +232,7 @@ export const DashboardPage: React.FC = () => {
                                 {t('dashboard.noActivity')}
                             </p>
                             <button
-                                onClick={() => navigate('/formulas')}
+                                onClick={() => navigate('/fichas-tecnicas')}
                                 className="mt-3 text-sm font-bold hover:underline"
                                 style={{ color: 'var(--primary)' }}
                             >

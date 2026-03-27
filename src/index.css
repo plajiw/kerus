@@ -1,0 +1,604 @@
+/* ═══════════════════════════════════════════════════════════════════
+   KERUS — Master Stylesheet
+   Single source of truth for all design tokens and component classes.
+
+   Structure:
+     1. Fonts
+     2. Shared constants (layout, spacing, typography)
+     3. Theme: Light (default)
+     4. Theme: Dark
+     5. Theme: Monokai (template)
+     6. Base / Reset
+     7. Design System components (.ds-*)
+     8. Utility overrides (Tailwind → token bridge)
+     9. Rich text editor
+    10. Print
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────────
+   1. FONTS
+   ───────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+
+/* ─────────────────────────────────────────────────────────────────
+   2. SHARED CONSTANTS
+   Values that never change between themes.
+   ───────────────────────────────────────────────────────────────── */
+
+:root {
+    /* Radius */
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --radius-sm: 6px;
+
+    /* Control heights — all interactive controls share these
+       so form rows stay optically aligned without manual tweaks */
+    --h-control-sm: 32px;
+    --h-control:    36px;
+    --h-control-lg: 44px;
+
+    /* Horizontal padding */
+    --px-control: 12px;
+    --px-btn:     16px;
+
+    /* Typography */
+    --text-control: 13px;
+    --text-label:   11px;   /* uppercase tracking labels */
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   3. THEME: LIGHT (Default)
+   Applied to :root — active when no [data-theme] is set.
+   ───────────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme="light"] {
+
+    /* ── Surfaces ─────────────────────────────────────────────────
+       Hierarchy: sidebar → page → cards → toolbar/inputs
+       Elevation is conveyed purely by surface change — no shadows  */
+    --surface-0: #E8E8E8;   /* Sidebar (darkest base)              */
+    --surface-1: #F6F6F6;   /* Page background                     */
+    --surface-2: #FFFFFF;   /* Cards — elevated white              */
+    --surface-3: #ECECEC;   /* Toolbar / inputs / buttons / headers */
+
+    --surface-bg-gradient:   linear-gradient(180deg, #F8F8F8 0%, #F6F6F6 100%);
+    --surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #FCFCFC 100%);
+
+    /* ── Border ───────────────────────────────────────────────────
+       No-Line Philosophy: transparent in light mode.
+       Separation comes from surface changes only, never from lines. */
+    --border: transparent;
+
+    /* ── Brand ────────────────────────────────────────────────────
+       #E67E00 in light vs #FF8C00 in dark — optical balance.       */
+    --primary:           #E67E00;
+    --primary-rgb:       230, 126, 0;
+    --primary-container: #fd8b00;
+
+    /* ── Ink — warm editorial browns ────────────────────────────── */
+    --ink-0: #1C1714;   /* Near-black warm — headings, body text   */
+    --ink-1: #3D3430;   /* Dark brown — secondary text, icons      */
+    --ink-2: #7C7370;   /* Medium gray — labels, placeholders      */
+
+    /* ── Semantic status ──────────────────────────────────────────
+       Backgrounds are very subtle (0.10 alpha).
+       Text is 700-level for legibility on white surfaces.           */
+    --status-success-bg:   rgba(22,  163,  74, 0.10);
+    --status-success-text: #15803d;
+    --status-warning-bg:   rgba(180,  83,   9, 0.10);
+    --status-warning-text: #b45309;
+    --status-info-bg:      rgba(29,   78, 216, 0.10);
+    --status-info-text:    #1d4ed8;
+    --status-neutral-bg:   rgba(120, 113, 108, 0.10);
+    --status-neutral-text: #57534e;
+    --status-error-bg:     rgba(185,  28,  28, 0.10);
+    --status-error-text:   #b91c1c;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   4. THEME: DARK
+   Applied when <html data-theme="dark">
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+
+    /* ── Surfaces ────────────────────────────────────────────────── */
+    --surface-0: #0e0e0e;   /* Sidebar — deepest black             */
+    --surface-1: #131313;   /* Page background                     */
+    --surface-2: #202020;   /* Cards / component body              */
+    --surface-3: #2c2c2c;   /* Toolbar / inputs / buttons / headers */
+
+    --surface-bg-gradient:   var(--surface-1);
+    --surface-card-gradient: var(--surface-2);
+
+    /* ── Border ──────────────────────────────────────────────────── */
+    --border: #222222;
+
+    /* ── Brand ───────────────────────────────────────────────────── */
+    --primary:           #FF8C00;
+    --primary-rgb:       255, 140, 0;
+    --primary-container: #fd8b00;
+
+    /* ── Ink ─────────────────────────────────────────────────────── */
+    --ink-0: #ffffff;
+    --ink-1: #e4e2e1;
+    --ink-2: #adaaaa;
+
+    /* ── Semantic status ─────────────────────────────────────────
+       Backgrounds are 0.15 alpha.
+       Text is 400-level for legibility on dark surfaces.            */
+    --status-success-bg:   rgba(16,  185, 129, 0.15);
+    --status-success-text: #34d399;
+    --status-warning-bg:   rgba(245, 158,  11, 0.15);
+    --status-warning-text: #fbbf24;
+    --status-info-bg:      rgba(99,  102, 241, 0.15);
+    --status-info-text:    #818cf8;
+    --status-neutral-bg:   rgba(255, 255, 255, 0.08);
+    --status-neutral-text: #adaaaa;
+    --status-error-bg:     rgba(239,  68,  68, 0.15);
+    --status-error-text:   #f87171;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   5. THEME: MONOKAI (Template — uncomment to activate)
+   Applied when <html data-theme="monokai">
+   Add 'monokai' to the AppTheme type in src/services/localStorageService.ts
+   ───────────────────────────────────────────────────────────────── */
+
+/*
+[data-theme="monokai"] {
+    --surface-0: #1e1f1c;
+    --surface-1: #272822;
+    --surface-2: #3e3d32;
+    --surface-3: #49483e;
+
+    --surface-bg-gradient:   var(--surface-1);
+    --surface-card-gradient: var(--surface-2);
+
+    --border: #49483e;
+
+    --primary:           #f92672;
+    --primary-rgb:       249, 38, 114;
+    --primary-container: #f92672;
+
+    --ink-0: #f8f8f2;
+    --ink-1: #cfcfc2;
+    --ink-2: #75715e;
+
+    --status-success-bg:   rgba(166, 226,  46, 0.15);
+    --status-success-text: #a6e22e;
+    --status-warning-bg:   rgba(230, 219, 116, 0.15);
+    --status-warning-text: #e6db74;
+    --status-info-bg:      rgba(102, 217, 239, 0.15);
+    --status-info-text:    #66d9ef;
+    --status-neutral-bg:   rgba(248, 248, 242, 0.08);
+    --status-neutral-text: #75715e;
+    --status-error-bg:     rgba(249,  38, 114, 0.15);
+    --status-error-text:   #f92672;
+}
+*/
+
+
+/* ─────────────────────────────────────────────────────────────────
+   6. BASE / RESET
+   ───────────────────────────────────────────────────────────────── */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--surface-0);
+    color: var(--ink-0);
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-display {
+    font-family: 'Manrope', sans-serif;
+}
+
+/* Tailwind rounded → design token radius */
+.rounded-2xl { border-radius: var(--radius-lg) !important; }
+.rounded-xl  { border-radius: var(--radius-md) !important; }
+.rounded-3xl { border-radius: var(--radius-lg) !important; }
+.rounded-lg,
+.rounded     { border-radius: var(--radius-sm) !important; }
+
+
+/* ─────────────────────────────────────────────────────────────────
+   7. DESIGN SYSTEM COMPONENTS (.ds-*)
+
+   No-Line Philosophy:
+   - No box-shadow anywhere
+   - No visible borders (except focus ring and dark mode ghost border)
+   - Elevation = surface change only
+   - Light:  inputs on surface-3, buttons on surface-2 (white), hover → surface-3
+   - Dark:   inputs on surface-2, buttons on surface-3, hover → brightness(1.2)
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── Card / Panel ────────────────────────────────────────────── */
+
+.ds-card,
+.ds-panel {
+    border-radius: var(--radius-lg);
+    border: none;
+    background: var(--surface-2);
+}
+
+/* ── Form controls: input, select, textarea ──────────────────── */
+
+.ds-input,
+.ds-select,
+.ds-textarea {
+    border-radius: var(--radius-md);
+    border: none;
+    background: var(--surface-3);   /* #2C2C2C dark / #ECECEC light */
+    color: var(--ink-0);
+    outline: none;
+    transition: background 0.15s ease;
+}
+
+/* Focus ring — outline avoids box-model reflow (no jump on focus) */
+.ds-input:focus,
+.ds-select:focus,
+.ds-textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: -1px;
+}
+
+/* Input */
+.ds-input {
+    height: var(--h-control);
+    padding: 0 var(--px-control);
+    font-size: var(--text-control);
+}
+
+/* Remove number spinners */
+.ds-input::-webkit-outer-spin-button,
+.ds-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ds-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Large input variant */
+.ds-input-lg {
+    height: var(--h-control-lg);
+    padding: 0 14px;
+}
+
+/* Select */
+.ds-select {
+    height: var(--h-control);
+    padding: 0 var(--px-control);
+    font-size: var(--text-control);
+    cursor: pointer;
+}
+
+/* Textarea */
+.ds-textarea {
+    padding: 12px;
+    min-height: 120px;
+    font-size: var(--text-control);
+}
+
+/* ── Button — secondary / ghost ──────────────────────────────── */
+
+.ds-button {
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--surface-3);   /* #2C2C2C dark / #ECECEC light */
+    color: var(--ink-1);
+    height: var(--h-control);
+    padding: 0 var(--px-btn) !important;
+    min-width: 120px;
+    font-size: var(--text-control) !important;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    line-height: normal;
+    transition: background 0.15s ease, transform 0.1s ease, filter 0.15s ease;
+    cursor: pointer;
+}
+
+.ds-button:hover {
+    filter: brightness(0.94);
+}
+
+[data-theme="dark"] .ds-button:hover {
+    filter: brightness(1.18);
+}
+
+.ds-button:active {
+    transform: scale(0.98);
+}
+
+/* ── Button — primary ────────────────────────────────────────── */
+
+.ds-button-primary {
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--primary);
+    color: #ffffff;
+    height: var(--h-control);
+    padding: 0 var(--px-btn) !important;
+    min-width: 120px;
+    font-size: var(--text-control) !important;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    line-height: normal;
+    transition: filter 0.15s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.ds-button-primary:hover {
+    filter: brightness(1.1);
+}
+
+.ds-button-primary:active {
+    transform: scale(0.98);
+}
+
+/* ── Icon button ─────────────────────────────────────────────── */
+
+.ds-icon-button {
+    width: var(--h-control);
+    height: var(--h-control);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--ink-1);
+    transition: background 0.15s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.ds-icon-button:hover {
+    background-color: var(--surface-3);
+}
+
+[data-theme="dark"] .ds-icon-button:hover {
+    filter: brightness(1.18);
+    background-color: var(--surface-3);
+}
+
+/* ── Drop zone ───────────────────────────────────────────────── */
+
+.ds-drop {
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border);
+    background: var(--surface-1);
+}
+
+/* ── Skeleton / shimmer loader ───────────────────────────────── */
+
+@keyframes kerus-shimmer {
+    to { background-position: -200% center; }
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--surface-2) 25%,
+        var(--surface-3) 50%,
+        var(--surface-2) 75%
+    );
+    background-size: 200% auto;
+    animation: kerus-shimmer 1.4s linear infinite;
+    border-radius: var(--radius-sm);
+}
+
+/* ── Loading overlay ─────────────────────────────────────────── */
+
+@keyframes kerus-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes kerus-spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: kerus-fade-in 0.15s ease;
+}
+
+.loading-card {
+    background: var(--surface-0);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid var(--surface-3);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: kerus-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   8. UTILITY OVERRIDES — Tailwind → Token Bridge
+   Maps Tailwind's hardcoded slate/neutral classes to design tokens.
+   Progressively remove these as components migrate to tokens.
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] .bg-slate-950             { background-color: var(--surface-0) !important; }
+[data-theme="dark"] .bg-slate-900,
+[data-theme="dark"] .bg-neutral-900           { background-color: var(--surface-1) !important; }
+[data-theme="dark"] .bg-slate-800,
+[data-theme="dark"] .bg-neutral-800           { background-color: var(--surface-2) !important; }
+[data-theme="dark"] .border-slate-800,
+[data-theme="dark"] .border-neutral-800,
+[data-theme="dark"] .border-slate-700         { border-color: #2a2d32 !important; }
+[data-theme="dark"] .text-slate-300,
+[data-theme="dark"] .text-slate-400           { color: var(--ink-2) !important; }
+[data-theme="dark"] .text-slate-500           { color: var(--ink-2) !important; }
+
+[data-theme="light"] .border-slate-200,
+[data-theme="light"] .border-slate-200\/70,
+[data-theme="light"] .border-slate-200\/80    { border-color: var(--border); }
+[data-theme="light"] .text-slate-400          { color: var(--ink-2); }
+[data-theme="light"] .text-slate-500          { color: var(--ink-1); }
+
+
+/* ─────────────────────────────────────────────────────────────────
+   9. RICH TEXT EDITOR
+   ───────────────────────────────────────────────────────────────── */
+
+.rte-editor ul, .rte-output ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0.25rem 0;
+}
+
+.rte-editor ol, .rte-output ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin: 0.25rem 0;
+}
+
+.rte-editor li, .rte-output li       { margin: 0.15rem 0; }
+.rte-editor b, .rte-output b,
+.rte-editor strong, .rte-output strong { font-weight: 700; }
+.rte-editor i, .rte-output i,
+.rte-editor em, .rte-output em        { font-style: italic; }
+.rte-output p                         { margin: 0.25rem 0; }
+
+
+/* ─────────────────────────────────────────────────────────────────
+   10. ILLUSTRATION
+   ───────────────────────────────────────────────────────────────── */
+
+.recipe-illustration svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.print-title--with-illustration { padding-right: 96px; }
+
+.print-illustration {
+    position: absolute;
+    right: 0;
+    top: -6px;
+    width: 86px;
+    height: 86px;
+    opacity: 0.85;
+}
+
+.print-measure {
+    position: absolute !important;
+    left: -9999px !important;
+    top: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   11. PRINT
+   ───────────────────────────────────────────────────────────────── */
+
+.print-pages {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.print-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.print-continuation {
+    border-bottom: 1px dashed rgba(148, 163, 184, 0.6);
+    color: #94a3b8;
+    font-size: 0.7em;
+    letter-spacing: 0.28em;
+    margin-bottom: 16px;
+    padding-bottom: 6px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.print-compact                          { padding: 24px !important; }
+.print-compact .print-header            { margin-bottom: 16px !important; padding-bottom: 12px !important; }
+.print-compact .print-title             { margin-bottom: 24px !important; }
+.print-compact .print-section           { margin-bottom: 18px !important; }
+.print-compact .print-table th,
+.print-compact .print-table td          { padding-top: 6px !important; padding-bottom: 6px !important; }
+.print-compact .print-step-text,
+.print-compact .print-observations-text { line-height: 1.35 !important; }
+.print-compact .print-observations      { padding-top: 14px !important; }
+.print-compact .print-footer            { margin-top: 20px !important; padding-top: 10px !important; }
+
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    .no-print { display: none !important; }
+
+    body {
+        background-color: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .print-page,
+    .print-page * { overflow: visible !important; }
+
+    .print-area   { box-shadow: none !important; border: none !important; }
+
+    .print-page {
+        width: 210mm;
+        height: 297mm;
+    }
+
+    .print-table              { break-inside: avoid; page-break-inside: avoid; }
+    .print-table thead        { display: table-header-group; }
+    .print-row,
+    .print-section,
+    tr                        { break-inside: avoid; page-break-inside: avoid; }
+    .print-pages              { gap: 0; }
+    .print-page               { break-after: page; page-break-after: always; }
+    .print-page--last         { break-after: auto; page-break-after: auto; }
+    .print-measure            { display: none !important; }
+}

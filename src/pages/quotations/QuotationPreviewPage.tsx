@@ -1,12 +1,12 @@
 import React, { useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Edit3, FileDown, Printer } from 'lucide-react';
-import { useI18n } from '../i18n/i18n.tsx';
-import { useApp } from '../context/AppContext';
-import { QuotationPrintable } from '../components/QuotationPrintable';
-import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../components/ui/StatusToggle';
-import { HintButton } from '../components/ui/HintButton';
-import { QuotationStatus } from '../types';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useApp } from '../../context/AppContext';
+import { QuotationPrintable } from '../../components/QuotationPrintable';
+import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../../components/ui/StatusToggle';
+import { HintButton } from '../../components/ui/HintButton';
+import { QuotationStatus } from '../../types';
 
 export const QuotationPreviewPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();

@@ -87,7 +87,7 @@ export const useQuotationManager = () => {
             ...prev,
             items: prev.items.map(i =>
                 i.id === itemId
-                    ? { ...i, name: formulaName, type: 'formula', linkedFormulaId: formulaId }
+                    ? { ...i, name: formulaName, type: 'sheet', linkedFormulaId: formulaId }
                     : i
             ),
         }));

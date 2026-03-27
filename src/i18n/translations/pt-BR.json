@@ -44,7 +44,7 @@
     "backToHub": "Voltar ao Hub",
     "settings": "Configurações",
     "dashboard": "Dashboard",
-    "formulas": "Fórmulas",
+    "sheets": "Fichas Técnicas",
     "quotations": "Orçamentos",
     "stock": "Estoque",
     "soon": "Em breve",
@@ -57,7 +57,7 @@
     "recent": "Recentes",
     "viewAll": "Ver Todos",
     "empty": "NENHUM DADO REGISTRADO",
-    "newSheetDesc": "Criar formulação técnica do zero.",
+    "newSheetDesc": "Criar ficha técnica do zero.",
     "wizardDesc": "Gerar a partir de foto ou texto bruto.",
     "importXmlDesc": "Carregar backup de arquivo local.",
     "importJsonDesc": "Colar estrutura JSON para carregar.",
@@ -188,7 +188,7 @@
     "quotationsModuleDesc": "Gerar e controlar orçamentos",
     "stockModuleDesc": "Controle de estoque e insumos"
   },
-  "formulas": {
+  "sheets": {
     "searchPlaceholder": "Buscar fórmula...",
     "filterAll": "Todas",
     "filterFinal": "Final",
@@ -315,6 +315,7 @@
     "exportXml": "Exporta a ficha em formato XML para backup ou reimportação futura no sistema.",
     "statusBadge": "Indica a situação da ficha. Rascunho: ficha em edição, exportação bloqueada. Final: aprovada para produção, exportação disponível em PDF e XML.",
     "recentActivity": "Lista as últimas fichas técnicas criadas ou editadas. Clique em uma ficha para abrir o preview completo.",
+    "helpMode": "Exibe botões ? ao lado de campos e seções em toda a interface. Ao clicar, um popover explica o propósito daquele elemento. Desative quando não precisar mais das dicas — todos os botões ? desaparecem automaticamente.",
     "advancedMode": "Desbloqueia campos técnicos no editor de fórmulas: fases (A=Aquosa, B=Oleosa, C=Emulsificante, D=Ativa, E=Aroma), nome INCI por ingrediente, tamanho do lote com escala automática, faixa de pH com indicador visual, perfil de viscosidade e versão da fórmula. Também exibe um editor de código nos modais de importação.",
     "primaryColor": "A cor de destaque aplicada em botões, ícones e elementos interativos em todo o sistema.",
     "template": "Estrutura de referência do formato aceito pelo sistema. Use como guia ao criar seu arquivo de importação manualmente.",

@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useI18n } from '../i18n/i18n.tsx';
-import { useApp } from '../context/AppContext';
-import { useTheme } from '../hooks/useTheme';
-import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { RecipeEditor } from '../components/features/Editor/RecipeEditor';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useApp } from '../../context/AppContext';
+import { useTheme } from '../../hooks/useTheme';
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import { SheetEditor } from '../../components/features/Editor/SheetEditor';
 
-export const FormulaEditorPage: React.FC = () => {
+export const SheetEditorPage: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const { t } = useI18n();
     const { recipeManager, addToast, saveToHistory, history } = useApp();
-    const { primaryColor, animationsEnabled } = useTheme();
+    const { animationsEnabled } = useTheme();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export const FormulaEditorPage: React.FC = () => {
                 recipeManager.loadRecipe(found);
             } else {
                 addToast('Fórmula não encontrada', 'error');
-                navigate('/formulas');
+                navigate('/fichas-tecnicas');
             }
         } else {
             recipeManager.clearRecipe();
@@ -31,14 +31,14 @@ export const FormulaEditorPage: React.FC = () => {
     const handleFinalize = () => {
         if (recipeManager.validateRecipe(t)) {
             saveToHistory(recipeManager.currentRecipe);
-            navigate(`/formulas/${recipeManager.currentRecipe.id}/preview`);
+            navigate(`/fichas-tecnicas/${recipeManager.currentRecipe.id}/preview`);
         }
     };
 
     useKeyboardShortcuts({
         onAddIngredient: recipeManager.addIngredient,
         onSave: handleFinalize,
-        onPreview: () => navigate(`/formulas/${recipeManager.currentRecipe.id}/preview`),
+        onPreview: () => navigate(`/fichas-tecnicas/${recipeManager.currentRecipe.id}/preview`),
         onEscape: () => {},
         isEditor: true,
         isPreview: false,
@@ -46,13 +46,12 @@ export const FormulaEditorPage: React.FC = () => {
     });
 
     return (
-        <RecipeEditor
+        <SheetEditor
             manager={recipeManager}
-            onCancel={() => navigate('/formulas')}
-            onPreview={() => navigate(`/formulas/${recipeManager.currentRecipe.id}/preview`)}
+            onCancel={() => navigate('/fichas-tecnicas')}
+            onPreview={() => navigate(`/fichas-tecnicas/${recipeManager.currentRecipe.id}/preview`)}
             onFinalize={handleFinalize}
             animationsEnabled={animationsEnabled}
-            primaryColor={primaryColor}
         />
     );
 };

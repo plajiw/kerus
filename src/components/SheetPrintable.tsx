@@ -25,7 +25,7 @@ type PaginationState = {
   stepSplitIndex: number;
 };
 
-export const RecipePrintable: React.FC<Props> = ({ recipe, mode = 'preview' }) => {
+export const SheetPrintable: React.FC<Props> = ({ recipe, mode = 'preview' }) => {
   const { t } = useI18n();
   const fontSizeMap: Record<string, string> = {
     small: '13px',

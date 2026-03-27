@@ -1,35 +1,28 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import ReactDOM from 'react-dom';
 import { useHelpMode } from '../../hooks/useHelpMode';
+import { HintPopover, PANEL_W } from './HintPopover';
+import type { PopoverPos } from './HintPopover';
 
 interface HintButtonProps {
     hint: string;
     /** Label displayed at the top of the popover in primary color */
     title?: string;
+    /** Optional link to documentation shown at the bottom of the popover */
+    docsLink?: string;
+    /** Show this button even when help mode is disabled (use only for the help mode setting itself) */
+    forceVisible?: boolean;
     className?: string;
 }
 
-interface PopoverPos {
-    top: number | 'auto';
-    bottom: number | 'auto';
-    left: number;
-    placement: 'below' | 'above';
-    arrowLeft: number;
-}
+const PANEL_H_EST = 220;
 
-const PANEL_W = 288;
-// Aumentei um pouco a estimativa só para a regra de "quando" virar para cima
-const PANEL_H_EST = 220; 
-
-export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className = '' }) => {
-    // ── ALL hooks must come before any conditional return ────────
+export const HintButton: React.FC<HintButtonProps> = ({ hint, title, docsLink, forceVisible = false, className = '' }) => {
     const { helpMode } = useHelpMode();
     const [open, setOpen] = useState(false);
     const [pos, setPos] = useState<PopoverPos>({ top: 0, bottom: 'auto', left: 0, placement: 'below', arrowLeft: 12 });
     const btnRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
 
-    // Close when help mode is disabled
     useEffect(() => {
         if (!helpMode) setOpen(false);
     }, [helpMode]);
@@ -44,15 +37,11 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className =
         const spaceBelow = window.innerHeight - rect.bottom;
         const placement: 'below' | 'above' = spaceBelow < PANEL_H_EST ? 'above' : 'below';
 
-        // O TRUQUE MÁGICO AQUI:
         let top: number | 'auto' = 'auto';
         let bottom: number | 'auto' = 'auto';
-
         if (placement === 'above') {
-            // Se for pra cima, ancoramos a base (bottom) do popover 8px acima do topo do botão
             bottom = window.innerHeight - rect.top + 8;
         } else {
-            // Se for pra baixo, ancoramos o topo (top) do popover 8px abaixo da base do botão
             top = rect.bottom + 8;
         }
 
@@ -71,7 +60,6 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className =
         setOpen(p => !p);
     };
 
-    // Global close + scroll re-anchor
     useEffect(() => {
         if (!open) return;
         const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
@@ -82,7 +70,6 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className =
             ) setOpen(false);
         };
         const onScroll = () => calcPos();
-
         document.addEventListener('keydown', onKey);
         document.addEventListener('mousedown', onOutside);
         window.addEventListener('scroll', onScroll, true);
@@ -93,88 +80,8 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className =
         };
     }, [open, calcPos]);
 
-    // ── Guard: invisible when help mode is off ───────────────────
-    if (!helpMode) return null;
+    if (!helpMode && !forceVisible) return null;
 
-    // ── Arrow decoration ─────────────────────────────────────────
-    const arrow = (
-        <span
-            aria-hidden="true"
-            style={{
-                position: 'absolute',
-                ...(pos.placement === 'below'
-                    ? { top: -7, borderBottom: '7px solid var(--border)', borderTop: 'none' }
-                    : { bottom: -7, borderTop: '7px solid var(--border)', borderBottom: 'none' }),
-                left: pos.arrowLeft,
-                width: 0,
-                height: 0,
-                borderLeft: '7px solid transparent',
-                borderRight: '7px solid transparent',
-            }}
-        >
-            <span style={{
-                position: 'absolute',
-                left: -6,
-                ...(pos.placement === 'below'
-                    ? { top: 1, borderBottom: '6px solid var(--surface-2)', borderTop: 'none' }
-                    : { bottom: 1, borderTop: '6px solid var(--surface-2)', borderBottom: 'none' }),
-                width: 0,
-                height: 0,
-                borderLeft: '6px solid transparent',
-                borderRight: '6px solid transparent',
-            }} />
-        </span>
-    );
-
-    // ── Portal popover ───────────────────────────────────────────
-    const panel = open ? ReactDOM.createPortal(
-        <div
-            ref={panelRef}
-            role="tooltip"
-            onMouseDown={e => e.stopPropagation()}
-            onClick={e => e.stopPropagation()}
-            className="animate-in fade-in zoom-in-95 duration-150"
-            style={{
-                position: 'fixed',
-                zIndex: 9999,
-                top: pos.top,       // Aplica a regra dinâmica
-                bottom: pos.bottom, // Aplica a regra dinâmica
-                left: pos.left,
-                width: PANEL_W,
-                borderRadius: 12,
-                padding: '14px 16px',
-                background: 'var(--surface-2)',
-                border: '1px solid var(--border)',
-                pointerEvents: 'auto',
-            }}
-        >
-            {arrow}
-            {title && (
-                <p style={{
-                    margin: '0 0 7px',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: '0.07em',
-                    textTransform: 'uppercase',
-                    color: 'var(--primary)',
-                }}>
-                    {title}
-                </p>
-            )}
-            <p style={{
-                margin: 0,
-                fontSize: 12,
-                lineHeight: 1.65,
-                color: 'var(--ink-1)',
-                fontWeight: 500,
-            }}>
-                {hint}
-            </p>
-        </div>,
-        document.body,
-    ) : null;
-
-    // ── Trigger button ───────────────────────────────────────────
     return (
         <span
             className={`inline-flex items-center flex-shrink-0 ${className}`}
@@ -225,17 +132,27 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, className =
                     }
                 }}
             >
-                <span style={{ 
+                <span style={{
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
-                    transform: 'translate(-50%, -50%)', 
-                    lineHeight: 1, 
+                    transform: 'translate(-50%, -50%)',
+                    lineHeight: 1,
                 }}>
                     ?
                 </span>
             </button>
-            {panel}
+            {open && (
+                <HintPopover
+                    pos={pos}
+                    title={title}
+                    hint={hint}
+                    docsLink={docsLink}
+                    panelRef={panelRef}
+                    onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}
+                    onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                />
+            )}
         </span>
     );
 };

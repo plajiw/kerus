@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { useI18n } from '../i18n/i18n.tsx';
-import { useTheme } from '../hooks/useTheme';
-import { useCompanySettings } from '../hooks/useCompanySettings';
-import { useAdvancedMode } from '../hooks/useAdvancedMode';
-import { useHelpMode } from '../hooks/useHelpMode';
-import { useApp } from '../context/AppContext';
+import { useI18n } from '../../i18n/i18n.tsx';
+import { useTheme } from '../../hooks/useTheme';
+import { useCompanySettings } from '../../hooks/useCompanySettings';
+import { useAdvancedMode } from '../../hooks/useAdvancedMode';
+import { useHelpMode } from '../../hooks/useHelpMode';
+import { useApp } from '../../context/AppContext';
 import { Building2, User, Phone, Palette, Globe, Sun, Moon, Zap, HelpCircle } from 'lucide-react';
-import { HintButton } from '../components/ui/HintButton';
+import { HintButton } from '../../components/ui/HintButton';
 
 export const SettingsPage: React.FC = () => {
     const { t, locale, setLocale } = useI18n();
-    const { primaryColor, setPrimaryColor, isDark, toggleDark, UI_THEMES } = useTheme();
+    const { isDark, toggleDark } = useTheme();
     const { settings, updateSettings } = useCompanySettings();
     const { addToast } = useApp();
 
@@ -93,26 +93,6 @@ export const SettingsPage: React.FC = () => {
                     </h2>
                     <div className="space-y-5">
                         <div>
-                            <div className="flex items-center gap-1.5 mb-2">
-                                <p className="text-xs font-semibold text-slate-500 dark:text-neutral-400">{t('settings.primaryColor')}</p>
-                                <HintButton 
-                                    title={t('settings.primaryColor')} 
-                                    hint={t('hints.primaryColor')} 
-                                />
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                {UI_THEMES.map(theme => (
-                                    <button
-                                        key={theme.nameKey}
-                                        onClick={() => setPrimaryColor(theme.color)}
-                                        className={`w-8 h-8 rounded-full border-2 transition-all ${primaryColor === theme.color ? 'ring-2 ring-offset-2 ring-[var(--primary)] border-white' : 'border-transparent'}`}
-                                        style={{ backgroundColor: theme.color }}
-                                        title={t(theme.nameKey)}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                        <div>
                             <p className="text-xs font-semibold text-slate-500 dark:text-neutral-400 mb-2">{t('settings.theme')}</p>
                             <button
                                 onClick={toggleDark}
@@ -147,6 +127,12 @@ export const SettingsPage: React.FC = () => {
                     <h2 className="text-sm font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-widest mb-1 flex items-center gap-2">
                         <HelpCircle size={14} />
                         {t('settings.helpMode')}
+                        <HintButton
+                            title={t('settings.helpMode')}
+                            hint={t('hints.helpMode')}
+                            docsLink="/docs/guide/help-mode"
+                            forceVisible
+                        />
                     </h2>
                     <p className="text-xs mb-5" style={{ color: 'var(--ink-2)' }}>{t('settings.helpModeDesc')}</p>
                     <label className="flex items-center gap-3 cursor-pointer select-none w-fit">

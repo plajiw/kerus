@@ -44,7 +44,7 @@
     "backToHub": "Back to Hub",
     "settings": "Settings",
     "dashboard": "Dashboard",
-    "formulas": "Formulas",
+    "sheets": "Sheets",
     "quotations": "Quotations",
     "stock": "Stock",
     "soon": "Coming soon",
@@ -188,7 +188,7 @@
     "quotationsModuleDesc": "Generate and track quotations",
     "stockModuleDesc": "Stock and ingredient control"
   },
-  "formulas": {
+  "sheets": {
     "searchPlaceholder": "Search formula...",
     "filterAll": "All",
     "filterFinal": "Final",
@@ -315,6 +315,7 @@
     "exportXml": "Exports the sheet in XML format for backup or future reimport.",
     "statusBadge": "Indicates the sheet's current state. Draft: sheet in editing, export blocked. Final: approved for production, export available as PDF and XML.",
     "recentActivity": "Lists the latest technical sheets created or edited. Click any item to open the full preview.",
+    "helpMode": "Shows ? buttons next to fields and sections throughout the interface. Click one to open a popover explaining that element. Disable once you no longer need the hints — all ? buttons disappear automatically.",
     "advancedMode": "Unlocks technical fields in the formula editor: phases (A=Aqueous, B=Oil, C=Emulsifier, D=Active, E=Fragrance), INCI name per ingredient, batch size with auto-scaling, pH target range with visual indicator, viscosity profile, and formula version. Also shows a code editor in import modals.",
     "primaryColor": "The accent color applied to buttons, icons and interactive elements throughout the system.",
     "template": "Reference structure of the format accepted by the system. Use as a guide when creating your import file manually.",

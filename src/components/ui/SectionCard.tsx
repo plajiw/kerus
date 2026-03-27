@@ -28,7 +28,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
             {/* Header */}
             <div
                 className={`flex items-center justify-between px-5 py-3.5 ${collapsible ? 'cursor-pointer select-none' : ''}`}
-                style={{ background: 'var(--surface-1)', borderBottom: open ? '1px solid var(--border)' : 'none' }}
+                style={{ background: 'var(--surface-3)', borderBottom: open ? '1px solid var(--border)' : 'none' }}
                 onClick={collapsible ? () => setOpen(p => !p) : undefined}
             >
                 <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>

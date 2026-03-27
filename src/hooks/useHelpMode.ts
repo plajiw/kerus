@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
+import { getPrefs, setPrefs } from '../services/localStorageService';
 
-const KEY = 'kerus_help_mode';
 const EVENT = 'kerus_help_mode_changed';
-
-const getHelpMode = (): boolean => {
-    try { return localStorage.getItem(KEY) !== 'false'; } catch { return true; }
-};
 
 /**
  * Global help-mode toggle.
@@ -14,20 +10,18 @@ const getHelpMode = (): boolean => {
  * react immediately when the setting is changed on the Settings page.
  */
 export const useHelpMode = () => {
-    const [helpMode, setHelpModeState] = useState<boolean>(getHelpMode);
+    const [helpMode, setHelpModeState] = useState<boolean>(() => getPrefs().helpMode);
 
     useEffect(() => {
-        const handler = () => setHelpModeState(getHelpMode());
+        const handler = () => setHelpModeState(getPrefs().helpMode);
         window.addEventListener(EVENT, handler);
         return () => window.removeEventListener(EVENT, handler);
     }, []);
 
     const setHelpMode = (v: boolean) => {
         setHelpModeState(v);
-        try {
-            localStorage.setItem(KEY, String(v));
-            window.dispatchEvent(new Event(EVENT));
-        } catch {}
+        setPrefs({ helpMode: v });
+        window.dispatchEvent(new Event(EVENT));
     };
 
     return { helpMode, setHelpMode };

@@ -14,6 +14,15 @@ const STATUS_COLORS: Record<CoverStatusVariant, { bg: string; border: string; te
     orange: { bg: 'rgba(230,126,0,0.35)', border: 'rgba(251,191,36,0.3)', text: '#fbbf24' },
 };
 
+// Create a saturated gradient from a hex color, balanced for both themes
+const createColorGradient = (hexColor: string, isDark: boolean): string => {
+    if (!hexColor) return '';
+    // Create a gradient with good color saturation, adjusted for theme
+    const startOpacity = isDark ? 0.48 : 0.38;
+    const endOpacity = isDark ? 0.28 : 0.18;
+    return `linear-gradient(135deg, ${hexColor}${Math.round(startOpacity * 255).toString(16).padStart(2, '0')}, ${hexColor}${Math.round(endOpacity * 255).toString(16).padStart(2, '0')})`;
+};
+
 export interface HubGridCardProps {
     name: string;
     /** CSS aspect-ratio value (e.g. '4/3'). Used when coverFixedHeight is not set. */
@@ -22,6 +31,8 @@ export interface HubGridCardProps {
     coverFixedHeight?: string;
     /** Optional icon rendered centered in the cover */
     coverIcon?: React.ReactNode;
+    /** Optional custom background color for cover. If not provided, uses gradient based on name. */
+    coverColor?: string;
     statusText: string;
     statusVariant: CoverStatusVariant;
     /** Content rendered inside the card body, below the name */
@@ -42,6 +53,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
     coverAspectRatio,
     coverFixedHeight,
     coverIcon,
+    coverColor,
     statusText,
     statusVariant,
     infoSlot,
@@ -67,7 +79,7 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
                 className="relative w-full overflow-hidden flex items-center justify-center cursor-pointer"
                 onClick={onToggleSelect}
                 style={{
-                    background: getCoverGradient(name, isDark),
+                    background: coverColor ? createColorGradient(coverColor, isDark) : getCoverGradient(name, isDark),
                     ...(coverFixedHeight
                         ? { height: coverFixedHeight }
                         : { aspectRatio: coverAspectRatio ?? '4/3' }),

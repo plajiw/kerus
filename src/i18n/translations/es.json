@@ -44,7 +44,7 @@
     "backToHub": "Volver al Hub",
     "settings": "Configuraciones",
     "dashboard": "Dashboard",
-    "formulas": "Fórmulas",
+    "sheets": "Fichas Técnicas",
     "quotations": "Cotizaciones",
     "stock": "Inventario",
     "soon": "Próximamente",
@@ -188,7 +188,7 @@
     "quotationsModuleDesc": "Generar y controlar cotizaciones",
     "stockModuleDesc": "Control de inventario e insumos"
   },
-  "formulas": {
+  "sheets": {
     "searchPlaceholder": "Buscar fórmula...",
     "filterAll": "Todas",
     "filterFinal": "Final",
@@ -315,6 +315,7 @@
     "exportXml": "Exporta la ficha en formato XML para respaldo o reimportación futura.",
     "statusBadge": "Indica el estado actual de la ficha. Borrador: en edición, exportación bloqueada. Final: aprobada para producción, exportación disponible.",
     "recentActivity": "Lista las últimas fichas técnicas creadas o editadas. Haga clic en cualquier elemento para abrir la vista previa completa.",
+    "helpMode": "Muestra botones ? junto a campos y secciones en toda la interfaz. Al hacer clic, un popover explica el propósito de ese elemento. Desactívelo cuando ya no necesite las sugerencias — todos los botones ? desaparecen automáticamente.",
     "advancedMode": "Desbloquea campos técnicos en el editor de fórmulas: fases (A=Acuosa, B=Oleosa, C=Emulsificante, D=Activa, E=Aroma), nombre INCI por ingrediente, tamaño de lote con escalado automático, rango de pH con indicador visual, perfil de viscosidad y versión de la fórmula. También muestra un editor de código en los modales de importación.",
     "primaryColor": "El color de acento aplicado a botones, íconos y elementos interactivos en todo el sistema.",
     "template": "Estructura de referencia del formato aceptado. Úsela como guía al crear su archivo de importación manualmente.",
