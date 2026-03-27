@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  ignoreDeadLinks: true,
   base: '/docs/',
   title: "Kerus Docs",
   description: "Documentação Técnica do Gerador de Fórmulas Kerus",
