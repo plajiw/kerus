@@ -1,14 +1,8 @@
 {
+  "version": 2,
   "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/docs/(.*)",
-      "destination": "/docs/$1"
-    },
-    {
-      "source": "/docs",
-      "destination": "/docs/index.html"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

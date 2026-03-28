@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, Edit3, X, Check, Star } from 'lucide-react';
+import { Eye, Edit3, Trash2, Check, Star } from 'lucide-react';
 import { Quotation } from '../../../types';
 import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../../ui/StatusToggle';
 import { getCoverGradient } from '../../../utils/coverGradient';
@@ -158,8 +158,8 @@ export const QuotationTable: React.FC<QuotationTableProps> = ({
                                         <button onClick={() => onPreview(q.id)} className="ds-icon-button" style={{ color: 'var(--primary)' }} title="Preview">
                                             <Eye size={14} />
                                         </button>
-                                        <button onClick={() => onDelete(q.id)} className="ds-icon-button" style={{ color: 'var(--ink-2)' }} title="Excluir">
-                                            <X size={14} />
+                                        <button onClick={() => onDelete(q.id)} className="ds-icon-button-danger" title="Excluir">
+                                            <Trash2 size={14} />
                                         </button>
                                     </div>
                                 </td>

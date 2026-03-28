@@ -379,6 +379,61 @@ h1, h2, h3, h4, h5, h6,
     background-color: var(--surface-3);
 }
 
+/* ── Button — danger (ações destrutivas com texto) ──────────── */
+
+.ds-button-danger {
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--status-error-text);    /* nasce vermelho */
+    height: var(--h-control);
+    padding: 0 var(--px-btn) !important;
+    font-size: var(--text-control) !important;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    line-height: normal;
+    transition: background 0.15s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.ds-button-danger:hover {
+    background: var(--status-error-bg);   /* fundo vermelho suave */
+}
+
+.ds-button-danger:active {
+    transform: scale(0.98);
+}
+
+/* ── Icon button — danger (lixeira na tabela) ────────────────── */
+
+.ds-icon-button-danger {
+    width: var(--h-control);
+    height: var(--h-control);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--ink-2);                  /* nasce cinza — não polui a tabela */
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.ds-icon-button-danger:hover {
+    background: var(--status-error-bg);   /* fundo vermelho suave */
+    color: var(--status-error-text);      /* ícone fica vermelho */
+}
+
+.ds-icon-button-danger:active {
+    transform: scale(0.92);
+}
+
 /* ── Drop zone ───────────────────────────────────────────────── */
 
 .ds-drop {

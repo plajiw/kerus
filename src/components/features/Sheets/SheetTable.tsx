@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, Edit3, X, Check, Star } from 'lucide-react';
+import { Eye, Edit3, Trash2, Check, Star } from 'lucide-react';
 import { Recipe } from '../../../types/index';
 import { StatusToggle, FORMULA_STATUS_CONFIGS } from '../../ui/StatusToggle';
 import { getCoverGradient } from '../../../utils/coverGradient';
@@ -142,8 +142,8 @@ export const SheetTable: React.FC<SheetTableProps> = ({
                                         <button onClick={() => onPreview(recipe.id)} className="ds-icon-button" style={{ color: 'var(--primary)' }} title={t('common.preview')}>
                                             <Eye size={14} />
                                         </button>
-                                        <button onClick={() => onDelete(recipe.id)} className="ds-icon-button" style={{ color: 'var(--ink-2)' }} title="Excluir">
-                                            <X size={14} />
+                                        <button onClick={() => onDelete(recipe.id)} className="ds-icon-button-danger" title="Excluir">
+                                            <Trash2 size={14} />
                                         </button>
                                     </div>
                                 </td>

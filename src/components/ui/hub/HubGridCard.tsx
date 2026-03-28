@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Edit3, Eye, Check, Star } from 'lucide-react';
+import { Trash2, Edit3, Eye, Check, Star } from 'lucide-react';
 import { getCoverGradient } from '../../../utils/coverGradient';
 import { useTheme } from '../../../context/ThemeContext';
 
@@ -134,16 +134,11 @@ export const HubGridCard: React.FC<HubGridCardProps> = ({
                     {/* Delete — top right */}
                     <button
                         onClick={(e) => { e.stopPropagation(); onDelete(); }}
-                        className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full transition-transform hover:scale-105 pointer-events-auto"
-                        style={{
-                            background: isDark ? 'rgba(185,28,28,0.85)' : 'rgba(254,226,226,0.9)',
-                            border: `1px solid ${isDark ? 'rgba(248,113,113,0.3)' : 'rgba(239,68,68,0.4)'}`,
-                            color: isDark ? '#fca5a5' : '#b91c1c',
-                            backdropFilter: 'blur(8px)',
-                        }}
+                        className="ds-icon-button-danger absolute top-3 right-3 pointer-events-auto"
+                        style={{ backdropFilter: 'blur(8px)' }}
                         title="Excluir"
                     >
-                        <X size={14} />
+                        <Trash2 size={14} />
                     </button>
 
                     {/* Edit / Preview — bottom right */}
