@@ -1,18 +1,38 @@
 /* ═══════════════════════════════════════════════════════════════════
-   KERUS — Master Stylesheet
+   KERUS — Master Stylesheet v3.0
    Single source of truth for all design tokens and component classes.
 
    Structure:
-     1. Fonts
-     2. Shared constants (layout, spacing, typography)
-     3. Theme: Light (default)
-     4. Theme: Dark
-     5. Theme: Monokai (template)
-     6. Base / Reset
-     7. Design System components (.ds-*)
-     8. Utility overrides (Tailwind → token bridge)
-     9. Rich text editor
-    10. Print
+     1.  Fonts
+     2.  Shared constants  ← NEVER theme-specific
+     3a. Theme: Light      ← default
+     3b. Theme: Dark
+     3c. Theme: Monokai
+     3d. Theme: Ocean
+     4.  Base / Reset
+     5.  Design System (.ds-*)
+         Buttons:   .ds-button-primary · .ds-button · .ds-button-ghost · .ds-button-danger
+         Modifiers: .ds-button-sm
+         Icons:     .ds-icon-button · .ds-icon-button-primary · .ds-icon-button-danger · .ds-icon-button-sm
+         Forms:     .ds-input · .ds-input-lg · .ds-select · .ds-textarea
+         Layout:    .ds-card · .ds-panel · .ds-drop
+         Feedback:  .skeleton · .loading-overlay
+     6.  Utility overrides (Tailwind → token bridge)
+     7.  Rich text editor
+     8.  Print / Illustration
+
+   ── THEME CONTRACT ────────────────────────────────────────────────
+   Every theme block MUST define exactly these 24 variables in order.
+   Adding or removing one requires updating ALL 4 theme blocks.
+
+   SURFACES      --surface-0  --surface-1  --surface-2  --surface-3
+   GRADIENTS     --surface-bg-gradient  --surface-card-gradient
+   BORDER        --border   (transparent in light; subtle in dark variants)
+   BRAND         --primary  --primary-rgb  --primary-container
+   INK           --ink-0  --ink-1  --ink-2
+   STATUS (×5)   --status-{type}-bg  --status-{type}-text
+                 types: success · warning · info · neutral · error
+   ─────────────────────────────────────────────────────────────────
    ═══════════════════════════════════════════════════════════════════ */
 
 
@@ -37,22 +57,32 @@
     /* Control heights — all interactive controls share these
        so form rows stay optically aligned without manual tweaks */
     --h-control-sm: 32px;
-    --h-control:    36px;
+    --h-control: 36px;
     --h-control-lg: 44px;
 
     /* Horizontal padding */
     --px-control: 12px;
-    --px-btn:     16px;
+    --px-btn: 16px;
 
     /* Typography */
     --text-control: 13px;
-    --text-label:   11px;   /* uppercase tracking labels */
+    --text-label: 11px;
+
+    /* Icon sizes — use these values with the Lucide size= prop
+       xs  12  dense labels, status badges, subscript actions
+       sm  14  buttons, table rows, toolbar actions
+       md  18  navigation items, section headers
+       lg  20  KPI cards, modal titles, primary CTAs
+       Larger (32 / 40 / 48) are for empty-state illustrations only */
+    --icon-xs: 12px;
+    --icon-sm: 14px;
+    --icon-md: 18px;
+    --icon-lg: 20px;
 }
 
 
 /* ─────────────────────────────────────────────────────────────────
-   3. THEME: LIGHT (Default)
-   Applied to :root — active when no [data-theme] is set.
+   3a. THEME: LIGHT  [data-theme="light"]  (default)
    ───────────────────────────────────────────────────────────────── */
 
 :root,
@@ -61,12 +91,16 @@
     /* ── Surfaces ─────────────────────────────────────────────────
        Hierarchy: sidebar → page → cards → toolbar/inputs
        Elevation is conveyed purely by surface change — no shadows  */
-    --surface-0: #E8E8E8;   /* Sidebar (darkest base)              */
-    --surface-1: #F6F6F6;   /* Page background                     */
-    --surface-2: #FFFFFF;   /* Cards — elevated white              */
-    --surface-3: #ECECEC;   /* Toolbar / inputs / buttons / headers */
+    --surface-0: #E8E8E8;
+    /* Sidebar (darkest base)              */
+    --surface-1: #F6F6F6;
+    /* Page background                     */
+    --surface-2: #FFFFFF;
+    /* Cards — elevated white              */
+    --surface-3: #ECECEC;
+    /* Toolbar / inputs / buttons / headers */
 
-    --surface-bg-gradient:   linear-gradient(180deg, #F8F8F8 0%, #F6F6F6 100%);
+    --surface-bg-gradient: linear-gradient(180deg, #F8F8F8 0%, #F6F6F6 100%);
     --surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #FCFCFC 100%);
 
     /* ── Border ───────────────────────────────────────────────────
@@ -76,53 +110,59 @@
 
     /* ── Brand ────────────────────────────────────────────────────
        #E67E00 in light vs #FF8C00 in dark — optical balance.       */
-    --primary:           #E67E00;
-    --primary-rgb:       230, 126, 0;
+    --primary: #E67E00;
+    --primary-rgb: 230, 126, 0;
     --primary-container: #fd8b00;
 
     /* ── Ink — warm editorial browns ────────────────────────────── */
-    --ink-0: #1C1714;   /* Near-black warm — headings, body text   */
-    --ink-1: #3D3430;   /* Dark brown — secondary text, icons      */
-    --ink-2: #7C7370;   /* Medium gray — labels, placeholders      */
+    --ink-0: #1C1714;
+    /* Near-black warm — headings, body text   */
+    --ink-1: #3D3430;
+    /* Dark brown — secondary text, icons      */
+    --ink-2: #7C7370;
+    /* Medium gray — labels, placeholders      */
 
     /* ── Semantic status ──────────────────────────────────────────
        Backgrounds are very subtle (0.10 alpha).
        Text is 700-level for legibility on white surfaces.           */
-    --status-success-bg:   rgba(22,  163,  74, 0.10);
+    --status-success-bg: rgba(22, 163, 74, 0.10);
     --status-success-text: #15803d;
-    --status-warning-bg:   rgba(180,  83,   9, 0.10);
+    --status-warning-bg: rgba(180, 83, 9, 0.10);
     --status-warning-text: #b45309;
-    --status-info-bg:      rgba(29,   78, 216, 0.10);
-    --status-info-text:    #1d4ed8;
-    --status-neutral-bg:   rgba(120, 113, 108, 0.10);
+    --status-info-bg: rgba(29, 78, 216, 0.10);
+    --status-info-text: #1d4ed8;
+    --status-neutral-bg: rgba(120, 113, 108, 0.10);
     --status-neutral-text: #57534e;
-    --status-error-bg:     rgba(185,  28,  28, 0.10);
-    --status-error-text:   #b91c1c;
+    --status-error-bg: rgba(185, 28, 28, 0.10);
+    --status-error-text: #b91c1c;
 }
 
 
 /* ─────────────────────────────────────────────────────────────────
-   4. THEME: DARK
-   Applied when <html data-theme="dark">
+   3b. THEME: DARK  [data-theme="dark"]
    ───────────────────────────────────────────────────────────────── */
 
 [data-theme="dark"] {
 
     /* ── Surfaces ────────────────────────────────────────────────── */
-    --surface-0: #0e0e0e;   /* Sidebar — deepest black             */
-    --surface-1: #131313;   /* Page background                     */
-    --surface-2: #202020;   /* Cards / component body              */
-    --surface-3: #2c2c2c;   /* Toolbar / inputs / buttons / headers */
+    --surface-0: #0e0e0e;
+    /* Sidebar — deepest black             */
+    --surface-1: #131313;
+    /* Page background                     */
+    --surface-2: #202020;
+    /* Cards / component body              */
+    --surface-3: #2c2c2c;
+    /* Toolbar / inputs / buttons / headers */
 
-    --surface-bg-gradient:   var(--surface-1);
+    --surface-bg-gradient: var(--surface-1);
     --surface-card-gradient: var(--surface-2);
 
     /* ── Border ──────────────────────────────────────────────────── */
     --border: #222222;
 
     /* ── Brand ───────────────────────────────────────────────────── */
-    --primary:           #FF8C00;
-    --primary-rgb:       255, 140, 0;
+    --primary: #FF8C00;
+    --primary-rgb: 255, 140, 0;
     --primary-container: #fd8b00;
 
     /* ── Ink ─────────────────────────────────────────────────────── */
@@ -133,61 +173,304 @@
     /* ── Semantic status ─────────────────────────────────────────
        Backgrounds are 0.15 alpha.
        Text is 400-level for legibility on dark surfaces.            */
-    --status-success-bg:   rgba(16,  185, 129, 0.15);
+    --status-success-bg: rgba(16, 185, 129, 0.15);
     --status-success-text: #34d399;
-    --status-warning-bg:   rgba(245, 158,  11, 0.15);
+    --status-warning-bg: rgba(245, 158, 11, 0.15);
     --status-warning-text: #fbbf24;
-    --status-info-bg:      rgba(99,  102, 241, 0.15);
-    --status-info-text:    #818cf8;
-    --status-neutral-bg:   rgba(255, 255, 255, 0.08);
+    --status-info-bg: rgba(99, 102, 241, 0.15);
+    --status-info-text: #818cf8;
+    --status-neutral-bg: rgba(255, 255, 255, 0.08);
     --status-neutral-text: #adaaaa;
-    --status-error-bg:     rgba(239,  68,  68, 0.15);
-    --status-error-text:   #f87171;
+    --status-error-bg: rgba(239, 68, 68, 0.15);
+    --status-error-text: #f87171;
 }
 
 
 /* ─────────────────────────────────────────────────────────────────
-   5. THEME: MONOKAI (Template — uncomment to activate)
-   Applied when <html data-theme="monokai">
-   Add 'monokai' to the AppTheme type in src/services/localStorageService.ts
+   3c. THEME: MONOKAI  [data-theme="monokai"]
    ───────────────────────────────────────────────────────────────── */
 
-/*
 [data-theme="monokai"] {
     --surface-0: #1e1f1c;
     --surface-1: #272822;
     --surface-2: #3e3d32;
     --surface-3: #49483e;
 
-    --surface-bg-gradient:   var(--surface-1);
+    --surface-bg-gradient: var(--surface-1);
     --surface-card-gradient: var(--surface-2);
 
     --border: #49483e;
 
-    --primary:           #f92672;
-    --primary-rgb:       249, 38, 114;
+    --primary: #f92672;
+    --primary-rgb: 249, 38, 114;
     --primary-container: #f92672;
 
     --ink-0: #f8f8f2;
     --ink-1: #cfcfc2;
     --ink-2: #75715e;
 
-    --status-success-bg:   rgba(166, 226,  46, 0.15);
+    --status-success-bg: rgba(166, 226, 46, 0.15);
     --status-success-text: #a6e22e;
-    --status-warning-bg:   rgba(230, 219, 116, 0.15);
+    --status-warning-bg: rgba(230, 219, 116, 0.15);
     --status-warning-text: #e6db74;
-    --status-info-bg:      rgba(102, 217, 239, 0.15);
-    --status-info-text:    #66d9ef;
-    --status-neutral-bg:   rgba(248, 248, 242, 0.08);
+    --status-info-bg: rgba(102, 217, 239, 0.15);
+    --status-info-text: #66d9ef;
+    --status-neutral-bg: rgba(248, 248, 242, 0.08);
     --status-neutral-text: #75715e;
-    --status-error-bg:     rgba(249,  38, 114, 0.15);
-    --status-error-text:   #f92672;
+    --status-error-bg: rgba(249, 38, 114, 0.15);
+    --status-error-text: #f92672;
 }
-*/
+
+/* ─────────────────────────────────────────────────────────────────
+   3d. THEME: OCEAN  [data-theme="ocean"]
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="ocean"] {
+
+    /* ── Surfaces (Tons de azul escuro/slate) ────────────────────── */
+    --surface-0: #0f172a;
+    /* Sidebar — azul noite profundo       */
+    --surface-1: #1e293b;
+    /* Page background                     */
+    --surface-2: #334155;
+    /* Cards / component body              */
+    --surface-3: #475569;
+    /* Toolbar / inputs / buttons / headers */
+
+    --surface-bg-gradient: var(--surface-1);
+    --surface-card-gradient: var(--surface-2);
+
+    /* ── Border ──────────────────────────────────────────────────── */
+    --border: #334155;
+
+    /* ── Brand (Cyan/Sky blue vibrante para contraste) ───────────── */
+    --primary: #38bdf8;
+    --primary-rgb: 56, 189, 248;
+    --primary-container: #0284c7;
+
+    /* ── Ink ─────────────────────────────────────────────────────── */
+    --ink-0: #f8fafc;
+    /* Branco azulado                      */
+    --ink-1: #cbd5e1;
+    /* Texto secundário                    */
+    --ink-2: #94a3b8;
+    /* Labels e placeholders               */
+
+    /* ── Semantic status ─────────────────────────────────────────── */
+    --status-success-bg: rgba(16, 185, 129, 0.15);
+    --status-success-text: #34d399;
+    --status-warning-bg: rgba(245, 158, 11, 0.15);
+    --status-warning-text: #fbbf24;
+    --status-info-bg: rgba(56, 189, 248, 0.15);
+    --status-info-text: #7dd3fc;
+    --status-neutral-bg: rgba(255, 255, 255, 0.08);
+    --status-neutral-text: #cbd5e1;
+    --status-error-bg: rgba(239, 68, 68, 0.15);
+    --status-error-text: #f87171;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   THEME: SEPIA (Warm / Reading Mode)
+   Reduz a fadiga visual, ideal para telas com muito texto e leitura.
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="sepia"] {
+
+    /* ── Surfaces (Tons de papel / creme / bege) ─────────────────── */
+    --surface-0: #EBE3D5;
+    /* Sidebar — tom mais escuro de base   */
+    --surface-1: #F4EFE6;
+    /* Page background — papel envelhecido */
+    --surface-2: #FCF9F2;
+    /* Cards — superfície mais clara       */
+    --surface-3: #E5D9C5;
+    /* Toolbar / inputs / buttons          */
+
+    --surface-bg-gradient: linear-gradient(180deg, #F8F4ED 0%, #F4EFE6 100%);
+    --surface-card-gradient: linear-gradient(180deg, #FCF9F2 0%, #FAF6EB 100%);
+
+    /* ── Border ──────────────────────────────────────────────────── */
+    --border: transparent;
+
+    /* ── Brand (Terracota / Laranja terroso) ─────────────────────── */
+    --primary: #C05621;
+    --primary-rgb: 192, 86, 33;
+    --primary-container: #DD6B20;
+
+    /* ── Ink (Marrons escuros em vez de preto) ───────────────────── */
+    --ink-0: #433422;
+    /* Títulos e corpo de texto principal  */
+    --ink-1: #5C4B37;
+    /* Texto secundário                    */
+    --ink-2: #8A7B66;
+    /* Labels e placeholders               */
+
+    /* ── Semantic status ─────────────────────────────────────────── */
+    --status-success-bg: rgba(22, 163, 74, 0.10);
+    --status-success-text: #15803d;
+    --status-warning-bg: rgba(180, 83, 9, 0.10);
+    --status-warning-text: #b45309;
+    --status-info-bg: rgba(43, 108, 176, 0.10);
+    --status-info-text: #2b6cb0;
+    --status-neutral-bg: rgba(138, 123, 102, 0.12);
+    --status-neutral-text: #5c4b37;
+    --status-error-bg: rgba(185, 28, 28, 0.10);
+    --status-error-text: #b91c1c;
+}
 
 
 /* ─────────────────────────────────────────────────────────────────
-   6. BASE / RESET
+   THEME: AMOLED / TRUE BLACK
+   Preto puro para economia de bateria em telas OLED e alto contraste.
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="amoled"] {
+
+    /* ── Surfaces (Preto absoluto) ───────────────────────────────── */
+    --surface-0: #000000;
+    /* Sidebar — Preto puro                */
+    --surface-1: #000000;
+    /* Page background — Preto puro        */
+    --surface-2: #121212;
+    /* Cards — Cinza muito escuro          */
+    --surface-3: #1E1E1E;
+    /* Toolbar / inputs / buttons          */
+
+    --surface-bg-gradient: var(--surface-1);
+    --surface-card-gradient: var(--surface-2);
+
+    /* ── Border ──────────────────────────────────────────────────── */
+    --border: #2C2C2C;
+
+    /* ── Brand (Laranja vibrante / Neon para destacar no preto) ──── */
+    --primary: #FF8C00;
+    --primary-rgb: 255, 140, 0;
+    --primary-container: #FF9800;
+
+    /* ── Ink ─────────────────────────────────────────────────────── */
+    --ink-0: #FFFFFF;
+    /* Branco puro para contraste máximo   */
+    --ink-1: #B3B3B3;
+    /* Cinza claro                         */
+    --ink-2: #808080;
+    /* Cinza médio                         */
+
+    /* ── Semantic status ─────────────────────────────────────────── */
+    --status-success-bg: rgba(16, 185, 129, 0.20);
+    --status-success-text: #10B981;
+    --status-warning-bg: rgba(245, 158, 11, 0.20);
+    --status-warning-text: #F59E0B;
+    --status-info-bg: rgba(56, 189, 248, 0.20);
+    --status-info-text: #38BDF8;
+    --status-neutral-bg: rgba(255, 255, 255, 0.12);
+    --status-neutral-text: #B3B3B3;
+    --status-error-bg: rgba(239, 68, 68, 0.20);
+    --status-error-text: #EF4444;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   THEME: DRACULA (IDE Inspired)
+   Tema extremamente popular entre desenvolvedores (Roxo/Rosa/Dark).
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="dracula"] {
+
+    /* ── Surfaces ────────────────────────────────────────────────── */
+    --surface-0: #1e1f29;
+    /* Sidebar escuro                      */
+    --surface-1: #282a36;
+    /* Page background (Dracula base)      */
+    --surface-2: #383a59;
+    /* Cards / component body              */
+    --surface-3: #44475a;
+    /* Inputs / buttons / hover states     */
+
+    --surface-bg-gradient: var(--surface-1);
+    --surface-card-gradient: var(--surface-2);
+
+    /* ── Border ──────────────────────────────────────────────────── */
+    --border: #44475a;
+
+    /* ── Brand (Roxo vibrante do Dracula) ────────────────────────── */
+    --primary: #bd93f9;
+    --primary-rgb: 189, 147, 249;
+    --primary-container: #ff79c6;
+
+    /* ── Ink ─────────────────────────────────────────────────────── */
+    --ink-0: #f8f8f2;
+    /* Dracula foreground                  */
+    --ink-1: #bfbfbf;
+    /* Secundário                          */
+    --ink-2: #6272a4;
+    /* Dracula comment (labels)            */
+
+    /* ── Semantic status (Cores da paleta Dracula) ───────────────── */
+    --status-success-bg: rgba(80, 250, 123, 0.15);
+    --status-success-text: #50fa7b;
+    /* Dracula green               */
+    --status-warning-bg: rgba(241, 250, 140, 0.15);
+    --status-warning-text: #f1fa8c;
+    /* Dracula yellow              */
+    --status-info-bg: rgba(139, 233, 253, 0.15);
+    --status-info-text: #8be9fd;
+    /* Dracula cyan                */
+    --status-neutral-bg: rgba(248, 248, 242, 0.10);
+    --status-neutral-text: #6272a4;
+    --status-error-bg: rgba(255, 85, 85, 0.15);
+    --status-error-text: #ff5555;
+    /* Dracula red                 */
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   THEME: HIGH CONTRAST (Accessibility)
+   Focado em legibilidade máxima (WCAG AAA). Usa amarelo brilhante
+   e bordas acentuadas para separar elementos.
+   ───────────────────────────────────────────────────────────────── */
+
+[data-theme="high-contrast"] {
+
+    /* ── Surfaces ────────────────────────────────────────────────── */
+    --surface-0: #000000;
+    --surface-1: #000000;
+    --surface-2: #000000;
+    --surface-3: #000000;
+    /* Sem distinção de fundo, guiado por bordas */
+
+    --surface-bg-gradient: var(--surface-1);
+    --surface-card-gradient: var(--surface-2);
+
+    /* ── Border (Essencial neste tema para delimitar componentes) ── */
+    --border: #FFFFFF;
+
+    /* ── Brand (Amarelo de alto contraste) ───────────────────────── */
+    --primary: #FFFF00;
+    --primary-rgb: 255, 255, 0;
+    --primary-container: #FFFF00;
+
+    /* ── Ink ─────────────────────────────────────────────────────── */
+    --ink-0: #FFFFFF;
+    --ink-1: #FFFFFF;
+    --ink-2: #E0E0E0;
+
+    /* ── Semantic status ─────────────────────────────────────────
+       No high-contrast, o texto dita a leitura, sem alpha no bg
+       para evitar perda de contraste.                               */
+    --status-success-bg: transparent;
+    --status-success-text: #00FF00;
+    --status-warning-bg: transparent;
+    --status-warning-text: #FFCC00;
+    --status-info-bg: transparent;
+    --status-info-text: #00FFFF;
+    --status-neutral-bg: transparent;
+    --status-neutral-text: #FFFFFF;
+    --status-error-bg: transparent;
+    --status-error-text: #FF0000;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. BASE / RESET
    ───────────────────────────────────────────────────────────────── */
 
 body {
@@ -196,28 +479,44 @@ body {
     color: var(--ink-0);
 }
 
-h1, h2, h3, h4, h5, h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 .font-display {
     font-family: 'Manrope', sans-serif;
 }
 
 /* Tailwind rounded → design token radius */
-.rounded-2xl { border-radius: var(--radius-lg) !important; }
-.rounded-xl  { border-radius: var(--radius-md) !important; }
-.rounded-3xl { border-radius: var(--radius-lg) !important; }
+.rounded-2xl {
+    border-radius: var(--radius-lg) !important;
+}
+
+.rounded-xl {
+    border-radius: var(--radius-md) !important;
+}
+
+.rounded-3xl {
+    border-radius: var(--radius-lg) !important;
+}
+
 .rounded-lg,
-.rounded     { border-radius: var(--radius-sm) !important; }
+.rounded {
+    border-radius: var(--radius-sm) !important;
+}
 
 
 /* ─────────────────────────────────────────────────────────────────
-   7. DESIGN SYSTEM COMPONENTS (.ds-*)
+   5. DESIGN SYSTEM COMPONENTS (.ds-*)
 
    No-Line Philosophy:
    - No box-shadow anywhere
-   - No visible borders (except focus ring and dark mode ghost border)
+   - No visible borders (except focus ring on inputs)
    - Elevation = surface change only
-   - Light:  inputs on surface-3, buttons on surface-2 (white), hover → surface-3
-   - Dark:   inputs on surface-2, buttons on surface-3, hover → brightness(1.2)
+   - Light:  inputs on surface-3, cards on surface-2 (white)
+   - Dark:   inputs on surface-2, buttons on surface-3
    ───────────────────────────────────────────────────────────────── */
 
 /* ── Card / Panel ────────────────────────────────────────────── */
@@ -236,7 +535,8 @@ h1, h2, h3, h4, h5, h6,
 .ds-textarea {
     border-radius: var(--radius-md);
     border: none;
-    background: var(--surface-3);   /* #2C2C2C dark / #ECECEC light */
+    background: var(--surface-3);
+    /* #2C2C2C dark / #ECECEC light */
     color: var(--ink-0);
     outline: none;
     transition: background 0.15s ease;
@@ -294,7 +594,8 @@ h1, h2, h3, h4, h5, h6,
 .ds-button {
     border-radius: var(--radius-sm);
     border: none;
-    background: var(--surface-3);   /* #2C2C2C dark / #ECECEC light */
+    background: var(--surface-3);
+    /* #2C2C2C dark / #ECECEC light */
     color: var(--ink-1);
     height: var(--h-control);
     padding: 0 var(--px-btn) !important;
@@ -353,6 +654,47 @@ h1, h2, h3, h4, h5, h6,
     transform: scale(0.98);
 }
 
+/* ── Button — ghost (low emphasis, no background) ─────────────── */
+
+.ds-button-ghost {
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--ink-1);
+    height: var(--h-control);
+    padding: 0 var(--px-btn) !important;
+    min-width: fit-content;
+    font-size: var(--text-control) !important;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    line-height: normal;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+.ds-button-ghost:hover {
+    background: var(--surface-3);
+    color: var(--ink-0);
+}
+
+.ds-button-ghost:active {
+    transform: scale(0.98);
+}
+
+/* ── Button modifier — sm (height override) ──────────────────── */
+/* Apply alongside a base button class: class="ds-button ds-button-sm" */
+
+.ds-button-sm {
+    height: var(--h-control-sm) !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    min-width: unset;
+}
+
 /* ── Icon button ─────────────────────────────────────────────── */
 
 .ds-icon-button {
@@ -385,7 +727,8 @@ h1, h2, h3, h4, h5, h6,
     border-radius: var(--radius-sm);
     border: none;
     background: transparent;
-    color: var(--status-error-text);    /* nasce vermelho */
+    color: var(--status-error-text);
+    /* nasce vermelho */
     height: var(--h-control);
     padding: 0 var(--px-btn) !important;
     font-size: var(--text-control) !important;
@@ -401,7 +744,8 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .ds-button-danger:hover {
-    background: var(--status-error-bg);   /* fundo vermelho suave */
+    background: var(--status-error-bg);
+    /* fundo vermelho suave */
 }
 
 .ds-button-danger:active {
@@ -419,19 +763,55 @@ h1, h2, h3, h4, h5, h6,
     border-radius: var(--radius-sm);
     border: none;
     background: transparent;
-    color: var(--ink-2);                  /* nasce cinza — não polui a tabela */
+    color: var(--ink-2);
+    /* nasce cinza — não polui a tabela */
     transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
     cursor: pointer;
     flex-shrink: 0;
 }
 
 .ds-icon-button-danger:hover {
-    background: var(--status-error-bg);   /* fundo vermelho suave */
-    color: var(--status-error-text);      /* ícone fica vermelho */
+    background: var(--status-error-bg);
+    /* fundo vermelho suave */
+    color: var(--status-error-text);
+    /* ícone fica vermelho */
 }
 
 .ds-icon-button-danger:active {
     transform: scale(0.92);
+}
+
+/* ── Icon button — primary ───────────────────────────────────── */
+
+.ds-icon-button-primary {
+    width: var(--h-control);
+    height: var(--h-control);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--primary);
+    color: #ffffff;
+    transition: filter 0.15s ease, transform 0.1s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.ds-icon-button-primary:hover {
+    filter: brightness(1.1);
+}
+
+.ds-icon-button-primary:active {
+    transform: scale(0.92);
+}
+
+/* ── Icon button — sm (size override) ───────────────────────── */
+/* Apply alongside a base icon button: class="ds-icon-button ds-icon-button-sm" */
+
+.ds-icon-button-sm {
+    width: var(--h-control-sm) !important;
+    height: var(--h-control-sm) !important;
 }
 
 /* ── Drop zone ───────────────────────────────────────────────── */
@@ -445,16 +825,16 @@ h1, h2, h3, h4, h5, h6,
 /* ── Skeleton / shimmer loader ───────────────────────────────── */
 
 @keyframes kerus-shimmer {
-    to { background-position: -200% center; }
+    to {
+        background-position: -200% center;
+    }
 }
 
 .skeleton {
-    background: linear-gradient(
-        90deg,
-        var(--surface-2) 25%,
-        var(--surface-3) 50%,
-        var(--surface-2) 75%
-    );
+    background: linear-gradient(90deg,
+            var(--surface-2) 25%,
+            var(--surface-3) 50%,
+            var(--surface-2) 75%);
     background-size: 200% auto;
     animation: kerus-shimmer 1.4s linear infinite;
     border-radius: var(--radius-sm);
@@ -463,12 +843,19 @@ h1, h2, h3, h4, h5, h6,
 /* ── Loading overlay ─────────────────────────────────────────── */
 
 @keyframes kerus-fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes kerus-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-overlay {
@@ -512,47 +899,90 @@ h1, h2, h3, h4, h5, h6,
    Progressively remove these as components migrate to tokens.
    ───────────────────────────────────────────────────────────────── */
 
-[data-theme="dark"] .bg-slate-950             { background-color: var(--surface-0) !important; }
+[data-theme="dark"] .bg-slate-950 {
+    background-color: var(--surface-0) !important;
+}
+
 [data-theme="dark"] .bg-slate-900,
-[data-theme="dark"] .bg-neutral-900           { background-color: var(--surface-1) !important; }
+[data-theme="dark"] .bg-neutral-900 {
+    background-color: var(--surface-1) !important;
+}
+
 [data-theme="dark"] .bg-slate-800,
-[data-theme="dark"] .bg-neutral-800           { background-color: var(--surface-2) !important; }
+[data-theme="dark"] .bg-neutral-800 {
+    background-color: var(--surface-2) !important;
+}
+
 [data-theme="dark"] .border-slate-800,
 [data-theme="dark"] .border-neutral-800,
-[data-theme="dark"] .border-slate-700         { border-color: #2a2d32 !important; }
+[data-theme="dark"] .border-slate-700 {
+    border-color: #2a2d32 !important;
+}
+
 [data-theme="dark"] .text-slate-300,
-[data-theme="dark"] .text-slate-400           { color: var(--ink-2) !important; }
-[data-theme="dark"] .text-slate-500           { color: var(--ink-2) !important; }
+[data-theme="dark"] .text-slate-400 {
+    color: var(--ink-2) !important;
+}
+
+[data-theme="dark"] .text-slate-500 {
+    color: var(--ink-2) !important;
+}
 
 [data-theme="light"] .border-slate-200,
 [data-theme="light"] .border-slate-200\/70,
-[data-theme="light"] .border-slate-200\/80    { border-color: var(--border); }
-[data-theme="light"] .text-slate-400          { color: var(--ink-2); }
-[data-theme="light"] .text-slate-500          { color: var(--ink-1); }
+[data-theme="light"] .border-slate-200\/80 {
+    border-color: var(--border);
+}
+
+[data-theme="light"] .text-slate-400 {
+    color: var(--ink-2);
+}
+
+[data-theme="light"] .text-slate-500 {
+    color: var(--ink-1);
+}
 
 
 /* ─────────────────────────────────────────────────────────────────
    9. RICH TEXT EDITOR
    ───────────────────────────────────────────────────────────────── */
 
-.rte-editor ul, .rte-output ul {
+.rte-editor ul,
+.rte-output ul {
     list-style-type: disc;
     padding-left: 1.5rem;
     margin: 0.25rem 0;
 }
 
-.rte-editor ol, .rte-output ol {
+.rte-editor ol,
+.rte-output ol {
     list-style-type: decimal;
     padding-left: 1.5rem;
     margin: 0.25rem 0;
 }
 
-.rte-editor li, .rte-output li       { margin: 0.15rem 0; }
-.rte-editor b, .rte-output b,
-.rte-editor strong, .rte-output strong { font-weight: 700; }
-.rte-editor i, .rte-output i,
-.rte-editor em, .rte-output em        { font-style: italic; }
-.rte-output p                         { margin: 0.25rem 0; }
+.rte-editor li,
+.rte-output li {
+    margin: 0.15rem 0;
+}
+
+.rte-editor b,
+.rte-output b,
+.rte-editor strong,
+.rte-output strong {
+    font-weight: 700;
+}
+
+.rte-editor i,
+.rte-output i,
+.rte-editor em,
+.rte-output em {
+    font-style: italic;
+}
+
+.rte-output p {
+    margin: 0.25rem 0;
+}
 
 
 /* ─────────────────────────────────────────────────────────────────
@@ -565,7 +995,9 @@ h1, h2, h3, h4, h5, h6,
     height: 100%;
 }
 
-.print-title--with-illustration { padding-right: 96px; }
+.print-title--with-illustration {
+    padding-right: 96px;
+}
 
 .print-illustration {
     position: absolute;
@@ -612,16 +1044,42 @@ h1, h2, h3, h4, h5, h6,
     text-transform: uppercase;
 }
 
-.print-compact                          { padding: 24px !important; }
-.print-compact .print-header            { margin-bottom: 16px !important; padding-bottom: 12px !important; }
-.print-compact .print-title             { margin-bottom: 24px !important; }
-.print-compact .print-section           { margin-bottom: 18px !important; }
+.print-compact {
+    padding: 24px !important;
+}
+
+.print-compact .print-header {
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+}
+
+.print-compact .print-title {
+    margin-bottom: 24px !important;
+}
+
+.print-compact .print-section {
+    margin-bottom: 18px !important;
+}
+
 .print-compact .print-table th,
-.print-compact .print-table td          { padding-top: 6px !important; padding-bottom: 6px !important; }
+.print-compact .print-table td {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+}
+
 .print-compact .print-step-text,
-.print-compact .print-observations-text { line-height: 1.35 !important; }
-.print-compact .print-observations      { padding-top: 14px !important; }
-.print-compact .print-footer            { margin-top: 20px !important; padding-top: 10px !important; }
+.print-compact .print-observations-text {
+    line-height: 1.35 !important;
+}
+
+.print-compact .print-observations {
+    padding-top: 14px !important;
+}
+
+.print-compact .print-footer {
+    margin-top: 20px !important;
+    padding-top: 10px !important;
+}
 
 @media print {
     @page {
@@ -629,7 +1087,9 @@ h1, h2, h3, h4, h5, h6,
         margin: 0;
     }
 
-    .no-print { display: none !important; }
+    .no-print {
+        display: none !important;
+    }
 
     body {
         background-color: white;
@@ -638,22 +1098,51 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .print-page,
-    .print-page * { overflow: visible !important; }
+    .print-page * {
+        overflow: visible !important;
+    }
 
-    .print-area   { box-shadow: none !important; border: none !important; }
+    .print-area {
+        box-shadow: none !important;
+        border: none !important;
+    }
 
     .print-page {
         width: 210mm;
         height: 297mm;
     }
 
-    .print-table              { break-inside: avoid; page-break-inside: avoid; }
-    .print-table thead        { display: table-header-group; }
+    .print-table {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .print-table thead {
+        display: table-header-group;
+    }
+
     .print-row,
     .print-section,
-    tr                        { break-inside: avoid; page-break-inside: avoid; }
-    .print-pages              { gap: 0; }
-    .print-page               { break-after: page; page-break-after: always; }
-    .print-page--last         { break-after: auto; page-break-after: auto; }
-    .print-measure            { display: none !important; }
+    tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .print-pages {
+        gap: 0;
+    }
+
+    .print-page {
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .print-page--last {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .print-measure {
+        display: none !important;
+    }
 }

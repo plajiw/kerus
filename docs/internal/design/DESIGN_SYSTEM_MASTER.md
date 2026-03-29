@@ -1,1130 +1,374 @@
-# KERUS — Design System Master Reference
+# KERUS — Design System Master Reference v3.0
 
-**Versão**: 2.4.0 Obsidian
-**Status**: Fonte única de verdade
-**Gerado em**: 2026-03-24
+**Arquivo fonte:** `src/index.css`
+**Última revisão:** 2026-03-28
 
-> Este documento unifica todos os arquivos de referência visual do projeto (stitch, design-system.md, decisões registradas em memória). Em caso de conflito entre documentos antigos e este, este prevalece.
-
----
-
-## 0. Stack de Recursos UI/UX — Fonte Única de Verdade
-
-Esta seção define as bibliotecas e recursos aprovados para o projeto. **Não utilize alternativas sem registro aqui.**
-
-### 0.1 Ícones — Lucide React
-
-| Item           | Valor                                                                             |
-| -------------- | --------------------------------------------------------------------------------- |
-| Biblioteca     | **`lucide-react`**                                                                |
-| Instalação     | `npm install lucide-react` (já incluso no projeto)                                |
-| Uso            | `import { FlaskConical, Settings } from 'lucide-react'`                           |
-| Tamanho padrão | `size={18}` em navegação, `size={14}` em botões/tabelas, `size={20}` em cards KPI |
-
-> **Nota sobre protótipos Stitch:** os arquivos em `docs/stitch/` usam Material Symbols Outlined como referência visual. Esses protótipos representam a intenção de design, **não a implementação**. A biblioteca de ícones implementada no projeto é Lucide React. Qualquer mapeamento de ícone Material → Lucide está na seção 8.
-
-### 0.2 Fontes — Google Fonts (já carregadas no index.html)
-
-| Família               | Papel                        | Carregada via             |
-| --------------------- | ---------------------------- | ------------------------- |
-| **Manrope** (400–800) | Headlines, navegação, labels | `@import` em `index.html` |
-| **Inter** (400–600)   | Body, dados, formulários     | `@import` em `index.html` |
-
-Não adicionar outras fontes sem decisão registrada.
-
-### 0.3 Animações / DnD
-
-| Recurso              | Biblioteca                                 | Uso                                      |
-| -------------------- | ------------------------------------------ | ---------------------------------------- |
-| Drag & drop          | `@dnd-kit/core` + `@dnd-kit/sortable`      | Ingredientes, Etapas, Itens de Orçamento |
-| Animações de entrada | Tailwind `animate-in fade-in duration-300` | Transição de páginas                     |
-
-### 0.4 Componentes UI Prontos do Projeto
-
-Estes componentes já existem e devem ser reutilizados — não recriar do zero:
-
-| Componente        | Caminho                                     | Função                                     |
-| ----------------- | ------------------------------------------- | ------------------------------------------ |
-| `HubButton`       | `src/components/ui/hub/HubButton.tsx`       | Botão que força a regra ícone-ou-texto     |
-| `HubToolbar`      | `src/components/ui/hub/HubToolbar.tsx`      | Barra de ações das páginas de listagem     |
-| `HubGridCard`     | `src/components/ui/hub/HubGridCard.tsx`     | Card de item no modo grid                  |
-| `HubHeader`       | `src/components/ui/hub/HubHeader.tsx`       | Cabeçalho de página com título + subtítulo |
-| `HubStatsGrid`    | `src/components/ui/hub/HubStatsGrid.tsx`    | Grid de KPIs com slot de filtro            |
-| `HubStatusFilter` | `src/components/ui/hub/HubStatusFilter.tsx` | Filtro de status em select                 |
-| `HubDateFilter`   | `src/components/ui/hub/HubDateFilter.tsx`   | Filtro de período em select                |
-| `HubViewToggle`   | `src/components/ui/hub/HubViewToggle.tsx`   | Toggle grid/lista                          |
-| `StatCard`        | `src/components/ui/StatCard.tsx`            | Card KPI com ícone, valor e label          |
-| `SectionCard`     | `src/components/ui/SectionCard.tsx`         | Seção colapsável do editor                 |
-| `StatusToggle`    | `src/components/ui/StatusToggle.tsx`        | Toggle de status semântico                 |
-| `HintButton`      | `src/components/ui/HintButton.tsx`          | Botão "?" com tooltip                      |
-
-### 0.5 Referências Visuais (Stitch)
-
-Arquivos de referência de design em `docs/stitch/`:
-
-| Arquivo                                              | Conteúdo                                                                                 |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `stitch/screen.png`                                  | Visão geral da UI — layout principal, sidebar, toolbar, grid de fórmulas                 |
-| `stitch/DESIGN.md`                                   | Filosofia visual original — "The Obsidian Architect"                                     |
-| `stitch/kerus_dark_ember/DESIGN.md`                  | Estratégia de design — dark amber theme                                                  |
-| `stitch/wiki_de_padr_es_refinados_kerus/screen.png`  | **Padrões de botões, ícones e cards KPI** — usar como referência primária de componentes |
-| `stitch/componentes_de_feedback_kerus/screen.png`    | Formulários, tabelas, toasts, estados de feedback                                        |
-| `stitch/wiki_modais_e_configura_es_kerus/screen.png` | Anatomia de modais e side panels (drawers)                                               |
+> Este documento é a fonte única de verdade para todas as decisões visuais do projeto.
+> Em conflito com qualquer outro documento, este prevalece.
 
 ---
 
-## 1. North Star: The Obsidian Architect
+## 1. Filosofia
 
-O Kerus rejeita a estética de "planilha clínica" — grade de caixas cinzas e linhas rígidas que drenam a energia do usuário. A visão é o **Obsidian Architect**: um workspace executivo de vidro escuro onde os dados não são apenas exibidos, são **curados**.
+### No-Line Philosophy
 
-Princípios centrais:
+Hierarquia visual é definida **exclusivamente por mudança de superfície** — nunca por bordas de 1px ou sombras.
 
-- **Quiet Authority** — tipografia editorial em alto contraste sobre tela carvão profunda.
-- **No-Line Philosophy** — fronteiras são definidas por mudança de superfície, não por bordas de 1px.
-- **Intentional Asymmetry** — variação de largura de cards e espaço em branco guiam o olho.
-- **Functional Color** — cor não é decorativa; é âncora semântica.
+| PROIBIDO | OBRIGATÓRIO |
+|---|---|
+| `box-shadow` em qualquer componente | Usar `var(--surface-N)` para elevação |
+| `border` visível entre componentes | `outline` apenas em inputs com foco |
+| Cores hexadecimais hardcoded | Sempre `var(--token)` |
+| Classes Tailwind `dark:` | Sempre `var(--ink-N)`, `var(--surface-N)` |
+| `border-color` visível no light mode | `--border: transparent` no light |
+
+**Por que `--border` é `transparent` no light mode?**
+No tema claro, as superfícies têm contraste suficiente para criar hierarquia sem bordas. Nos temas escuros, uma borda sutil é necessária porque as superfícies escuras têm menos contraste natural.
 
 ---
 
-## 2. Paleta de Cores
+## 2. Sistema de Temas
 
-### 2.1 Tokens Semânticos (Tailwind / CSS)
+### Como funciona
 
-| Token                                                       | Hex       | Papel                                      |
-| ----------------------------------------------------------- | --------- | ------------------------------------------ |
-| `background` / `surface` / `surface-dim`                    | `#0e0e0e` | Tela base absoluta                         |
-| `surface-container-lowest`                                  | `#000000` | Sombras, verdadeiro preto                  |
-| `surface-container-low`                                     | `#131313` | Sidebar, painéis secundários               |
-| `surface-container`                                         | `#1a1a1a` | Separadores sutis                          |
-| `surface-container-high`                                    | `#20201f` | Cards, hover de linha                      |
-| `surface-container-highest` / `surface-variant`             | `#262626` | Inputs, popovers, chips                    |
-| `surface-bright`                                            | `#2c2c2c` | Popovers flutuantes, dropdowns             |
-| `primary` / `surface-tint`                                  | `#ff9f4a` | Laranja marca — CTA, foco, ativo           |
-| `primary-container` / `primary-fixed` / `primary-fixed-dim` | `#fd8b00` | Gradiente do primário, hover               |
-| `primary-dim`                                               | `#ed8200` | Estado pressionado do primário             |
-| `on-primary`                                                | `#532a00` | Texto sobre fundo primário (escuro)        |
-| `on-primary-fixed`                                          | `#180800` | Texto sobre botão primário preenchido      |
-| `secondary` / `secondary-fixed` / `inverse-surface`         | `#e4e2e1` | Texto corpo, não usar branco puro          |
-| `secondary-container`                                       | `#474747` | Ícone-container, filtro-chips              |
-| `on-secondary-container`                                    | `#d2d0cf` | Texto sobre secondary-container            |
-| `on-surface` / `on-background`                              | `#ffffff` | Texto primário                             |
-| `on-surface-variant`                                        | `#adaaaa` | Texto metadado, labels, ícones secondários |
-| `outline`                                                   | `#767575` | Checkboxes inativos                        |
-| `outline-variant`                                           | `#484847` | Ghost borders, divisores sutis             |
-| `tertiary`                                                  | `#ffe393` | AI sparkle, destaque especial              |
-| `tertiary-fixed` / `tertiary-container`                     | `#ffd33a` | Ícone info/update                          |
-| `error`                                                     | `#ff7351` | Estado de erro — texto e bordas            |
-| `error-container`                                           | `#b92902` | Background de erro severo                  |
-| `error-dim`                                                 | `#d53d18` | Hover/pressionado de erro                  |
-
-### 2.2 CSS Custom Properties (Implementação no Projeto)
-
-Existem dois sets de tokens: dark (`:root` da `html.dark`) e light (`:root` padrão).
-
-#### Modo Escuro (`html.dark`)
-
-| CSS Variable  | Papel                  | Valor     |
-| ------------- | ---------------------- | --------- |
-| `--surface-0` | Background / Sidebar   | `#0e0e0e` |
-| `--surface-1` | Página principal       | `#131313` |
-| `--surface-2` | Cards                  | `#202020` |
-| `--surface-3` | Toolbar / inputs       | `#2c2c2c` |
-| `--ink-0`     | Texto primário         | `#ffffff` |
-| `--ink-1`     | Texto secundário       | `#e4e2e1` |
-| `--ink-2`     | Texto terciário / meta | `#adaaaa` |
-| `--primary`   | Accent amber           | `#FF8C00` |
-| `--border`    | Bordas                 | `#222222` |
-
-#### Modo Claro (`:root` padrão) — Paleta Neutral Gray
-
-No modo claro a hierarquia é definida por tons de cinza neutro com texto quente. `--border` é `transparent` — a separação entre componentes é feita exclusivamente por mudança de superfície (No-Line Philosophy).
-
-| CSS Variable  | Papel               | Valor       | Nota                          |
-| ------------- | ------------------- | ----------- | ----------------------------- |
-| `--surface-0` | Sidebar             | `#EBEBEB`   | cinza médio — mais escuro     |
-| `--surface-1` | Página principal    | `#F3F3F3`   | cinza claro                   |
-| `--surface-2` | Cards (elevados)    | `#FFFFFF`   | branco puro — mais elevado    |
-| `--surface-3` | Toolbar / inputs    | `#ECECEC`   | cinza toolbar                 |
-| `--ink-0`     | Texto primário      | `#1C1714`   | near-black warm               |
-| `--ink-1`     | Texto secundário    | `#3D3430`   | dark warm brown               |
-| `--ink-2`     | Texto meta/tertiary | `#7C7370`   | medium warm gray              |
-| `--primary`   | Accent amber        | `#E67E00`   | ligeiramente mais escuro que dark |
-| `--border`    | Bordas              | `transparent` | **No-Line** — sem bordas visíveis |
-
-**Regra absoluta:** Nunca use cores hardcoded ou classes `dark:` do Tailwind. Use sempre `var(--ink-0)`, `var(--surface-1)`, etc.
-
-```tsx
-// CORRETO
-style={{ color: 'var(--ink-0)', background: 'var(--surface-1)' }}
-
-// ERRADO
-className="text-slate-800 dark:text-slate-100"  // ❌
-```
-
-### 2.3 Tokens de Status Semântico
-
-Cores de status são definidas como CSS vars e invertidas automaticamente por tema. **Nunca use valores hex hardcoded para status.**
-
-| Token                | Light (texto escuro)                        | Dark (texto claro)                          |
-| -------------------- | ------------------------------------------- | ------------------------------------------- |
-| `--status-success-*` | bg `rgba(22,163,74,.10)` / text `#15803d`   | bg `rgba(16,185,129,.15)` / text `#34d399`  |
-| `--status-warning-*` | bg `rgba(180,83,9,.10)` / text `#b45309`    | bg `rgba(245,158,11,.15)` / text `#fbbf24`  |
-| `--status-info-*`    | bg `rgba(29,78,216,.10)` / text `#1d4ed8`   | bg `rgba(99,102,241,.15)` / text `#818cf8`  |
-| `--status-neutral-*` | bg `rgba(120,113,108,.10)` / text `#57534e` | bg `rgba(255,255,255,.08)` / text `#adaaaa` |
-| `--status-error-*`   | bg `rgba(185,28,28,.10)` / text `#b91c1c`   | bg `rgba(239,68,68,.15)` / text `#f87171`   |
-
-```tsx
-// USO CORRETO
-style={{ background: 'var(--status-success-bg)', color: 'var(--status-success-text)' }}
-```
-
-### 2.4 Hierarquia de Superfície
-
-Trate a UI como uma pilha física de materiais. Quanto mais "elevado" o componente, mais clara a camada (em ambos os temas).
+O tema é aplicado via `data-theme` no `<html>`. Cada tema define exatamente as mesmas 24 variáveis CSS. Trocar o tema = trocar os valores, não as variáveis.
 
 ```
-surface-0  → Sidebar / nav rail   (mais fundida no background)
-surface-1  → Página / workspace
-surface-2  → Cards (elevados sobre a página)
-surface-3  → Toolbar, inputs, dropdowns
+document.documentElement.setAttribute('data-theme', 'dark');
 ```
 
-### 2.5 No-Line Philosophy (REGRA ABSOLUTA)
+Componentes React **nunca** contêm valores de cor — toda cor vem de `var(--token)`.
 
-> [!IMPORTANT]
-> O Kerus não utiliza bordas visíveis entre componentes nem sombras. **Hierarquia é definida exclusivamente por mudança de superfície.**
+### Temas disponíveis
 
-#### Proibido em ambos os temas
-
-- `box-shadow` / classes `shadow-*` em qualquer componente
-- `border: 1px solid` para separar cards, seções ou layouts
-- Classes `divide-*` do Tailwind entre itens de lista
-
-#### `--border` por tema
-
-- **Escuro:** `#222222` — usado apenas em elementos específicos como scrollbars e spinners, não em cards
-- **Claro:** `transparent` — nenhuma borda visível; toda separação é por contraste de superfície
-
-#### Hierarquia correta no tema claro
-
-A lógica de elevação no tema claro é: quanto mais claro, mais elevado.
-
-```
-surface-0 (#EBEBEB)  →  Sidebar — mais fundida
-surface-1 (#F3F3F3)  →  Página / workspace
-surface-2 (#FFFFFF)  →  Cards, modais — mais elevados
-surface-3 (#ECECEC)  →  Toolbar, headers de seção, inputs
-```
-
-> **Atenção:** `surface-3` é mais escuro que `surface-1` — é usado para elementos "afundados" como toolbars e headers de card, não como elevação.
-
-#### Hover
-
-- Use `--surface-2` para hover de itens de navegação e botões sobre `surface-0` ou `surface-1`
-- **Nunca** use `surface-3` para hover quando o fundo já é `surface-0` (as cores são quase idênticas no tema claro)
-
-#### Focus / inputs
-
-- Inputs em repouso: `background: var(--surface-3); border: none`
-- Inputs em foco: `border: 2px solid var(--primary)` — o único caso onde uma borda aparece no tema claro
-- Isso comunica interatividade sem quebrar a filosofia No-Line (é marcação semântica, não separação estrutural)
-
-#### Botões — regra universal (ambos os temas)
-
-Botões nunca usam `border` ou `background: transparent`. A distinção é feita por **elevação de superfície**:
-
-| Tema | Fundo da página | `ds-button` (padrão) | Hover |
+| Chave `data-theme` | Nome UI | Tipo | Primary |
 |---|---|---|---|
-| Escuro | `surface-1` `#131313` | `surface-3` `#2c2c2c` | `filter: brightness(1.2)` |
-| Claro | `surface-1` `#F3F3F3` | `surface-2` `#FFFFFF` | `surface-3` `#ECECEC` |
+| `light` | Claro | claro | `#E67E00` |
+| `dark` | Escuro | escuro | `#FF8C00` |
+| `monokai` | Monokai | escuro | `#f92672` |
+| `ocean` | Ocean | escuro | `#38bdf8` |
 
-- **Nunca** use `border` em `ds-button` — hierarquia vem da diferença de surface, não de linha
-- **Nunca** use `background: transparent` em botões — ficam invisíveis sobre fundos escuros ou claros
-- `ds-button-primary`: `background: var(--primary); border: none` — sempre sem borda, a cor já é âncora suficiente
+O seletor de temas está em `src/pages/settings/SettingsPage.tsx`.
+O tipo `ThemeMode` está em `src/services/localStorageService.ts`.
+O script de inicialização (antes do React) está em `index.html`.
+
+### Contrato de tema — 24 variáveis obrigatórias
+
+Todo bloco `[data-theme="X"]` em `src/index.css` DEVE declarar estas variáveis, nesta ordem.
+Adicionar ou remover uma variável exige atualizar os **4 blocos**.
+
+```css
+/* SURFACES (4) */
+--surface-0        /* Sidebar, camada mais profunda */
+--surface-1        /* Fundo da página */
+--surface-2        /* Cards, corpo de componentes */
+--surface-3        /* Toolbar, inputs, botões, headers */
+
+/* GRADIENTS (2) */
+--surface-bg-gradient
+--surface-card-gradient
+
+/* BORDER (1) */
+--border           /* transparent no light; cor sutil nos temas escuros */
+
+/* BRAND (3) */
+--primary
+--primary-rgb      /* para rgba(var(--primary-rgb), 0.12) */
+--primary-container
+
+/* INK (3) */
+--ink-0            /* Títulos, texto principal */
+--ink-1            /* Texto secundário, ícones */
+--ink-2            /* Labels, placeholders */
+
+/* STATUS (10 = 5 tipos × 2 vars) */
+--status-success-bg    --status-success-text
+--status-warning-bg    --status-warning-text
+--status-info-bg       --status-info-text
+--status-neutral-bg    --status-neutral-text
+--status-error-bg      --status-error-text
+```
+
+### Como adicionar um novo tema
+
+1. Copie o bloco completo de um tema existente em `src/index.css`
+2. Altere os 24 valores — mantenha a mesma ordem
+3. Adicione o tema ao tipo `ThemeMode` em `src/services/localStorageService.ts`
+4. Adicione ao array `themes` em `src/pages/settings/SettingsPage.tsx` com as cores de preview
+5. Atualize o array de temas válidos no script inline de `index.html`
+6. Registre na tabela de temas disponíveis acima
 
 ---
 
-## 3. Tipografia
+## 3. Tokens de Superfície
 
-### 3.1 Font Stack
+### Hierarquia de elevação
 
-Sistema dual: autoridade editorial + legibilidade de dados.
+```
+--surface-0   Sidebar / camada base
+   └─ --surface-1   Fundo da página
+          └─ --surface-2   Cards, painéis
+                 └─ --surface-3   Inputs, toolbar, botões
+```
 
-| Família     | Papel                                   | Tailwind Class             |
-| ----------- | --------------------------------------- | -------------------------- |
-| **Manrope** | Display, Headlines, Labels de navegação | `font-headline`            |
-| **Inter**   | Body, dados, formulários, tabelas       | `font-body` / `font-label` |
+Em temas claros: superfícies mais claras = mais elevadas.
+Em temas escuros: superfícies mais claras = mais elevadas.
+
+### Quando usar cada surface
+
+| Token | Componente | Notas |
+|---|---|---|
+| `--surface-0` | Sidebar | Camada mais escura/profunda |
+| `--surface-1` | `<main>` background | Fundo neutro da página |
+| `--surface-2` | `.ds-card`, `.ds-panel` | Conteúdo elevado sobre o fundo |
+| `--surface-3` | `<input>`, `.ds-button`, `<select>`, toolbar headers | Controles interativos, "rebaixados" dentro do card |
+
+---
+
+## 4. Tokens de Cor
+
+### Brand
+
+| Token | Uso |
+|---|---|
+| `--primary` | Botão primário, links, indicador de foco, destaques |
+| `--primary-rgb` | Para `rgba(var(--primary-rgb), 0.12)` em overlays e hovers suaves |
+| `--primary-container` | Hover/pressed do primary |
+
+### Ink — Texto e ícones
+
+| Token | Light | Dark | Uso |
+|---|---|---|---|
+| `--ink-0` | `#1C1714` | `#ffffff` | Títulos, texto principal |
+| `--ink-1` | `#3D3430` | `#e4e2e1` | Texto secundário, ícones, labels de campo |
+| `--ink-2` | `#7C7370` | `#adaaaa` | Placeholders, labels uppercase, texto mudo |
+
+### Status
+
+| Tipo | Uso |
+|---|---|
+| `success` | Ação concluída, status aprovado/ativo |
+| `warning` | Requer atenção, rascunho, pendente |
+| `info` | Informação neutra, contexto adicional |
+| `neutral` | Estado padrão, sem polaridade semântica |
+| `error` | Falha, exclusão, ação destrutiva |
+
+Regra: use sempre o par `--status-{tipo}-bg` + `--status-{tipo}-text`. Nunca um sem o outro.
+
+---
+
+## 5. Constantes Compartilhadas
+
+Estas variáveis são definidas em `:root` e **nunca mudam entre temas**.
+
+### Raio de borda
+
+| Token | Valor | Uso |
+|---|---|---|
+| `--radius-lg` | 12px | Cards, modais, painéis |
+| `--radius-md` | 8px | Inputs, selects |
+| `--radius-sm` | 6px | **Padrão**: botões, badges, tags |
+
+### Alturas de controle
+
+Todos os controles interativos DEVEM usar uma dessas alturas — nunca `height` hardcoded.
+
+| Token | Valor | Uso |
+|---|---|---|
+| `--h-control-sm` | 32px | Botões compactos `.ds-button-sm`, inputs densos |
+| `--h-control` | 36px | **Padrão**: todos os controles |
+| `--h-control-lg` | 44px | CTAs de destaque, inputs grandes |
+
+### Tipografia de controles
+
+| Token | Valor | Uso |
+|---|---|---|
+| `--text-control` | 13px | Texto em inputs, botões, selects |
+| `--text-label` | 11px | Rótulos uppercase sobre campos |
+
+---
+
+## 6. Tamanhos de Ícone
+
+Biblioteca: **Lucide React** — `import { IconName } from 'lucide-react'`
+
+| Token CSS | Valor | `size=` | Contexto |
+|---|---|---|---|
+| `--icon-xs` | 12px | `size={12}` | Labels densos, badges de status |
+| `--icon-sm` | 14px | `size={14}` | **Padrão**: botões, tabelas, toolbar |
+| `--icon-md` | 18px | `size={18}` | Navegação lateral, headers de seção |
+| `--icon-lg` | 20px | `size={20}` | Cards KPI, títulos de modal |
+
+Tamanhos 32, 40, 48 são reservados para **ilustrações de estado vazio** — nunca use em controles UI.
+
+**Regras de ícone por contexto:**
+
+```
+.ds-button ou .ds-button-primary  →  size={14}  (--icon-sm)
+.ds-icon-button                   →  size={14}  (--icon-sm)
+Sidebar (NavRow)                  →  size={18}  (--icon-md)
+Header de seção / modal           →  size={14}  (--icon-sm)
+Card KPI / dashboard              →  size={20}  (--icon-lg)
+```
+
+---
+
+## 7. Componentes Design System
+
+Todos os componentes visuais são criados usando as classes `.ds-*` definidas em `src/index.css`.
+**Nunca recriar esses estilos inline ou via Tailwind.**
+
+### 7.1 Botões com texto
+
+#### Hierarquia de ênfase
+
+```
+ds-button-primary  ← Alta ênfase   (1 por seção)
+ds-button          ← Média ênfase  (maioria das ações)
+ds-button-ghost    ← Baixa ênfase  (cancelar, voltar, limpar)
+ds-button-danger   ← Destrutivo    (excluir com rótulo)
+```
+
+#### `.ds-button-primary`
+
+- bg: `var(--primary)` / color: `#ffffff`
+- Altura: `--h-control` (36px) / ícone: `size={14}`
+- hover: `brightness(1.1)` / active: `scale(0.98)`
+- **Regra**: máximo 1 por seção visual. Nunca dois lado a lado.
+
+#### `.ds-button`
+
+- bg: `var(--surface-3)` / color: `var(--ink-1)`
+- Altura: `--h-control` (36px)
+- hover: `brightness(0.94)` light / `brightness(1.18)` dark
+
+#### `.ds-button-ghost`
+
+- bg: `transparent` / color: `var(--ink-1)`
+- hover: `background: var(--surface-3)`
+- Usar quando `.ds-button` seria pesado demais visualmente.
+
+#### `.ds-button-danger`
+
+- bg: `transparent` / color: `var(--status-error-text)`
+- hover: `background: var(--status-error-bg)`
+- O visual nasce cinza/neutro e só fica vermelho no hover — evita alarmismo.
+
+#### `.ds-button-sm` — modificador de tamanho
+
+Combinar com qualquer base:
 
 ```html
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" />
+<button class="ds-button ds-button-sm">Ação</button>
+<button class="ds-button-primary ds-button-sm">Salvar</button>
 ```
 
-### 3.2 Escala Tipográfica
-
-| Nome        | Tamanho              | Peso                            | Fonte   | Uso                                 |
-| ----------- | -------------------- | ------------------------------- | ------- | ----------------------------------- |
-| Display     | 60px / `text-6xl`    | 900 `font-black`                | Manrope | Hero de página                      |
-| Headline XL | 48px / `text-5xl`    | 900                             | Manrope | Títulos de seção principais         |
-| Headline LG | 36px / `text-4xl`    | 800                             | Manrope | Títulos de grupo                    |
-| Title LG    | 20px / `text-xl`     | 700                             | Manrope | Títulos de card                     |
-| Title MD    | 16px / `text-base`   | 700                             | Manrope | Subtítulos                          |
-| Body Base   | 14px / `text-sm`     | 400                             | Inter   | Texto geral, tabelas                |
-| Body SM     | 12px / `text-xs`     | 400                             | Inter   | Metadados, datas                    |
-| Label       | 10px / `text-[10px]` | 700 `uppercase tracking-widest` | Inter   | Rótulos de seção, headers de coluna |
-
-### 3.3 Hierarquia de Cor no Texto
-
-- `on-surface` (`#ffffff`) → informação primária (valores, títulos)
-- `on-surface-variant` (`#adaaaa`) → metadados (datas, contagens, descrições)
-- `primary` (`#ff9f4a`) → links ativos, valores de destaque, estado selecionado
-- `secondary` (`#e4e2e1`) → corpo longo — **nunca branco puro** para texto extenso
-
-### 3.4 Padrões
-
-```css
-/* Títulos de página */
-tracking-tighter  /* -0.02em */
-
-/* Labels de formulário / headers de coluna */
-uppercase tracking-widest  /* 0.1em */
-
-/* Identificadores (números, datas, códigos) */
-font-mono
-```
+- Altura: `--h-control-sm` (32px) / font-size: 12px
 
 ---
 
-## 4. Espaçamento (Base 4px)
+### 7.2 Botões de ícone (quadrados, sem texto)
 
-| Token        | Valor | Uso típico                                      |
-| ------------ | ----- | ----------------------------------------------- |
-| `--space-1`  | 4px   | Gaps micro                                      |
-| `--space-2`  | 8px   | Gap inline, ícone-texto                         |
-| `--space-3`  | 12px  | Padding horizontal de controle                  |
-| `--space-4`  | 16px  | Padding de card compacto                        |
-| `--space-5`  | 20px  | Gap entre seções internas                       |
-| `--space-6`  | 24px  | Padding de card padrão                          |
-| `--space-8`  | 32px  | Padding de canvas, gaps de grid                 |
-| `--space-12` | 48px  | Separação entre seções maiores                  |
-| `--space-16` | 64px  | Major section break — deixa o Obsidian respirar |
+#### `.ds-icon-button`
 
-**Padrão de padding de card:** `p-6` (24px) para cards normais, `p-8` (32px) para cards de detalhe.
+- Dimensões: `--h-control` × `--h-control` (36 × 36px)
+- bg: `transparent` / color: `var(--ink-1)`
+- hover: `background: var(--surface-3)`
 
----
+#### `.ds-icon-button-primary`
 
-## 5. Border Radius
+- Dimensões: 36 × 36px
+- bg: `var(--primary)` / color: `#ffffff`
+- Usar para a ação de ícone principal em um grupo.
 
-```css
-DEFAULT: 0.125rem  /* 2px  — elementos muito pequenos */
-lg:      0.25rem   /* 4px  — badges, chips compactos */
-xl:      0.5rem    /* 8px  — inputs, botões */
-full:    0.75rem   /* 12px — pills, tags, avatares */
+#### `.ds-icon-button-danger`
 
-/* Containers grandes */
-rounded-2xl: 1rem    /* 16px — cards principais */
-rounded-[2rem]: 32px /* Large cards / bento sections */
-```
+- Dimensões: 36 × 36px
+- Nasce em `--ink-2` (mudo/cinza)
+- hover: `--status-error-bg` + `--status-error-text`
+- Usar para excluir/remover em linhas de tabela.
 
-**Regra:** Use sempre `8–12px` em containers para suavizar o dark mode sem perder a identidade executiva.
-
----
-
-## 6. Height Tokens (Controles Interativos)
-
-Todos os controles interativos compartilham tokens de altura para alinhamento óptico uniforme em linha.
-
-| Token            | Valor    | Uso                                       |
-| ---------------- | -------- | ----------------------------------------- |
-| `--h-control-sm` | 32px     | Filtros compactos, inline                 |
-| `--h-control`    | **36px** | **Padrão — todos os controles**           |
-| `--h-control-lg` | 44px     | Inputs hero (título de fórmula/orçamento) |
-
-```css
-/* SEMPRE use o token — nunca hardcode px em controles */
-height: var(--h-control);
-```
-
-#### Containers Segmentados (View Toggles / Grupos)
-
-Componentes que agrupam múltiplos controles (ex: `HubViewToggle`) devem fixar sua altura externa no token `--h-control` e usar padding interno sutil (ex: `2px`) para garantir que o container não exceda a altura padrão da linha. Isso evita saltos verticais quando a toolbar alterna entre modos (ex: seleção vs normal).
-
----
-
-## 7. Componentes
-
-### 7.1 Botões
-
-#### Regra Absoluta: Ícone OU Texto — nunca os dois
-
-Use o componente **`HubButton`** em todas as barras de ação (HubToolbar) de páginas de listagem. Ele é a única interface aprovada para botões de ação primária/secundária nessas telas — garante a regra em compile time via TypeScript.
-
-```tsx
-import { HubButton } from '../components/ui/hub/HubButton';
-
-// CORRETO — texto apenas (variant primary ou secondary)
-<HubButton variant="primary" label="Nova Ficha" onClick={...} />
-<HubButton variant="secondary" label="Criar com IA" onClick={...} />
-
-// CORRETO — ícone apenas (variant icon, obriga title para acessibilidade)
-<HubButton variant="icon" icon={<ArrowLeft size={14}/>} title="Voltar" onClick={...} />
-
-// ERRADO — nunca misture inline
-<button className="ds-button"><Save size={14}/> Salvar</button>  // ❌
-```
-
-Para botões fora da HubToolbar (editores, modais, etc.) use as classes `ds-*` diretamente, mas mantendo a regra ícone-ou-texto sem exceções:
-
-```tsx
-// CORRETO — texto apenas
-<button className="ds-button">Salvar</button>
-<button className="ds-button-primary">Criar Fórmula</button>
-
-// CORRETO — ícone apenas
-<button className="ds-icon-button" title="Voltar"><ArrowLeft size={14}/></button>
-```
-
-#### Hierarquia de Botões
-
-| Classe              | Fundo            | Borda           | Texto          | Uso                                     |
-| ------------------- | ---------------- | --------------- | -------------- | --------------------------------------- |
-| `ds-button-primary` | `var(--primary)` | —               | Branco         | 1 por header/toolbar. CTA principal.    |
-| `ds-button`         | Transparente     | `var(--border)` | `var(--ink-0)` | Ações secundárias, cancelar, adicionar. |
-| `ds-icon-button`    | Transparente     | —               | `var(--ink-2)` | Back, Close, Delete, Zoom, Toggle.      |
-
-**Atenção:** Máximo **1 `ds-button-primary`** por header ou barra de ação.
-
-#### Implementação Interna (Tailwind)
+#### `.ds-icon-button-sm` — modificador de tamanho
 
 ```html
-<!-- Primary -->
-<button class="py-3 px-6 bg-primary text-on-primary-fixed font-bold rounded-xl
-               hover:brightness-110 active:scale-95 transition-all">
-  Criar Fórmula
+<button class="ds-icon-button ds-icon-button-sm">
+  <X size={12} />
 </button>
-
-<!-- Secondary / Ghost -->
-<button class="py-3 px-6 bg-surface-container-highest text-on-surface font-bold
-               rounded-xl hover:bg-surface-bright active:scale-95 transition-all">
-  Cancelar
-</button>
-
-<!-- Ghost Text Only -->
-<button class="py-3 px-4 text-on-surface-variant hover:text-primary font-bold
-               rounded-xl transition-all">
-  Descartar
-</button>
-
-<!-- Icon Only -->
-<button class="w-9 h-9 flex items-center justify-center rounded-xl
-               text-on-surface-variant hover:bg-surface-bright active:scale-90 transition-all"
-        title="Editar">
-  <span class="material-symbols-outlined">edit</span>
-</button>
 ```
 
-#### Botão "Create with AI" (Toolset Bar)
+- Dimensões: `--h-control-sm` × `--h-control-sm` (32 × 32px)
 
-Tratado como "Global Utility" — ancora AI no sistema.
+---
+
+### 7.3 Controles de formulário
+
+Todos os controles usam `--surface-3` como background e `outline 2px solid var(--primary)` no foco.
+
+| Classe | Altura | Padding | Uso |
+|---|---|---|---|
+| `.ds-input` | 36px | `0 12px` | Input de texto padrão |
+| `.ds-input-lg` | 44px | `0 14px` | Input de destaque, busca principal |
+| `.ds-select` | 36px | `0 12px` | Dropdown |
+| `.ds-textarea` | mín. 120px | `12px` | Campo de texto longo |
+
+**Regra de foco**: o `outline` de foco é o único `border` visível permitido na interface.
+
+---
+
+### 7.4 Layout
+
+#### `.ds-card` / `.ds-panel`
+
+- bg: `var(--surface-2)` / border-radius: `var(--radius-lg)`
+- **Proibido**: `box-shadow`, `border`.
 
 ```html
-<button class="py-3 px-6 bg-primary text-on-primary-fixed font-bold rounded-xl
-               flex items-center justify-center gap-2 hover:scale-[0.98] transition-transform">
-  <span class="material-symbols-outlined text-sm">auto_awesome</span>
-  Criar com IA
-</button>
+<section class="ds-card p-6">...</section>
 ```
 
-- Background: `primary` com gradient opcional `primary → primary-container` a 135°
-- Ícone: `auto_awesome` com glow sutil `tertiary` (#ffe393) para denotar inteligência
+#### `.ds-drop`
 
-#### Hint Trigger ("i")
-
-```html
-<button class="group w-10 h-10 flex items-center justify-center rounded-full
-               bg-surface-bright border border-outline-variant/20
-               hover:border-primary/50 transition-all">
-  <span class="material-symbols-outlined text-on-surface-variant
-               group-hover:text-primary transition-colors text-lg">help_outline</span>
-  <!-- Tooltip -->
-  <div class="absolute bottom-full mb-3 w-48 p-4 bg-surface-container-highest
-              rounded-xl text-[11px] text-on-surface-variant opacity-0
-              group-hover:opacity-100 transition-opacity pointer-events-none
-              shadow-xl border border-outline-variant/20">
-    <strong class="text-on-surface block mb-1">Título</strong>
-    Texto explicativo não-obstrutivo.
-  </div>
-</button>
-```
+- bg: `var(--surface-1)` / border: `2px dashed var(--border)`
+- Para zonas de drag-and-drop.
 
 ---
 
-### 7.2 Inputs
+### 7.5 Feedback
 
-```tsx
-// Padrão
-<input className="ds-input w-full" />
+#### `.skeleton`
 
-// Hero (título da página)
-<input className="ds-input ds-input-lg w-full font-bold"
-       style={{ height: 'var(--h-control-lg)' }} />
+- Shimmer animado: `surface-2 → surface-3 → surface-2`
+- Usar para estados de carregamento onde o layout final é conhecido.
 
-// Com busca
-<div className="relative">
-  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
-          style={{ color: 'var(--ink-2)' }} />
-  <input className="ds-input w-full pl-9" placeholder="Buscar..." />
-</div>
-```
+#### `.loading-overlay` + `.loading-card` + `.loading-spinner`
 
-**Estados:**
-
-- **Normal:** border `outline-variant @ 15%` (Ghost Border — sentida, não vista)
-- **Focus:** border `primary` @ 100%, ring `rgba(255,159,74,0.1)`
-- **Error:** border `error` (#ff7351), background mantém `surface-container-highest` (não "semáforo")
+- Overlay modal com backdrop blur e spinner.
+- Usar para operações assíncronas que bloqueiam a UI (exportação, IA).
 
 ---
 
-### 7.3 Select
+## 8. Checklist para novos componentes
 
-Status e filtros usam sempre `<select>` — nunca toggle/badge clicável.
-
-```tsx
-<select className="ds-select w-full">
-  <option>...</option>
-</select>
-```
-
-#### Status Select Colorido
-
-```tsx
-const STATUS_STYLE = {
-  RASCUNHO: { bg: 'rgba(245,158,11,0.12)', color: '#b45309', border: 'rgba(245,158,11,0.4)' },
-  FINAL:    { bg: 'rgba(16,185,129,0.12)', color: '#047857', border: 'rgba(16,185,129,0.4)' },
-  ENVIADO:  { bg: 'rgba(59,130,246,0.12)', color: '#1d4ed8', border: 'rgba(59,130,246,0.4)' },
-  APROVADO: { bg: 'rgba(16,185,129,0.12)', color: '#047857', border: 'rgba(16,185,129,0.4)' },
-};
-
-<select
-  className="ds-select text-xs font-bold uppercase tracking-wide"
-  style={{ color: style.color, background: style.bg, borderColor: style.border }}
-  value={status}
-  onChange={e => setStatus(e.target.value)}
->
-  <option value="RASCUNHO">Rascunho</option>
-  <option value="FINAL">Final</option>
-</select>
-```
+- [ ] Zero cores hexadecimais hardcoded no componente
+- [ ] Zero classes Tailwind `dark:` usadas
+- [ ] Zero `box-shadow` ou `border` entre componentes
+- [ ] Alturas usam `var(--h-control*)` — nunca `height` hardcoded
+- [ ] Ícones seguem o padrão de tamanho da seção 6
+- [ ] Botões usam `.ds-button*` ou `.ds-icon-button*`
+- [ ] Inputs/selects usam `.ds-input`, `.ds-select` ou `.ds-textarea`
+- [ ] Cards/painéis usam `.ds-card` ou `.ds-panel`
+- [ ] Status visuais usam o par `--status-{tipo}-bg` + `--status-{tipo}-text`
 
 ---
 
-### 7.4 Labels de Campo
+## 9. Adicionando novos tokens
 
-Padrão único para todos os campos de formulário:
+Se uma necessidade de cor não é atendida pelos tokens existentes:
 
-```tsx
-<label className="block text-xs font-bold uppercase tracking-widest mb-1.5"
-       style={{ color: 'var(--ink-2)' }}>
-  Nome do Campo
-</label>
-```
+1. Confirme que nenhum token existente serve
+2. Defina o token com nome semântico (ex: `--accent-secondary`)
+3. Adicione ao contrato: atualize os 4 blocos de tema em `src/index.css`
+4. Documente aqui na seção correspondente
+5. Atualize o contador de variáveis no contrato (atualmente **24**)
 
-- Tamanho: `text-xs` (12px)
-- Peso: `font-bold`
-- Case: `uppercase`
-- Tracking: `tracking-widest` (0.1em)
-- Cor: `var(--ink-2)` (muted)
-- Margem inferior: `mb-1.5` (6px)
-
----
-
-### 7.5 Cards
-
-```html
-<!-- Card padrão de lista/grid -->
-<div class="bg-surface-container-high p-8 rounded-2xl
-            border border-outline-variant/10
-            hover:border-primary/40 transition-all">
-  <!-- Cabeçalho do card -->
-  <div class="mb-6 flex items-center justify-between">
-    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-      <span class="material-symbols-outlined">functions</span>
-    </div>
-    <span class="text-[10px] font-black uppercase text-on-surface-variant">Grupo A</span>
-  </div>
-  <!-- Conteúdo -->
-  <h5 class="text-xl font-bold font-headline mb-2">Título do Card</h5>
-  <p class="text-xs text-on-surface-variant leading-relaxed mb-6">Descrição secundária.</p>
-  <!-- Rodapé -->
-  <div class="pt-6 border-t border-outline-variant/10 flex items-center justify-between">
-    <span class="text-xs font-bold text-primary">Ver detalhes</span>
-    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-  </div>
-</div>
-```
-
-**Ícone em StatCard e módulos:** Container `w-12 h-12 rounded-xl` com **`background: var(--primary)`** e **ícone na cor `#ffffff`** — fundo laranja sólido + ícone branco. Não usar fundo neutro com ícone colorido.
-
-```tsx
-// CORRETO — fundo primário + ícone branco
-<div style={{ background: 'var(--primary)', color: '#ffffff' }}
-     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
-  <FlaskConical size={20} />
-</div>
-
-// ERRADO — fundo neutro + ícone colorido (padrão depreciado)
-<div style={{ background: 'var(--surface-3)', color: 'var(--primary)' }}>  {/* ❌ */}
-```
-
----
-
-### 7.6 Tabelas
-
-```html
-<div class="bg-surface-container-high rounded-2xl border border-outline-variant/10 overflow-hidden">
-  <table class="w-full text-left border-collapse">
-    <thead>
-      <tr class="bg-surface-container-highest/50">
-        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-on-surface-variant">
-          Coluna
-        </th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-outline-variant/10">
-      <tr class="hover:bg-surface-container-low transition-colors">
-        <td class="px-6 py-4 font-bold text-sm">Valor</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-```
-
-**Regras de tabela:**
-
-- Sem divisores horizontais visíveis — use `divide-outline-variant/10` (quase invisível)
-- Hover de linha: `surface-container-low` (shift de superfície, não cor)
-- Headers: `text-[10px] font-black uppercase tracking-widest text-on-surface-variant`
-- Ações em linha: `ds-icon-button` (ícone apenas), `hover:text-primary` para editar, `hover:text-error` para deletar
-- Status badge: `div w-2 h-2 rounded-full` na cor semântica + label texto
-
----
-
-### 7.7 SectionCard
-
-Componente React de seção colapsável com header, hint, badge e slot de ação.
-
-```tsx
-<SectionCard
-  title="Ingredientes"
-  icon={<FlaskConical size={14} />}
-  hint={t('hints.ingredients')}
-  collapsible
-  defaultOpen={true}
-  actions={<button className="ds-button">Adicionar</button>}
->
-  <div className="p-5">...</div>
-</SectionCard>
-```
-
----
-
-### 7.8 Sortable Row (DnD)
-
-Padrão para linhas arrastáveis (Ingredientes, Etapas, Itens de Orçamento):
-
-```
-[GripVertical] [ícone tipo?] [input flex-1] [ds-icon-button ação]
-```
-
-- Grip: `GripVertical` size 15, `opacity-30 hover:opacity-70`
-- Fundo: `var(--surface-1)`, borda: `var(--border)`
-- Novo item: borda `var(--primary)` com ring de glow
-
----
-
-## 8. Iconografia
-
-Biblioteca implementada: **`lucide-react`** (ver seção 0.1).
-
-> Os protótipos em `docs/stitch/` referenciam Material Symbols Outlined. Esses nomes são de referência visual apenas — use os equivalentes Lucide na implementação.
-
-```tsx
-import { FlaskConical, LayoutDashboard, Settings } from 'lucide-react';
-
-// Tamanho padrão por contexto
-<FlaskConical size={18} />   // Sidebar nav
-<Settings size={14} />       // Botões, tabelas, ações
-<Receipt size={20} />        // Cards KPI (StatCard)
-```
-
-### 8.1 Coloring Funcional
-
-| Tier | Cor | Quando usar |
-| --- | --- | --- |
-| **Row A — Primary Nav** | `color: 'var(--primary)'` | Destinos core: Dashboard, Fórmulas, Orçamentos |
-| **Row B — Utility** | `color: 'var(--ink-2)'` | Ações secundárias: Settings, Docs |
-| **Row C — AI** | `color: '#ffe393'` (tertiary) | Ações de IA |
-| **Row D — Destructive** | `color: '#ff7351'` (error) | Delete, ações irreversíveis |
-
-### 8.2 Mapeamento Material Symbols → Lucide React
-
-| Seção | Ícone Material (referência) | Lucide implementado |
-| --- | --- | --- |
-| Dashboard | `dashboard` | `LayoutDashboard` |
-| Fórmulas | `functions` | `FlaskConical` |
-| Orçamentos | `account_balance_wallet` | `Receipt` |
-| Configurações | `settings` | `Settings` |
-| Ajuda / Docs | `help_center` | `BookOpen` |
-| Criar com IA | `auto_awesome` | `Wand2` |
-| Ingredientes | `science` | `FlaskConical` |
-| Estoque | `inventory_2` | `Package` |
-| Editar | `edit` | `Edit3` |
-| Visualizar | `visibility` | `Eye` |
-| Excluir / Fechar | `close` | `X` |
-| Arrastar | `drag_indicator` | `GripVertical` |
-| Voltar | `arrow_back` | `ArrowLeft` |
-
-### 8.3 Filled vs Outlined (Lucide)
-
-Lucide não tem variante "filled" nativa. Simule o estado ativo/inativo via:
-
-- **Ativo na sidebar:** ícone com `color: primaryColor` (passado por prop via `useTheme`)
-- **Inativo:** `color: 'var(--ink-2)'`
-
-```tsx
-// Ativo — via item selecionado na NavItem
-style={isActive ? { backgroundColor: primaryColor } : undefined}
-
-// Ícone sempre `var(--ink-0)` quando sobre fundo primário (ativo)
-// Ícone `var(--ink-1)` quando inativo
-```
-
----
-
-## 9. Navegação
-
-### 9.1 Sidebar (Side Navigation)
-
-```
-Background: surface-container-low (#131313)
-Width: 256px (w-64)
-Shadow: 40px 0 60px -5px rgba(0,0,0,0.4)
-```
-
-**Item ativo:**
-
-```html
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl
-          bg-surface-container-high text-primary font-bold font-headline text-sm">
-  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
-  Dashboard
-</a>
-```
-
-**Item inativo:**
-
-```html
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl
-          text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface
-          font-medium font-headline text-sm transition-colors">
-  <span class="material-symbols-outlined">functions</span>
-  Fórmulas
-</a>
-```
-
-### 9.2 Top App Bar
-
-```
-Background: background (#0e0e0e) — sticky
-Height: 64px (h-16)
-Padding: px-8
-```
-
-- Logo: `text-primary font-black tracking-tight font-headline`
-- Nav links ativos: `text-primary border-b-2 border-primary pb-1`
-- Nav links inativos: `text-on-surface-variant hover:text-on-surface`
-- Ações (settings, help): `p-2 text-on-surface-variant hover:text-primary transition-colors`
-
-### 9.3 Segmented Control (View Toggle)
-
-```html
-<div class="flex p-1 bg-background rounded-xl border border-outline-variant/20">
-  <!-- Ativo -->
-  <button class="flex-1 py-2 flex items-center justify-center gap-2
-                 bg-surface-container-highest text-on-surface rounded-lg font-bold text-xs shadow-lg">
-    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">list</span>
-    Lista
-  </button>
-  <!-- Inativo -->
-  <button class="flex-1 py-2 flex items-center justify-center gap-2
-                 text-on-surface-variant hover:text-on-surface transition-colors font-bold text-xs">
-    <span class="material-symbols-outlined text-sm">grid_view</span>
-    Grid
-  </button>
-</div>
-```
-
----
-
-## 10. Modais e Overlays
-
-### 10.1 Anatomia do Modal
-
-```
-┌─────────────────────────────────────┐
-│  HEADER: [Título]           [Close] │  ← título + botão fechar
-│─────────────────────────────────────│  (separador por espaço, não linha)
-│                                     │
-│  CONTENT: form elements, texto      │  ← conteúdo principal
-│                                     │
-│─────────────────────────────────────│
-│  FOOTER:           [Cancel][Confirm]│  ← ações bottom-right
-└─────────────────────────────────────┘
-```
-
-**Regras:**
-
-1. Ação primária sempre no canto inferior direito (F-pattern scan).
-2. Sem bordas entre header/content/footer — use espaçamento vertical e surface-shift.
-3. Overlay: `bg-background/60 backdrop-blur-sm`.
-
-```html
-<!-- Overlay -->
-<div class="fixed inset-0 bg-background/60 backdrop-blur-sm z-40"></div>
-
-<!-- Modal SM — Confirmação (400px) -->
-<div class="bg-surface-container-high w-[400px] p-8 rounded-2xl
-            shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-outline-variant/20 z-50">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-bold font-headline">Eliminar item?</h3>
-    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">close</span>
-  </div>
-  <p class="text-sm text-on-surface-variant mb-8 leading-relaxed">
-    Esta ação não pode ser revertida.
-  </p>
-  <div class="flex gap-3 justify-end">
-    <button class="px-4 py-2 text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors">
-      Cancelar
-    </button>
-    <button class="px-6 py-2.5 text-xs font-bold bg-error text-white rounded-xl
-                   hover:bg-error-dim active:scale-95 transition-all">
-      Confirmar
-    </button>
-  </div>
-</div>
-```
-
-### 10.2 Tamanhos de Modal
-
-| Tamanho | Largura | Uso                                   |
-| ------- | ------- | ------------------------------------- |
-| **SM**  | 400px   | Confirmações, alertas simples         |
-| **MD**  | 640px   | Fluxos de tarefa padrão (formulários) |
-| **LG**  | 800px   | Configurações complexas, importação   |
-
-### 10.3 Side Panel (Drawer)
-
-Para configurações de alta densidade — **não-bloqueante**, mantém contexto primário visível.
-
-```html
-<!-- Drawer direito -->
-<div class="fixed inset-y-0 right-0 w-80 bg-surface-container-high
-            border-l border-outline-variant/20
-            shadow-[-20px_0px_60px_rgba(0,0,0,0.5)] z-40">
-  <div class="p-6 h-full flex flex-col">
-    <div class="flex justify-between items-center mb-8">
-      <h4 class="font-bold text-lg font-headline">Propriedades</h4>
-      <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">arrow_forward</span>
-    </div>
-    <!-- Grupos de propriedades -->
-    <div class="flex-1 space-y-8 overflow-y-auto">
-      <div class="space-y-4">
-        <p class="text-[10px] font-bold text-primary uppercase tracking-widest">Grupo A</p>
-        <!-- items -->
-      </div>
-    </div>
-    <!-- Ação de rodapé -->
-    <div class="pt-6 border-t border-outline-variant/10">
-      <button class="w-full py-3 bg-white/5 border border-white/10 rounded-xl
-                     text-xs font-bold hover:bg-white/10 transition-colors">
-        Aplicar
-      </button>
-    </div>
-  </div>
-</div>
-```
-
-**Regra Context Preservation:** Side panels devem manter visibilidade do workspace primário — use backdrop translúcido ou sem overlay.
-
----
-
-## 11. Feedback & Estados
-
-### 11.1 Skeleton (Lazy Load)
-
-```css
-.skeleton-pulse {
-  background: linear-gradient(90deg, #1a1a1a 25%, #262626 50%, #1a1a1a 75%);
-  background-size: 200% 100%;
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-```
-
-```html
-<!-- Card skeleton -->
-<div class="bg-surface-container-high p-6 rounded-xl space-y-4 border border-outline-variant/10">
-  <div class="w-12 h-12 rounded-lg skeleton-pulse"></div>
-  <div class="h-6 w-3/4 rounded-lg skeleton-pulse"></div>
-  <div class="h-4 w-full rounded-lg skeleton-pulse"></div>
-  <div class="h-4 w-1/2 rounded-lg skeleton-pulse"></div>
-</div>
-
-<!-- List item skeleton -->
-<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-lg">
-  <div class="w-10 h-10 rounded-full skeleton-pulse"></div>
-  <div class="flex-grow space-y-2">
-    <div class="h-4 w-1/3 rounded skeleton-pulse"></div>
-    <div class="h-3 w-1/2 rounded skeleton-pulse"></div>
-  </div>
-</div>
-```
-
-### 11.2 Progress Bar
-
-```html
-<div class="space-y-2">
-  <div class="flex justify-between text-xs font-bold font-headline uppercase tracking-tighter">
-    <span>Carregando</span>
-    <span class="text-primary">40%</span>
-  </div>
-  <div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
-    <div class="h-full bg-primary w-[40%]"></div>
-  </div>
-</div>
-
-<!-- 100% com glow -->
-<div class="h-full bg-primary w-full shadow-[0_0_8px_rgba(255,159,74,0.4)]"></div>
-```
-
-### 11.3 Toast / Notificação
-
-```html
-<!-- Sucesso -->
-<div class="flex items-center gap-3 bg-surface-container-highest p-4 rounded-xl
-            border-l-4 border-primary shadow-2xl">
-  <span class="material-symbols-outlined text-primary">check_circle</span>
-  <div class="flex-grow">
-    <p class="text-sm font-bold">Operação realizada</p>
-    <p class="text-[10px] text-on-surface-variant">Alterações salvas com sucesso.</p>
-  </div>
-  <button class="text-on-surface-variant hover:text-on-surface">
-    <span class="material-symbols-outlined text-sm">close</span>
-  </button>
-</div>
-
-<!-- Erro -->
-<div class="flex items-center gap-3 bg-surface-container-highest p-4 rounded-xl
-            border-l-4 border-error shadow-2xl">
-  <span class="material-symbols-outlined text-error">error</span>
-  ...
-</div>
-```
-
-**Posicionamento:** Canto superior direito ou inferior, fora do fluxo normal, `z-50`.
-
-### 11.4 Status de Linha (Tabela)
-
-| Estado           | Indicador                                | Cor     |
-| ---------------- | ---------------------------------------- | ------- |
-| Ativo            | `w-2 h-2 rounded-full bg-primary`        | #ff9f4a |
-| Arquivado        | `w-2 h-2 rounded-full bg-outline`        | #767575 |
-| Revisão Pendente | `w-2 h-2 rounded-full bg-tertiary-fixed` | #ffd33a |
-| Erro / Rejeitado | `w-2 h-2 rounded-full bg-error`          | #ff7351 |
-
----
-
-## 12. Layout de Editor
-
-Ambos os editores (Fórmula e Orçamento) usam o componente `EditorShell`:
-
-```
-┌────────────────────┬─┬─────────────────────┐
-│  Esquerda: form    ││  Direita: preview A4  │
-│  max-w-2xl         ││  (redimensionável     │
-│  px-5 py-6         ││   30–60% da largura)  │
-│  space-y-5         ││                       │
-│                    ││  controles de zoom    │
-└────────────────────┴─┴─────────────────────┘
-```
-
-- Form: `max-w-2xl mx-auto px-5 py-6 space-y-5`
-- Seções internas: componente `SectionCard`
-- Gap entre seções: `space-y-5` (20px)
-
-### 12.1 Header Bar do Editor
-
-```
-[ds-icon-button voltar] [Título h1] ────── [status select] [ds-button cancelar] [ds-button-primary salvar]
-```
-
-```tsx
-<div className="flex items-center justify-between gap-3 flex-wrap">
-  <button className="ds-icon-button" title="Voltar"><ArrowLeft size={14}/></button>
-  <h1 className="text-lg font-black uppercase tracking-tight flex-1"
-      style={{ color: 'var(--ink-0)' }}>
-    Nome da Fórmula
-  </h1>
-  <select className="ds-select text-xs font-bold uppercase" style={statusStyle} />
-  <button className="ds-button">Cancelar</button>
-  <button className="ds-button-primary">Salvar</button>
-</div>
-```
-
----
-
-## 13. Glassmorphism (Momentos "Create with AI")
-
-Para cards e seções de IA — premium, não para uso geral.
-
-```css
-.glass-panel {
-  background: rgba(38, 38, 38, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-}
-```
-
-Gradiente do botão de IA:
-
-```css
-background: linear-gradient(135deg, #ff9f4a, #fd8b00);
-```
-
----
-
-## 14. Transições & Animações
-
-| Ação              | Duração                      | Easing            |
-| ----------------- | ---------------------------- | ----------------- |
-| Hover de cor      | 200ms                        | ease              |
-| Hover de elevação | 200ms                        | ease-out          |
-| Active / press    | instantâneo (`scale-[0.98]`) | —                 |
-| Fade de overlay   | 200ms                        | ease              |
-| Slide de modal    | 300ms                        | ease-out          |
-| Skeleton pulse    | 1500ms                       | linear (infinite) |
-
-```css
-/* Hover padrão */
-transition: all 0.2s ease;
-
-/* Elevação de card */
-.card:hover { transform: translateY(-2px); }
-
-/* Press feedback */
-.btn:active { transform: scale(0.98); }
-```
-
----
-
-## 15. Separadores de Seção
-
-Nunca use `<hr>` puro. Use o padrão linha-label-linha:
-
-```html
-<div class="flex items-center gap-4">
-  <div class="h-px bg-outline-variant flex-grow"></div>
-  <h3 class="font-headline font-bold text-on-surface-variant uppercase tracking-widest text-xs">
-    Nome da Seção
-  </h3>
-  <div class="h-px bg-outline-variant w-12"></div>
-</div>
-```
-
----
-
-## 16. Breadcrumb / Localização
-
-```html
-<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-4">
-  <span class="w-2 h-2 rounded-full bg-primary"></span>
-  <span class="text-[10px] font-bold text-primary uppercase tracking-tighter">
-    Documentação / Overlays
-  </span>
-</div>
-```
-
----
-
-## 17. Do's e Don'ts
-
-### Faça
-
-- Use `24px` (`space-6`) em seções internas de card, `48–64px` entre seções maiores de página.
-- Use `8–12px` de border-radius em todos os containers.
-- Use "surface-shifting" para indicar hierarquia — informação mais importante = superfície mais clara.
-- Use `on-surface-variant` para metadados (datas, contagens) para criar "recessão visual".
-- Use `ds-icon-button` com prop `title` para acessibilidade em todos os ícone-botões.
-- Use o token `--h-control` para todos os controles para garantir alinhamento óptico.
-- Use `font-mono` para identificadores, datas, valores numéricos em tabelas.
-- Use `secondary` (#e4e2e1) para texto longo — nunca branco puro para reduzir fadiga ocular.
-
-### Não faça
-
-- **Nunca** use borda `1px solid` para separar seções ou itens de lista.
-- **Nunca** use `dark:` classes do Tailwind — use sempre CSS variables.
-- **Nunca** use drop-shadow em cards — deixe as camadas de cor fazerem o trabalho.
-- **Nunca** use branco puro (`#ffffff`) para texto corrido — use `secondary`.
-- **Nunca** misture ícone + texto em um botão `ds-button` / `ds-button-primary`.
-- **Nunca** coloque mais de 1 `ds-button-primary` por header ou barra de ação.
-- **Nunca** use toggle/badge para campo de status — use `<select>` colorido.
-- **Nunca** hardcode altura de controles — use `var(--h-control)`.
-
----
-
-## 18. Acessibilidade
-
-- Contraste mínimo 4.5:1 para texto normal, 3:1 para texto grande (18px+).
-- Todos os elementos interativos acessíveis por Tab com focus indicator visível.
-- Semântica correta: `<button>` para ação, `<a>` para navegação, `<input>` com `aria-label`.
-- `ds-icon-button` sempre com prop `title` (tooltip nativo).
-- Live regions para feedback de estado: `role="status" aria-live="polite"`.
-
----
-
-## 20. Responsive Patterns (Mobile First)
-
-### 20.1 Organic Two-Line Row (DnD)
-
-Para componentes de lista densa (Ingredientes, Etapas), utilize o padrão **Organic Two-Line** em telas menores que `640px`.
-
-- **Hierarquia Visual:**
-  - **Linha 1 (Identidade):** Grip Handle + Nome/Input Principal. Use `align="start"` no `SortableItem` para que o grip acompanhe o topo do nome.
-  - **Linha 2 (Dados/Ações):** Qty, Unidade, Preço, %, e Lixeira. A lixeira deve estar sempre no **fim da linha**.
-- **Otimização SE (320px):**
-  - Reduza gaps para `gap-1.5` no mobile.
-  - Utilize `maxWidth` reduzido (ex: 60-80px) para inputs numéricos ou `flex-1` com `min-w-0`.
-  - Evite `sm:hidden` em ícones essenciais se puderem ser acomodados no fim da Linha 2.
-- **Transição Desktop:** Em `sm:`, converta para `flex-row items-center` com todos os itens em uma única linha horizontal.
-
----
-
-## 21. Referências Internas
-
-| Arquivo                                         | Conteúdo                                         |
-| ----------------------------------------------- | ------------------------------------------------ |
-| `index.html`                                    | CSS custom properties (design tokens do projeto) |
-| `src/components/ui/`                            | `ds-*` classes implementadas                     |
-| `src/components/features/Editor/`               | Layouts de editor (Formula, Quotation)           |
-| `src/types/`                                    | Tipos TypeScript — fonte de verdade para DTOs    |
-| `docs/stitch/kerus_dark_ember/DESIGN.md`        | Filosofia visual original                        |
-| `docs/stitch/componentes_de_feedback_kerus/`    | Referência visual: feedback e estruturas         |
-| `docs/stitch/wiki_de_padr_es_refinados_kerus/`  | Referência visual: ícones, botões, padrões       |
-| `docs/stitch/wiki_modais_e_configura_es_kerus/` | Referência visual: modais e drawers              |
-
----
-
-*KERUS Design System Master — v2.4.0 Obsidian — 2026-03-24*
+**Nunca** adicione um token a menos de 4 temas ou use um valor hardcoded como solução temporária.

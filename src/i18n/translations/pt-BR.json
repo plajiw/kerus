@@ -315,7 +315,7 @@
     "exportXml": "Exporta a ficha em formato XML para backup ou reimportação futura no sistema.",
     "statusBadge": "Indica a situação da ficha. Rascunho: ficha em edição, exportação bloqueada. Final: aprovada para produção, exportação disponível em PDF e XML.",
     "recentActivity": "Lista as últimas fichas técnicas criadas ou editadas. Clique em uma ficha para abrir o preview completo.",
-    "helpMode": "Exibe botões ? ao lado de campos e seções em toda a interface. Ao clicar, um popover explica o propósito daquele elemento. Desative quando não precisar mais das dicas — todos os botões ? desaparecem automaticamente.",
+    "helpMode": "Aprenda a usar o sistema enquanto navega. Este modo exibe pequenos ícones que explicam cada recurso em detalhes. <strong>Desative a qualquer momento</strong> para ocultar as dicas quando já estiver familiarizado com a plataforma.",
     "advancedMode": "Desbloqueia campos técnicos no editor de fórmulas: fases (A=Aquosa, B=Oleosa, C=Emulsificante, D=Ativa, E=Aroma), nome INCI por ingrediente, tamanho do lote com escala automática, faixa de pH com indicador visual, perfil de viscosidade e versão da fórmula. Também exibe um editor de código nos modais de importação.",
     "primaryColor": "A cor de destaque aplicada em botões, ícones e elementos interativos em todo o sistema.",
     "template": "Estrutura de referência do formato aceito pelo sistema. Use como guia ao criar seu arquivo de importação manualmente.",

@@ -1,30 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, ThumbsUp, ThumbsDown } from 'lucide-react';
 
-const PANEL_W = 288;
+export const PANEL_W = 288;
 
-interface PopoverPos {
+export interface PopoverPos {
     top: number | 'auto';
     bottom: number | 'auto';
     left: number;
     placement: 'below' | 'above';
     arrowLeft: number;
+    maxHeight: number; // Nova propriedade exigida para cortar/scrollar a caixa
 }
 
 interface HintPopoverProps {
     pos: PopoverPos;
     title?: string;
-    hint: string;
+    hint: React.ReactNode;
     docsLink?: string;
+    mediaUrl?: string;
+    onFeedback?: (isHelpful: boolean) => void;
     panelRef: React.RefObject<HTMLDivElement>;
     onMouseDown: (e: React.MouseEvent) => void;
     onClick: (e: React.MouseEvent) => void;
 }
 
 export const HintPopover: React.FC<HintPopoverProps> = ({
-    pos, title, hint, docsLink, panelRef, onMouseDown, onClick,
+    pos, title, hint, docsLink, mediaUrl, onFeedback, panelRef, onMouseDown, onClick,
 }) => {
+    const [feedbackGiven, setFeedbackGiven] = useState(false);
+
+    const handleFeedback = (isHelpful: boolean) => {
+        setFeedbackGiven(true);
+        if (onFeedback) onFeedback(isHelpful);
+    };
+
     const arrow = (
         <span
             aria-hidden="true"
@@ -57,7 +67,8 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
     return ReactDOM.createPortal(
         <div
             ref={panelRef}
-            role="tooltip"
+            role="dialog"
+            aria-label={title || "Informação de ajuda"}
             onMouseDown={onMouseDown}
             onClick={onClick}
             className="animate-in fade-in zoom-in-95 duration-150"
@@ -69,63 +80,134 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                 left: pos.left,
                 width: PANEL_W,
                 borderRadius: 12,
-                padding: '14px 16px',
                 background: 'var(--surface-2)',
                 border: '1px solid var(--border)',
                 pointerEvents: 'auto',
+                overflow: 'hidden',
             }}
         >
             {arrow}
-            {title && (
-                <p style={{
-                    margin: '0 0 7px',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: '0.07em',
-                    textTransform: 'uppercase',
-                    color: 'var(--primary)',
-                }}>
-                    {title}
-                </p>
-            )}
-            <p style={{
-                margin: 0,
-                fontSize: 12,
-                lineHeight: 1.65,
-                color: 'var(--ink-1)',
-                fontWeight: 500,
+            
+            {/* CONTAINER COM SCROLL INTERNO */}
+            <div style={{
+                maxHeight: pos.maxHeight,
+                overflowY: 'auto',
+                padding: '14px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'var(--ink-2) transparent'
             }}>
-                {hint}
-            </p>
-            {docsLink && (
-                <>
-                    <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
-                    <a
-                        href={docsLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 5,
-                            fontSize: 11,
-                            fontWeight: 600,
-                            color: 'var(--primary)',
-                            textDecoration: 'none',
-                            opacity: 0.85,
-                        }}
-                        onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-                        onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
-                    >
-                        <BookOpen size={12} />
-                        Ver na documentação
-                    </a>
-                </>
-            )}
+                {title && (
+                    <p style={{
+                        margin: '0 0 7px',
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: '0.07em',
+                        textTransform: 'uppercase',
+                        color: 'var(--primary)',
+                        flexShrink: 0
+                    }}>
+                        {title}
+                    </p>
+                )}
+
+                {mediaUrl && (
+                    <div style={{ 
+                        width: '100%', 
+                        height: 140, 
+                        marginBottom: 10, 
+                        background: 'var(--surface-1)', 
+                        borderRadius: 'var(--radius-sm)',
+                        border: '1px solid var(--border)',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--ink-2)',
+                        fontSize: 10,
+                        flexShrink: 0
+                    }}>
+                        [Mídia: {mediaUrl}]
+                    </div>
+                )}
+
+                <div style={{
+                    margin: 0,
+                    fontSize: 12,
+                    lineHeight: 1.65,
+                    color: 'var(--ink-1)',
+                    fontWeight: 500,
+                }}>
+                    {hint}
+                </div>
+
+                {(docsLink || onFeedback) && (
+                    <div style={{ flexShrink: 0 }}>
+                        <hr style={{ margin: '12px 0 8px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                            
+                            {docsLink ? (
+                                <a
+                                    href={docsLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 5,
+                                        fontSize: 11,
+                                        fontWeight: 600,
+                                        color: 'var(--primary)',
+                                        textDecoration: 'none',
+                                        opacity: 0.85,
+                                    }}
+                                    onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                                    onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
+                                >
+                                    <BookOpen size={12} />
+                                    Ver na documentação
+                                </a>
+                            ) : <div />}
+
+                            {onFeedback && (
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    {!feedbackGiven ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                            <span style={{ fontSize: 10, color: 'var(--ink-2)', fontWeight: 600 }}>Útil?</span>
+                                            <div style={{ display: 'flex', gap: 2 }}>
+                                                <button 
+                                                    onClick={() => handleFeedback(true)}
+                                                    style={{ background: 'none', border: 'none', color: 'var(--ink-2)', cursor: 'pointer', padding: 2, display: 'flex' }}
+                                                    onMouseEnter={e => e.currentTarget.style.color = 'var(--status-success-text)'}
+                                                    onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
+                                                    title="Sim"
+                                                >
+                                                    <ThumbsUp size={12} />
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleFeedback(false)}
+                                                    style={{ background: 'none', border: 'none', color: 'var(--ink-2)', cursor: 'pointer', padding: 2, display: 'flex' }}
+                                                    onMouseEnter={e => e.currentTarget.style.color = 'var(--status-error-text)'}
+                                                    onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
+                                                    title="Não"
+                                                >
+                                                    <ThumbsDown size={12} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <span style={{ fontSize: 10, color: 'var(--status-success-text)', fontWeight: 600 }}>
+                                            Obrigado!
+                                        </span>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>,
         document.body,
     );
 };
-
-export { PANEL_W };
-export type { PopoverPos };

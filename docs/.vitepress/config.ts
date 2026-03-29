@@ -46,9 +46,9 @@ export default defineConfig({
             text: 'Introdução',
             collapsed: false,
             items: [
-              { text: 'O que é o Kerus?', link: '/guide/' },
+              { text: 'O que é o Kerus', link: '/guide/' },
               { text: 'Primeiros Passos', link: '/guide/getting-started' },
-              { text: 'Atualizações', link: '/guide/updates' },
+              { text: 'Novidades e Atualizações', link: '/guide/updates' },
             ]
           },
           {
@@ -56,16 +56,17 @@ export default defineConfig({
             collapsed: false,
             items: [
               { text: 'Fichas Técnicas', link: '/guide/sheet' },
-              { text: 'Gestão de Orçamentos', link: '/guide/quotations' },
-              { text: 'Controle de Estoque', link: '/guide/stock' },
+              { text: 'Orçamentos', link: '/guide/quotations' },
             ]
           },
           {
-            text: 'Sistema',
+            text: 'Personalização',
             collapsed: false,
             items: [
               { text: 'Configurações', link: '/guide/settings' },
-              { text: 'Interface e Tema', link: '/guide/theme' },
+              { text: 'Aparência e Tema', link: '/guide/theme' },
+              { text: 'Modo Ajuda', link: '/guide/help-mode' },
+              { text: 'Modo Avançado', link: '/guide/advanced-mode' },
             ]
           }
         ],
@@ -74,24 +75,11 @@ export default defineConfig({
         returnToTopLabel: 'Voltar ao topo',
         sidebarMenuLabel: 'Menu',
         darkModeSwitchLabel: 'Aparência',
-        
+
         footer: {
           message: 'Documentação oficial para usuários Kerus.',
-          copyright: 'Copyright © 2026 Invent Software'
         }
       }
-    },
-
-    en: {
-      label: 'English',
-      lang: 'en-US',
-      link: '/en/',
-    },
-
-    es: {
-      label: 'Español',
-      lang: 'es-ES',
-      link: '/es/',
     }
   }
 })

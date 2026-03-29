@@ -1,64 +1,91 @@
-# Orçamentos Inteligentes
+# Orçamentos
 
-O módulo de Orçamentos do Kerus é onde a sua inteligência técnica se transforma em resultado comercial. Ele foi desenhado para que você pare de perder tempo com planilhas manuais e envie propostas profissionais e precisas para seus clientes em segundos.
-
-A grande vantagem competitiva aqui é a **integração total**: seus orçamentos "leem" os custos e proporções das suas Fichas Técnicas em tempo real.
+O módulo de Orçamentos transforma o trabalho técnico das suas fichas em propostas comerciais completas e profissionais. Os custos são calculados automaticamente a partir dos dados da fórmula vinculada.
 
 ---
 
-## O Diferencial Comercial
+## Criar um Novo Orçamento
 
-Diferente de uma simples lista de preços em PDF, um orçamento gerado no Kerus carrega toda a rastreabilidade do seu laboratório ou cozinha:
-
-* **Vínculos Dinâmicos:** O valor do orçamento é calculado com base nos custos atuais das matérias-primas cadastradas na sua Ficha Técnica vinculada.
-* **Gestão de Clientes:** Centralize os dados de contato e histórico de propostas enviadas para cada parceiro comercial.
-* **Validade e Condições:** Defina prazos de entrega, métodos de pagamento e datas de validade da proposta de forma padronizada.
+No menu lateral, acesse **Orçamentos** e clique em **Novo Orçamento**.
 
 ---
 
-## Gerando uma Proposta de Elite
+## Vincular uma Ficha Técnica
 
-Para criar um orçamento de alto nível, o fluxo no Kerus segue três etapas simples:
+O primeiro passo é selecionar a ficha técnica que será a base do orçamento. O sistema importa automaticamente:
 
-### 1. Seleção da Ficha Técnica
+- Lista de ingredientes e suas proporções
+- Custo de matéria-prima por grama (se cadastrado na ficha)
+- Nome do produto
 
-Você escolhe qual fórmula será a base do orçamento. O sistema importa automaticamente a lista de ingredientes e as proporções. Se você ajustar o tamanho do lote no orçamento, o Kerus recalcula todos os custos proporcionalmente para você.
-
-### 2. Personalização de Margens
-
-Defina sua margem de lucro, custos de embalagem e mão de obra. O sistema exibe o **Custo Real vs. Preço de Venda**, garantindo que você nunca trabalhe no prejuízo.
-
-### 3. Emissão do Documento Profissional
-
-Com um clique, o sistema gera uma proposta visualmente impecável, pronta para ser impressa ou enviada via WhatsApp/E-mail, com a marca da sua empresa e todos os detalhes técnicos necessários.
-
----
-
-## Recursos Exclusivos
-
-::: tip <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Precisão Financeira
-**Atualização Automática de Custos:** Se o preço de um insumo subir no seu inventário, o Kerus pode alertar que seus orçamentos antigos vinculados àquela fórmula precisam de revisão. Você nunca mais enviará um preço defasado por esquecimento.
-:::
-
-::: info <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Acompanhamento de Status
-Mantenha o controle total sobre suas negociações através dos status:
-
-* **Pendente:** Proposta enviada, aguardando resposta do cliente.
-* **Aprovado:** Orçamento aceito, pronto para liberação da produção.
-* **Arquivado:** Histórico de negociações que não avançaram, mantendo seu banco de dados limpo.
+::: warning Somente fichas no status Final aparecem nessa lista
+Orçamentos são documentos comerciais — apenas fórmulas validadas podem ser cotadas.
 :::
 
 ---
 
-## Organização Visual (Dashboard)
+## Ajustar o Lote e os Custos {#custos}
 
-Todos os seus orçamentos recentes aparecem de forma resumida no seu **Dashboard**. Isso permite que você identifique rapidamente quais clientes precisam de um acompanhamento (*follow-up*) e qual o volume financeiro total das suas propostas em aberto.
+Após vincular a ficha, defina:
+
+- **Tamanho do lote cotado** — pode ser diferente do lote-padrão da ficha. Os custos são recalculados proporcionalmente.
+- **Custo de embalagem** — valor unitário da embalagem do produto final
+- **Mão de obra** — custo de produção por lote
+- **Margem de lucro (%)** — percentual aplicado sobre o custo total
+
+O sistema exibe em tempo real o **custo total** e o **preço de venda sugerido** com base nesses parâmetros.
+
+---
+
+## Preencher os Dados do Cliente
+
+Registre as informações do destinatário da proposta:
+
+- Nome do cliente ou empresa
+- Contato (e-mail ou telefone)
+- Condições de pagamento (à vista, parcelado, etc.)
+- Prazo de entrega estimado
+- Data de validade da proposta
+
+---
+
+## Status do Orçamento {#status}
+
+Acompanhe o andamento de cada proposta pelo status:
+
+**Pendente**
+: Proposta enviada ao cliente, aguardando resposta. Status inicial de todo orçamento criado.
+
+**Aprovado**
+: Cliente aceitou a proposta. A produção pode ser liberada.
+
+**Arquivado**
+: Negociação encerrada sem aprovação. O orçamento é mantido no histórico para referência futura.
+
+Para alterar o status, use o seletor na tela de visualização do orçamento.
+
+---
+
+## Exportar e Enviar
+
+Na tela de visualização, use os botões no topo:
+
+- **PDF** — gera uma proposta formatada com os dados da empresa, produto, quantidades e valores, pronta para envio
+- **Imprimir** — abre a janela de impressão do navegador
+
+::: tip A proposta já inclui os dados da sua empresa
+Nome, contato e identificação profissional configurados em Configurações aparecem automaticamente no cabeçalho do documento.
+:::
+
+---
+
+## Acompanhamento no Dashboard
+
+O Dashboard exibe um resumo dos orçamentos mais recentes com seus status. Use-o para identificar rapidamente quais propostas precisam de acompanhamento.
 
 ---
 
 ## Próximos Passos
 
-Agora que você já domina a criação de fórmulas e orçamentos, aprenda a personalizar a interface para o seu conforto visual:
-
-* [Entendendo a Interface e o Tema Escuro](./theme)
-* [Ajustando suas Preferências de Usuário](./settings)
+- [Ajustar os dados da empresa nas Configurações](./settings)
+- [Entender o status das Fichas Técnicas](./sheet#status)

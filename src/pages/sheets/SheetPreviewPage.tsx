@@ -121,7 +121,7 @@ export const SheetPreviewPage: React.FC = () => {
                                 saveToHistory({ ...recipe, status: next });
                             }}
                         />
-                        <HintButton hint={t('hints.statusBadge')} />
+                        <HintButton hint={t('hints.statusBadge')} docsLink="/docs/guide/sheet#status" />
                     </div>
                 </div>
 
@@ -137,7 +137,7 @@ export const SheetPreviewPage: React.FC = () => {
                         <button onClick={handleExportPDF} className="ds-button-primary flex items-center gap-1.5 text-sm">
                             <FileDown size={13} /> {t('buttons.exportPdf')}
                         </button>
-                        <HintButton hint={t('hints.exportPdf')} />
+                        <HintButton hint={t('hints.exportPdf')} docsLink="/docs/guide/sheet#exportar" />
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -153,7 +153,7 @@ export const SheetPreviewPage: React.FC = () => {
                         >
                             <FileCode2 size={13} /> {t('buttons.exportXml')}
                         </button>
-                        <HintButton hint={t('hints.exportXml')} />
+                        <HintButton hint={t('hints.exportXml')} docsLink="/docs/guide/sheet#exportar" />
                     </div>
 
                     <button onClick={() => window.print()} className="ds-button flex items-center gap-1.5 text-sm">

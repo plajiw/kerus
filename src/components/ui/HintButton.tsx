@@ -1,25 +1,29 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useHelpMode } from '../../hooks/useHelpMode';
+import { useApp } from '../../context/AppContext';
 import { HintPopover, PANEL_W } from './HintPopover';
 import type { PopoverPos } from './HintPopover';
 
 interface HintButtonProps {
-    hint: string;
-    /** Label displayed at the top of the popover in primary color */
     title?: string;
-    /** Optional link to documentation shown at the bottom of the popover */
+    text: React.ReactNode;
+    callout?: 'icon' | 'warning' | 'info';
+    calloutText?: React.ReactNode;
     docsLink?: string;
-    /** Show this button even when help mode is disabled (use only for the help mode setting itself) */
+    mediaUrl?: string;
+    feedbackId?: string;
     forceVisible?: boolean;
     className?: string;
 }
 
-const PANEL_H_EST = 220;
-
-export const HintButton: React.FC<HintButtonProps> = ({ hint, title, docsLink, forceVisible = false, className = '' }) => {
+export const HintButton: React.FC<HintButtonProps> = ({ 
+    title, text, callout, calloutText, docsLink, mediaUrl, feedbackId, forceVisible = false, className = '' 
+}) => {
     const { helpMode } = useHelpMode();
+    const { addToast } = useApp();
     const [open, setOpen] = useState(false);
-    const [pos, setPos] = useState<PopoverPos>({ top: 0, bottom: 'auto', left: 0, placement: 'below', arrowLeft: 12 });
+    // Pos adicionado o maxHeight inicial
+    const [pos, setPos] = useState<PopoverPos>({ top: 0, bottom: 'auto', left: 0, placement: 'below', arrowLeft: 12, maxHeight: 300 });
     const btnRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
 
@@ -30,27 +34,31 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, docsLink, f
     const calcPos = useCallback(() => {
         if (!btnRef.current) return;
         const rect = btnRef.current.getBoundingClientRect();
-
+        
         let left = rect.left + rect.width / 2 - PANEL_W / 2;
         left = Math.max(12, Math.min(left, window.innerWidth - PANEL_W - 12));
-
+        
+        // MATEMÁTICA DE TELA: Avalia espaço em cima e embaixo
         const spaceBelow = window.innerHeight - rect.bottom;
-        const placement: 'below' | 'above' = spaceBelow < PANEL_H_EST ? 'above' : 'below';
-
+        const spaceAbove = rect.top;
+        
+        // Se não couber embaixo (menos de 280px) E tiver mais espaço em cima, inverte
+        const placement: 'below' | 'above' = (spaceBelow < 280 && spaceAbove > spaceBelow) ? 'above' : 'below';
+        
         let top: number | 'auto' = 'auto';
         let bottom: number | 'auto' = 'auto';
+        let maxHeight = 280;
+
         if (placement === 'above') {
             bottom = window.innerHeight - rect.top + 8;
+            maxHeight = Math.max(150, spaceAbove - 24); // Limita a altura deixando 24px de respiro no topo
         } else {
             top = rect.bottom + 8;
+            maxHeight = Math.max(150, spaceBelow - 24); // Limita a altura deixando 24px de respiro no fundo
         }
-
-        const arrowLeft = Math.max(10, Math.min(
-            (rect.left + rect.width / 2) - left - 6,
-            PANEL_W - 24,
-        ));
-
-        setPos({ top, bottom, left, placement, arrowLeft });
+        
+        const arrowLeft = Math.max(10, Math.min((rect.left + rect.width / 2) - left - 6, PANEL_W - 24));
+        setPos({ top, bottom, left, placement, arrowLeft, maxHeight });
     }, []);
 
     const handleClick = (e: React.MouseEvent) => {
@@ -79,6 +87,55 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, docsLink, f
             window.removeEventListener('scroll', onScroll, true);
         };
     }, [open, calcPos]);
+
+    const handleFeedback = (isHelpful: boolean) => {
+        if (isHelpful) {
+            addToast('Ficamos felizes em ajudar!', 'success');
+        } else {
+            addToast('Obrigado pelo feedback. Vamos melhorar esta explicação!', 'info');
+        }
+    };
+
+    const renderHintContent = () => {
+        const contentNode = typeof text === 'string' 
+            ? <div style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: text }} />
+            : <div style={{ margin: 0 }}>{text}</div>;
+
+        if (!callout) return contentNode;
+
+        return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {contentNode}
+
+                {callout === 'icon' && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 10px', background: 'var(--surface-1)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+                        <code style={{ background: 'var(--surface-3)', padding: '2px 6px', borderRadius: '4px', color: 'var(--primary)', fontWeight: 800, fontSize: '11px', border: '1px solid var(--border)' }}>?</code>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                            {calloutText || 'Procure por este ícone na interface.'}
+                        </span>
+                    </div>
+                )}
+
+                {callout === 'warning' && (
+                    <div style={{ padding: '6px 10px', background: 'var(--status-warning-bg)', borderLeft: '3px solid var(--status-warning-text)', borderRadius: '0 var(--radius-sm) var(--radius-sm) 0' }}>
+                        <span style={{ fontSize: '11px', color: 'var(--status-warning-text)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Atenção</span>
+                        <div style={{ margin: '2px 0 0 0', fontSize: '11px', color: 'var(--ink-0)', fontWeight: 500 }}>
+                            {calloutText}
+                        </div>
+                    </div>
+                )}
+
+                {callout === 'info' && (
+                    <div style={{ padding: '6px 10px', background: 'var(--status-info-bg)', borderLeft: '3px solid var(--status-info-text)', borderRadius: '0 var(--radius-sm) var(--radius-sm) 0' }}>
+                        <span style={{ fontSize: '11px', color: 'var(--status-info-text)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dica</span>
+                        <div style={{ margin: '2px 0 0 0', fontSize: '11px', color: 'var(--ink-0)', fontWeight: 500 }}>
+                            {calloutText}
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     if (!helpMode && !forceVisible) return null;
 
@@ -142,12 +199,15 @@ export const HintButton: React.FC<HintButtonProps> = ({ hint, title, docsLink, f
                     ?
                 </span>
             </button>
+            
             {open && (
                 <HintPopover
                     pos={pos}
                     title={title}
-                    hint={hint}
+                    hint={renderHintContent()}
                     docsLink={docsLink}
+                    mediaUrl={mediaUrl}
+                    onFeedback={feedbackId ? handleFeedback : undefined}
                     panelRef={panelRef}
                     onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}
                     onClick={(e: React.MouseEvent) => e.stopPropagation()}

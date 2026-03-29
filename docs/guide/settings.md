@@ -1,70 +1,78 @@
-# Configurações do Sistema
+# Configurações
 
-O Kerus é uma ferramenta flexível que se molda à identidade do seu negócio. Na seção de **Configurações**, você define as regras de cálculo, os dados da sua marca para emissão de documentos e as suas preferências de interface.
-
-Manter estas informações atualizadas garante que seus orçamentos e fichas técnicas tenham um acabamento profissional e institucional.
+As Configurações centralizam tudo que define a identidade do seu negócio no sistema e as suas preferências de uso. Acesse pelo ícone de engrenagem no menu lateral.
 
 ---
 
-## 🏢 Perfil da Empresa
+## Perfil da Empresa {#perfil-da-empresa}
 
-Estes dados são a base da sua identidade visual no Kerus. As informações inseridas aqui aparecerão automaticamente no cabeçalho de todas as suas impressões e exportações em PDF.
+Os dados preenchidos aqui aparecem automaticamente no cabeçalho de todas as fichas técnicas e orçamentos exportados.
 
-* **Logotipo e Nome:** O nome da sua empresa ou laboratório.
-* **Dados de Contato:** E-mail, telefone e endereço que serão exibidos nos orçamentos para seus clientes.
-* **Identificação Profissional:** Espaço para registro em conselhos de classe (ex: CRQ, CRBM), se aplicável ao seu setor.
+**Nome da empresa ou laboratório**
+: Aparece em destaque no topo dos documentos exportados.
 
-::: tip <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Profissionalismo Automático
-Ao preencher o perfil da empresa uma única vez, você elimina a necessidade de formatar cabeçalhos manualmente em cada nova proposta comercial. O Kerus cuida da estética para você.
+**Nome do responsável técnico**
+: Identificação do profissional responsável pelas fórmulas.
+
+**Telefone de contato**
+: Exibido nos orçamentos para que o cliente possa retornar o contato.
+
+::: tip Preencha uma vez, use sempre
+Após salvar, essas informações são inseridas automaticamente em todos os documentos futuros. Não é necessário preencher a cada exportação.
 :::
 
----
-
-## ⚙️ Preferências de Interface
-
-Personalize como você interage com o software no dia a dia.
-
-### Modo de Visualização
-
-Escolha entre o **Tema Claro**, **Tema Escuro** ou deixe o sistema seguir automaticamente as configurações do seu computador.
-
-### Assistentes de Uso
-
-* **Modo Ajuda:** Ativa ou desativa os botões `?` de dicas rápidas.
-* **Modo Avançado:** Desbloqueia campos de alta complexidade técnica no editor de fórmulas (pH, viscosidade, densidade).
+Clique em **Salvar** para confirmar as alterações.
 
 ---
 
-## ⚖️ Unidades e Padrões de Cálculo
+## Aparência
 
-O Kerus permite que você defina como deseja visualizar seus dados técnicos por padrão:
+### Tema da Interface
 
-1. **Unidade de Medida Principal:** Defina se prefere trabalhar majoritariamente com Gramas (g), Mililitros (ml) ou Porcentagem (%).
-2. **Precisão Decimal:** Escolha quantas casas decimais você deseja visualizar nos seus cálculos de peso.
-3. **Moeda:** Configure a moeda local para que seus orçamentos exibam os símbolos monetários corretos (ex: R$, $, €).
+Alterne entre o **Tema Escuro** e o **Tema Claro** conforme sua preferência ou condição de iluminação do ambiente.
+
+O botão de alternância está disponível tanto nas Configurações quanto no menu lateral da aplicação.
+
+Para mais detalhes sobre os temas, consulte o guia de [Aparência e Tema](./theme).
 
 ---
 
-## 🔒 Segurança e Dados
+## Idioma
 
-::: warning <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Privacidade das Fórmulas
-Suas fórmulas são propriedade intelectual sua. O Kerus utiliza criptografia para garantir que seus dados técnicos sejam acessíveis apenas por você e pelos usuários autorizados na sua conta.
-:::
+Selecione o idioma da interface entre as opções disponíveis:
 
-### Gestão de Conta
+- Português (Brasil)
+- English
+- Español
 
-Nesta seção, você também pode:
+A alteração é aplicada imediatamente, sem necessidade de recarregar a página.
 
-* Alterar sua senha de acesso.
-* Atualizar seu e-mail de recuperação.
-* Gerenciar o faturamento e o plano da sua assinatura Kerus.
+---
+
+## Modo Ajuda {#modo-ajuda}
+
+Controla a visibilidade dos botões de dica (`?`) em toda a interface.
+
+- **Ativado** (padrão): os botões `?` aparecem ao lado dos campos e seções. Ao clicar, exibem uma explicação contextual rápida.
+- **Desativado**: os botões desaparecem. Indicado para usuários experientes que não precisam das orientações.
+
+Para saber mais, consulte o guia do [Modo Ajuda](./help-mode).
+
+---
+
+## Modo Avançado {#modo-avancado}
+
+Desbloqueia campos técnicos extras no editor de fichas técnicas, como faixa de pH, perfil de viscosidade e controle de versões.
+
+- **Desativado** (padrão): interface simplificada, focada nos campos essenciais.
+- **Ativado**: campos avançados aparecem no editor de fórmulas.
+
+Recomendado para formuladores com necessidade de documentação técnica aprofundada. Para saber mais, consulte o guia do [Modo Avançado](./advanced-mode).
 
 ---
 
 ## Próximos Passos
 
-Com tudo configurado, você está pronto para explorar as novidades mais recentes do nosso ecossistema:
-
-* [Veja as Notas de Atualização e Novidades](./updates)
-* [Volte para a Visão Geral do Sistema](./index)
-* [Aprenda a criar sua primeira Ficha Técnica](./sheet)
+- [Modo Ajuda — como funciona](./help-mode)
+- [Modo Avançado — o que desbloqueia](./advanced-mode)
+- [Aparência e Tema](./theme)

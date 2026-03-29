@@ -44,7 +44,16 @@ export function lsRemove(key: string): void {
 
 // ─── UI Preferences ────────────────────────────────────────────────────────
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = 
+  | 'system' 
+  | 'light' 
+  | 'dark' 
+  | 'monokai' 
+  | 'ocean' 
+  | 'sepia' 
+  | 'amoled' 
+  | 'dracula' 
+  | 'high-contrast';
 
 export interface AppPreferences {
     // Views

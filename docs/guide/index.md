@@ -1,52 +1,52 @@
-# O que é o Kerus?
-
-Bem-vindo à Documentação Oficial do Kerus. O Kerus é um software de alto desempenho projetado exclusivamente para a **formulação de precisão**, atendendo às necessidades operacionais e rigorosas de indústrias, laboratórios e formuladores independentes.
-
-O sistema foi criado para preencher a lacuna entre simples planilhas de receitas e sistemas complexos (e engessados) de ERP industrial, oferecendo uma interface limpa, inteligente e altamente técnica.
-
 ---
+layout: home
 
-## 🎯 Visão Geral e Setores Atendidos
+hero:
+  name: "Kerus"
+  text: "Formulação técnica com precisão profissional"
+  tagline: "Da bancada ao orçamento, tudo em um lugar."
+  actions:
+    - theme: brand
+      text: Primeiros Passos
+      link: /guide/getting-started
+    - theme: alt
+      text: Fichas Técnicas
+      link: /guide/sheet
 
-Seja você um engenheiro químico, um cosmetólogo ou um chef de desenvolvimento de produtos, o Kerus padroniza seu processo criativo e técnico. Nossa plataforma atende com excelência três nichos principais:
+features:
+  - icon:
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>'
+    title: Fichas Técnicas
+    details: Organize ingredientes por fases, valide proporções em tempo real e controle o ciclo de vida das suas fórmulas — de rascunho até validado.
+    link: /guide/sheet
+    linkText: Ver guia
 
-### 1. Indústria Cosmética e Química
+  - icon:
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'
+    title: Orçamentos
+    details: Transforme o custo real das suas fórmulas em propostas comerciais profissionais, com margens e custos calculados automaticamente.
+    link: /guide/quotations
+    linkText: Ver guia
 
-Desenvolvido com as regras da cosmetologia em mente. O Kerus oferece suporte nativo à gestão de nomenclaturas **INCI** (International Nomenclature of Cosmetic Ingredients), organização de processos por fases físico-químicas (ex: Fase Aquosa, Fase Oleosa, Termolábeis) e validação matemática para garantir que suas porcentagens sempre somem exatos 100%.
+  - icon:
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3.03A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3.03A2.5 2.5 0 0 0 14.5 2Z"/></svg>'
+    title: Indústria Cosmética
+    details: Suporte a nomenclatura INCI, organização por fases físico-químicas e validação de proporções para cosmetólogos e laboratórios de P&D.
 
-### 2. Indústria Gastronômica e Food Service
+  - icon:
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" x2="18" y1="17" y2="17"/></svg>'
+    title: Food Service e Gastronomia
+    details: Fichas operacionais para cozinhas industriais. Padronize processos, escale lotes automaticamente e calcule o custo exato por grama.
 
-Ideal para a criação de Fichas Técnicas operacionais. Padronize os processos da sua cozinha industrial, dimensione o tamanho de lotes de forma automática e tenha um controle rigoroso do custo exato por grama de cada ingrediente utilizado em suas receitas.
+  - icon:
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/></svg>'
+    title: Laboratórios de P&D
+    details: Histórico de versões, status de ciclo de vida e extração automática de dados via inteligência artificial para prototipagem ágil.
 
-### 3. Laboratórios de P&D (Pesquisa e Desenvolvimento)
-
-Projetado para a prototipagem rápida. Mantenha um histórico claro de versões de suas fórmulas, utilize o status de ciclo de vida (Rascunho vs. Validado) e conte com o auxílio da nossa Inteligência Artificial para extrair dados técnicos e acelerar a pesquisa de novos produtos.
-
+  - icon:
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>'
+    title: Modo Ajuda
+    details: Ative dicas contextuais em toda a interface. Cada campo tem uma explicação rápida disponível sem sair da tela.
+    link: /guide/help-mode
+    linkText: Ver guia
 ---
-
-## 🧩 O Ecossistema Kerus
-
-O sistema é dividido em módulos integrados que conversam entre si para facilitar a sua rotina de ponta a ponta:
-
-* **Fichas Técnicas (Fórmulas):** O coração do Kerus. O documento mestre que contém toda a inteligência, proporções e métodos de preparo do seu produto.
-* **Orçamentos:** O motor comercial. Transforme a inteligência e os custos reais da sua ficha técnica em propostas comerciais elegantes e profissionais para os seus clientes em poucos cliques.
-* **Controle de Estoque:** A garantia operacional. Acompanhe a disponibilidade das suas matérias-primas e saiba exatamente o impacto de cada lote produzido no seu inventário *(Módulo em expansão)*.
-* **Dashboard:** O seu centro de controle estratégico. Unifica suas estatísticas, fórmulas recentes e o andamento das suas propostas comerciais em um único painel dinâmico.
-
----
-
-## 🛠️ Personalização e Modos de Uso
-
-Acreditamos que o software deve se adaptar ao seu nível de experiência, e não o contrário:
-
-* **Modo Ajuda:** Uma experiência guiada para novos usuários. Quando ativado, exibe botões com dicas flutuantes (`?`) por toda a interface, explicando o propósito de cada campo, cálculo e botão.
-* **Modo Avançado:** Feito para formuladores seniores. Desbloqueia campos altamente técnicos, controle avançado de fases, escalas automáticas de lotes, faixas de pH e perfis de viscosidade.
-
----
-
-## 🚀 Próximos Passos
-
-Agora que você já conhece a proposta do Kerus, que tal mergulhar no uso prático do sistema? Escolha por onde deseja começar:
-
-* [Como criar sua primeira Ficha Técnica](./sheet.md)
-* [Ajustando as Preferências e Temas do Sistema](./settings.md)

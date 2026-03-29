@@ -1,70 +1,49 @@
 # Modo Ajuda
 
-O **Modo Ajuda** é um sistema de dicas contextuais embutido no Kerus. Quando ativado, ele exibe pequenos botões `?` ao lado de campos e seções — ao clicar, um popover flutuante aparece com uma explicação detalhada sobre aquele elemento.
+O Modo Ajuda exibe pequenos botões de dica (`?`) ao lado dos campos e seções da interface. Ao clicar em um desses botões, um painel flutuante aparece com uma explicação contextual daquele elemento — sem precisar sair da tela nem consultar a documentação.
 
-## Como ativar
+---
 
-O Modo Ajuda é controlado nas **Configurações** (`/configuracoes`), na seção de preferências de interface. A escolha é salva automaticamente e persiste entre sessões.
+## Como Ativar ou Desativar
+
+Acesse **Configurações** (ícone de engrenagem no menu lateral) e localize a seção **Modo Ajuda**.
+
+Use o interruptor para ativar ou desativar. A preferência é salva automaticamente e persiste entre sessões.
 
 - **Ativado** (padrão): os botões `?` ficam visíveis em toda a interface.
-- **Desativado**: todos os botões `?` desaparecem completamente — ideal para usuários experientes que não precisam das dicas.
+- **Desativado**: os botões `?` desaparecem completamente. Indicado para usuários que já conhecem bem o sistema.
 
-## Onde aparece
+::: tip O botão do Modo Ajuda nas Configurações é sempre visível
+Mesmo com o Modo Ajuda desativado, o botão `?` na seção de Configurações permanece disponível para que você possa reativá-lo quando quiser.
+:::
 
-O botão `?` é renderizado pelo componente `HintButton`, presente em:
+---
 
-- Campos do editor de fichas técnicas (ingredientes, etapas, metadados)
-- Seções do editor de orçamentos
-- Configurações avançadas
+## Como Usar
 
-## Anatomia do popover
+Sempre que vir um botão `?` ao lado de um campo, rótulo ou seção:
 
-Quando clicado, o botão abre um popover flutuante com:
+1. Clique no botão `?`
+2. Um painel flutuante aparece com o título da seção e uma explicação sobre aquele elemento
+3. Se houver um link "Ver na documentação", clique para acessar o guia completo sobre o assunto
+4. Clique fora do painel ou pressione `Esc` para fechá-lo
 
-```
-[ TÍTULO DA SEÇÃO ]         ← em laranja, uppercase, 10px
-Texto explicativo da dica.  ← corpo, 12px
-─────────────────────────
-📖 Ver na documentação      ← link opcional para esta docs
-```
+O painel se posiciona automaticamente — abre abaixo do botão quando há espaço, ou acima quando está próximo da borda inferior da tela.
 
-O popover se posiciona automaticamente — abre para baixo por padrão e inverte para cima quando não há espaço suficiente na viewport.
+---
 
-## Uso no código
+## Onde os Botões Aparecem
 
-```tsx
-import { HintButton } from '../ui/HintButton';
+Os botões de dica estão presentes nas principais áreas do sistema:
 
-// Básico
-<HintButton
-    title="Rendimento"
-    hint="Quantidade total produzida pela fórmula. Usado para calcular o custo por unidade."
-/>
+- Editor de fichas técnicas — campos de ingredientes, fases e metadados
+- Tela de visualização de fichas e orçamentos — status, exportações
+- Modal de importação — instruções de uso da IA
+- Configurações — explicações de cada opção
 
-// Com link para a documentação
-<HintButton
-    title="Rendimento"
-    hint="Quantidade total produzida pela fórmula. Usado para calcular o custo por unidade."
-    docsLink="/docs/guide/formulas"
-/>
-```
+---
 
-### Props do `HintButton`
+## Próximos Passos
 
-| Prop       | Tipo     | Padrão | Descrição                                               |
-| ---------- | -------- | ------ | ------------------------------------------------------- |
-| `hint`     | `string` | —      | Texto da dica (obrigatório)                             |
-| `title`    | `string` | —      | Título exibido no topo do popover em laranja            |
-| `docsLink` | `string` | —      | URL para a documentação — exibe link no rodapé do popup |
-| `className`| `string` | `''`   | Classes CSS adicionais para o wrapper                   |
-
-## Arquitetura
-
-O componente é dividido em dois arquivos para manter separação de responsabilidades:
-
-| Arquivo | Responsabilidade |
-| --- | --- |
-| `src/components/ui/HintButton.tsx` | Botão `?`, lógica de posicionamento, abertura/fechamento |
-| `src/components/ui/HintPopover.tsx` | Renderização do popover via React Portal |
-
-O estado de ativação é gerenciado pelo hook `useHelpMode` (`src/hooks/useHelpMode.ts`), que lê e escreve em `kerus_prefs` via `localStorageService`. Um evento customizado `kerus_help_mode_changed` sincroniza todos os `HintButton` montados ao mesmo tempo quando a configuração muda.
+- [Configurações do sistema](./settings)
+- [Modo Avançado — campos extras desbloqueados](./advanced-mode)

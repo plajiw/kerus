@@ -221,7 +221,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
                         >
                             <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
                                 <span onClick={() => setTemplateOpen(p => !p)}>{t('import.templateTitle')}</span>
-                                <HintButton hint={t('hints.template')} />
+                                <HintButton hint={t('hints.template')} docsLink="/docs/guide/sheet#importar" />
                             </div>
                             {templateOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                         </button>

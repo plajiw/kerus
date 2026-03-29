@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
     FlaskConical, LayoutDashboard, Receipt, Package,
-    Settings, ChevronLeft, ChevronRight, Moon, Sun,
+    Settings, ChevronLeft, ChevronRight,
     X, BookOpen,
 } from 'lucide-react';
 import { useI18n } from '../../i18n/i18n.tsx';
-import { useTheme } from '../../hooks/useTheme';
 import { usePreferences } from '../../hooks/usePreferences';
 import { AppVersion } from '../ui/AppVersion';
 
@@ -107,7 +106,6 @@ const NavGroup: React.FC<{
 // ─── Sidebar ───────────────────────────────────────────────────
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
     const { t } = useI18n();
-    const { isDark, toggleDark } = useTheme();
     const { prefs, updatePrefs } = usePreferences();
     const location = useLocation();
 
@@ -133,12 +131,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
     const sistemaItems: NavItem[] = [
         { to: '/configuracoes', icon: <Settings size={18} />, label: t('nav.settings') },
         { to: '/docs/', icon: <BookOpen size={18} />, label: 'Documentação' },
-        {
-            to: '',
-            icon: isDark ? <Sun size={18} /> : <Moon size={18} />,
-            label: isDark ? t('nav.lightMode') : t('nav.darkMode'),
-            onClick: toggleDark,
-        },
     ];
 
     return (

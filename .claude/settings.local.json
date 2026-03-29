@@ -51,7 +51,8 @@
       "Bash(grep -n \"type: ''formula''\" src/pages/dashboard/DashboardPage.tsx)",
       "Bash(grep -r \"JSZip\\\\|jszip\" c:/Users/plajiw/Documents/kerus/src --include=*.ts --include=*.tsx -n)",
       "Bash(find c:UsersplajiwDocumentskerussrcpagessheets -type f -name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js)",
-      "Bash(find c:UsersplajiwDocumentskerussrcpagesquotations -type f -name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js)"
+      "Bash(find c:UsersplajiwDocumentskerussrcpagesquotations -type f -name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js)",
+      "Bash(cat:*)"
     ]
   }
 }

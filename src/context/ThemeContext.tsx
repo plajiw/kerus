@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
-import { PRIMARY_COLOR } from '../constants/appConfig';
 import { getPrefs, setPrefs, ThemeMode } from '../services/localStorageService';
 
 const resolveIsDark = (mode: ThemeMode): boolean => {
-    if (mode === 'dark') return true;
-    if (mode === 'light') return false;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (mode === 'system') return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return mode !== 'light';
 };
 
 const applyTheme = (dark: boolean, mode: ThemeMode = 'light') => {
-    // [data-theme] attribute — used by tokens.css and components.css
-    const themeAttr = dark ? 'dark' : (mode !== 'system' ? mode : 'light');
+    const themeAttr = mode === 'system' ? (dark ? 'dark' : 'light') : mode;
     document.documentElement.setAttribute('data-theme', themeAttr);
-    // .dark class — kept for Tailwind dark: utility compatibility
     document.documentElement.classList.toggle('dark', dark);
     document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
 };
@@ -29,6 +25,7 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    // Inicializa o estado lendo as preferências salvas e aplicando o tema inicial
     const [isDark, setIsDark] = useState<boolean>(() => {
         const { themeMode } = getPrefs();
         const dark = resolveIsDark(themeMode);
@@ -39,24 +36,24 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(() => getPrefs().animationsEnabled);
     const [themeMode, setThemeModeState] = useState<ThemeMode>(() => getPrefs().themeMode);
 
-    // Apply fixed brand color once on mount
-    useEffect(() => {
-        document.documentElement.style.setProperty('--primary', PRIMARY_COLOR);
-    }, []);
+    // Sempre que o modo de tema ou o estado 'dark' mudar, re-aplica no DOM
+    useEffect(() => { 
+        applyTheme(isDark, themeMode); 
+    }, [isDark, themeMode]);
 
-    // Apply theme attribute and dark class whenever isDark/themeMode changes
-    useEffect(() => { applyTheme(isDark, themeMode); }, [isDark, themeMode]);
-
-    // Persist preferences
+    // Persiste as preferências sempre que elas mudarem
     useEffect(() => {
         setPrefs({ animationsEnabled, themeMode });
     }, [animationsEnabled, themeMode]);
 
-    // System theme listener
+    // Listener para reagir a mudanças no tema do sistema operacional (se o modo for 'system')
     useEffect(() => {
         if (themeMode !== 'system') return;
         const media = window.matchMedia('(prefers-color-scheme: dark)');
-        const onchange = () => setIsDark(media.matches);
+        
+        // Define função de callback tipada corretamente
+        const onchange = (e: MediaQueryListEvent) => setIsDark(e.matches);
+        
         setIsDark(media.matches);
         media.addEventListener('change', onchange);
         return () => media.removeEventListener('change', onchange);

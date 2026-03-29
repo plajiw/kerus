@@ -105,7 +105,7 @@ export const QuotationPreviewPage: React.FC = () => {
                             configs={statusConfigs}
                             onChange={v => updateQuotationStatus(quotation.id, v as QuotationStatus)}
                         />
-                        <HintButton hint={t('hints.statusBadge')} />
+                        <HintButton hint={t('hints.statusBadge')} docsLink="/docs/guide/quotations#status" />
                     </div>
                 </div>
 

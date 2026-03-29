@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════════════════════
+   KERUS DOCS — VitePress Theme Override
+   Maps Kerus design tokens to VitePress CSS variables.
+   Primary: #E67E00 (light) / #FF8C00 (dark)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Brand (shared light/dark base) ─────────────────────────────── */
+:root {
+  --vp-c-brand-1: #E67E00;
+  --vp-c-brand-2: #cc7000;
+  --vp-c-brand-3: #b86400;
+  --vp-c-brand-soft: rgba(230, 126, 0, 0.12);
+
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: #ffffff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: #ffffff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-bg: var(--vp-c-brand-3);
+}
+
+/* ── Light theme surfaces ─────────────────────────────────────────
+   Kerus light: surface-0 #E8E8E8, surface-1 #F6F6F6,
+                surface-2 #FFFFFF,  surface-3 #ECECEC
+   ───────────────────────────────────────────────────────────────── */
+:root {
+  --vp-c-bg:        #F6F6F6;
+  --vp-c-bg-soft:   #ECECEC;
+  --vp-c-bg-elv:    #FFFFFF;
+  --vp-c-bg-alt:    #E8E8E8;
+
+  --vp-c-text-1:    #1C1714;
+  --vp-c-text-2:    #3D3430;
+  --vp-c-text-3:    #7C7370;
+
+  --vp-c-divider:   rgba(28, 23, 20, 0.08);
+  --vp-c-border:    rgba(28, 23, 20, 0.08);
+
+  --vp-nav-bg-color:     #F6F6F6;
+  --vp-sidebar-bg-color: #E8E8E8;
+}
+
+/* ── Dark theme surfaces ──────────────────────────────────────────
+   Kerus dark: surface-0 #0e0e0e, surface-1 #131313,
+               surface-2 #202020,  surface-3 #2c2c2c
+   ───────────────────────────────────────────────────────────────── */
+.dark {
+  --vp-c-brand-1: #FF8C00;
+  --vp-c-brand-2: #e67e00;
+  --vp-c-brand-3: #cc7000;
+  --vp-c-brand-soft: rgba(255, 140, 0, 0.12);
+
+  --vp-c-bg:        #131313;
+  --vp-c-bg-soft:   #202020;
+  --vp-c-bg-elv:    #202020;
+  --vp-c-bg-alt:    #0e0e0e;
+
+  --vp-c-text-1:    #ffffff;
+  --vp-c-text-2:    #e4e2e1;
+  --vp-c-text-3:    #adaaaa;
+
+  --vp-c-divider:   #222222;
+  --vp-c-border:    #222222;
+
+  --vp-nav-bg-color:     #131313;
+  --vp-sidebar-bg-color: #0e0e0e;
+}
+
+/* ── Typography ───────────────────────────────────────────────────── */
+:root {
+  --vp-font-family-base: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --vp-font-family-mono: ui-monospace, 'SF Mono', monospace;
+}
+
+/* ── Links ────────────────────────────────────────────────────────── */
+.vp-doc a {
+  color: var(--vp-c-brand-1);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
+}
+
+/* ── No-shadow philosophy ─────────────────────────────────────────── */
+.VPNav,
+.VPSidebar,
+.vp-doc .custom-block {
+  box-shadow: none !important;
+}
+
+/* ── Custom blocks ────────────────────────────────────────────────── */
+.vp-doc .custom-block.tip {
+  border-color: var(--vp-c-brand-soft);
+  background: var(--vp-c-brand-soft);
+}
+
+.vp-doc .custom-block.tip .custom-block-title {
+  color: var(--vp-c-brand-1);
+}
+
+/* ── Definition list (used for status descriptions) ─────────────── */
+.vp-doc dl dt {
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+  margin-top: 12px;
+}
+
+.vp-doc dl dd {
+  margin-left: 16px;
+  color: var(--vp-c-text-2);
+}
+
+/* ── Tables ───────────────────────────────────────────────────────── */
+.vp-doc table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.vp-doc thead tr {
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc th,
+.vp-doc td {
+  border: 1px solid var(--vp-c-divider);
+  padding: 8px 12px;
+  font-size: 0.875rem;
+}

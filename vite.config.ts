@@ -12,13 +12,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       host: true,
-      proxy: {
-        '/docs': {
-          target: 'http://localhost:5173',
-          changeOrigin: true,
-          secure: false,
-        }
-      }
     },
     plugins: [react()],
     define: {

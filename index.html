@@ -6,7 +6,7 @@
     <title>Kerus</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <script>try{let p=JSON.parse(localStorage.getItem('kerus_prefs')||'{}'),t=p.themeMode;if(!['light','dark','system'].includes(t))t=(p.isDarkMode===true||p.isDarkMode==='true')?'dark':'light';if(t==='system')t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';const d=t||'light';document.documentElement.setAttribute('data-theme',d);if(d==='dark')document.documentElement.classList.add('dark');document.documentElement.style.colorScheme=d==='dark'?'dark':'light';}catch(e){}</script>
+    <script>try{let p=JSON.parse(localStorage.getItem('kerus_prefs')||'{}'),t=p.themeMode;if(!['light','dark','system','monokai','ocean'].includes(t))t='light';if(t==='system')t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';const d=t||'light';document.documentElement.setAttribute('data-theme',d);if(d!=='light')document.documentElement.classList.add('dark');document.documentElement.style.colorScheme=d==='light'?'light':'dark';}catch(e){}</script>
 
     <script>window.tailwind={config:{darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Manrope','sans-serif']},colors:{'surface-0':'var(--surface-0)','surface-1':'var(--surface-1)','surface-2':'var(--surface-2)','surface-3':'var(--surface-3)','ink-0':'var(--ink-0)','ink-1':'var(--ink-1)','ink-2':'var(--ink-2)',primary:'var(--primary)','primary-container':'var(--primary-container)'}}}}};</script>
     <script src="https://cdn.tailwindcss.com"></script>
