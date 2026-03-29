@@ -12,7 +12,6 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ collapsed }) =
     const { themeMode } = useTheme();
     const isDark = themeMode !== 'light' && themeMode !== 'sepia';
 
-    // Mock de dados do usuário (No futuro, virá do seu contexto de Autenticação)
     const user = {
         name: 'Pablo Ribeiro Ramos',
         email: 'pabloribeiro.cont@gmail.com',
@@ -46,15 +45,18 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ collapsed }) =
                 `}
                 title={collapsed ? user.name : undefined}
             >
-                {/* Avatar (Tamanho fixo, ancora na esquerda) */}
-                <div
-                    className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none transition-transform active:scale-95"
-                    style={{
-                        background: `linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%)`,
-                        color: '#FFFFFF'
-                    }}
-                >
-                    {user.initials}
+                {/* 1. Container âncora de 20px (w-5) */}
+                <div className="flex items-center justify-center flex-shrink-0 w-5">
+                    {/* 2. Avatar com 'flex-shrink-0' e 'min-w-[32px]' adicionados para blindar o quadrado! */}
+                    <div
+                        className="w-8 h-8 min-w-[32px] flex-shrink-0 rounded-lg flex items-center justify-center text-xs font-black select-none transition-transform active:scale-95"
+                        style={{
+                            background: `linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%)`,
+                            color: '#FFFFFF'
+                        }}
+                    >
+                        {user.initials}
+                    </div>
                 </div>
 
                 {/* Info Text (Efeito sanfona fluido) */}
@@ -96,7 +98,6 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ collapsed }) =
                     </div>
 
                     <div className="p-1.5 flex flex-col gap-0.5">
-                        {/* Pessoal */}
                         <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold transition-colors hover:bg-[var(--surface-3)]" style={{ color: 'var(--ink-1)' }}>
                             <User size={14} className="opacity-70" />
                             Meu Perfil
@@ -108,7 +109,6 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ collapsed }) =
 
                         <div className="h-px w-full my-1" style={{ background: 'var(--border)' }} />
 
-                        {/* Sair */}
                         <button 
                             className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold transition-colors hover:bg-[var(--status-error-bg)] group" 
                             style={{ color: 'var(--ink-1)' }}
