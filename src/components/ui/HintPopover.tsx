@@ -10,7 +10,7 @@ export interface PopoverPos {
     left: number;
     placement: 'below' | 'above';
     arrowLeft: number;
-    maxHeight: number; // Nova propriedade exigida para cortar/scrollar a caixa
+    maxHeight: number; // Exigido para cortar/scrollar a caixa
 }
 
 interface HintPopoverProps {
@@ -18,6 +18,8 @@ interface HintPopoverProps {
     title?: string;
     hint: React.ReactNode;
     docsLink?: string;
+    /** Permite customizar o texto "Ver na documentação" */
+    docsLinkLabel?: string;
     mediaUrl?: string;
     onFeedback?: (isHelpful: boolean) => void;
     panelRef: React.RefObject<HTMLDivElement>;
@@ -25,8 +27,14 @@ interface HintPopoverProps {
     onClick: (e: React.MouseEvent) => void;
 }
 
+// Utilitário de segurança para prevenir injeção de scripts em links (XSS)
+const isSafeUrl = (url?: string) => {
+    if (!url) return false;
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
+};
+
 export const HintPopover: React.FC<HintPopoverProps> = ({
-    pos, title, hint, docsLink, mediaUrl, onFeedback, panelRef, onMouseDown, onClick,
+    pos, title, hint, docsLink, docsLinkLabel, mediaUrl, onFeedback, panelRef, onMouseDown, onClick,
 }) => {
     const [feedbackGiven, setFeedbackGiven] = useState(false);
 
@@ -35,6 +43,7 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
         if (onFeedback) onFeedback(isHelpful);
     };
 
+    // Seta matemática original mantida intocada
     const arrow = (
         <span
             aria-hidden="true"
@@ -67,7 +76,9 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
     return ReactDOM.createPortal(
         <div
             ref={panelRef}
+            // Acessibilidade: Como possui botões/links internos, deve ser um dialog e não tooltip
             role="dialog"
+            aria-modal="false"
             aria-label={title || "Informação de ajuda"}
             onMouseDown={onMouseDown}
             onClick={onClick}
@@ -112,23 +123,32 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                     </p>
                 )}
 
-                {mediaUrl && (
+                {/* Reprodutor de Mídia Otimizado em MP4 (Substitui o GIF) */}
+                {isSafeUrl(mediaUrl) && (
                     <div style={{ 
                         width: '100%', 
                         height: 140, 
                         marginBottom: 10, 
-                        background: 'var(--surface-1)', 
+                        background: '#000000', // Fundo preto melhora a transição de carregamento do vídeo
                         borderRadius: 'var(--radius-sm)',
                         border: '1px solid var(--border)',
                         overflow: 'hidden',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--ink-2)',
-                        fontSize: 10,
                         flexShrink: 0
                     }}>
-                        [Mídia: {mediaUrl}]
+                        <video 
+                            src={mediaUrl}
+                            autoPlay 
+                            loop 
+                            muted 
+                            playsInline // Crucial para não abrir tela cheia em dispositivos móveis
+                            preload="none"
+                            style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover',
+                                pointerEvents: 'none' // Impede que o usuário pause o vídeo acidentalmente
+                            }} 
+                        />
                     </div>
                 )}
 
@@ -147,7 +167,7 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                         <hr style={{ margin: '12px 0 8px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
                             
-                            {docsLink ? (
+                            {isSafeUrl(docsLink) ? (
                                 <a
                                     href={docsLink}
                                     target="_blank"
@@ -166,7 +186,7 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                                     onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
                                 >
                                     <BookOpen size={12} />
-                                    Ver na documentação
+                                    {docsLinkLabel || 'Ver na documentação'}
                                 </a>
                             ) : <div />}
 
@@ -178,6 +198,7 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                                             <div style={{ display: 'flex', gap: 2 }}>
                                                 <button 
                                                     onClick={() => handleFeedback(true)}
+                                                    aria-label="Sim, foi útil"
                                                     style={{ background: 'none', border: 'none', color: 'var(--ink-2)', cursor: 'pointer', padding: 2, display: 'flex' }}
                                                     onMouseEnter={e => e.currentTarget.style.color = 'var(--status-success-text)'}
                                                     onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
@@ -187,6 +208,7 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                                                 </button>
                                                 <button 
                                                     onClick={() => handleFeedback(false)}
+                                                    aria-label="Não foi útil"
                                                     style={{ background: 'none', border: 'none', color: 'var(--ink-2)', cursor: 'pointer', padding: 2, display: 'flex' }}
                                                     onMouseEnter={e => e.currentTarget.style.color = 'var(--status-error-text)'}
                                                     onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
@@ -197,7 +219,7 @@ export const HintPopover: React.FC<HintPopoverProps> = ({
                                             </div>
                                         </div>
                                     ) : (
-                                        <span style={{ fontSize: 10, color: 'var(--status-success-text)', fontWeight: 600 }}>
+                                        <span style={{ fontSize: 10, color: 'var(--status-success-text)', fontWeight: 600 }} aria-live="polite">
                                             Obrigado!
                                         </span>
                                     )}

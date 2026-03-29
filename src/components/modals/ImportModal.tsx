@@ -241,9 +241,9 @@ export const ImportModal: React.FC<ImportModalProps> = ({
                             <textarea
                                 className="w-full h-52 rounded-xl p-4 font-mono text-xs resize-none outline-none"
                                 style={{
-                                    background: '#0f172a',
-                                    color: '#e2e8f0',
-                                    border: '1px solid #334155',
+                                    background: 'var(--surface-0)',
+                                    color: 'var(--ink-0)',
+                                    border: '1px solid var(--border)',
                                     lineHeight: 1.6,
                                 }}
                                 spellCheck={false}
@@ -256,9 +256,12 @@ export const ImportModal: React.FC<ImportModalProps> = ({
 
                     {/* Error */}
                     {error && (
-                        <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                            <AlertCircle size={14} className="text-red-500 flex-shrink-0" />
-                            <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                        <div
+                            className="flex items-center gap-2 px-4 py-3 rounded-xl"
+                            style={{ background: 'var(--status-error-bg)' }}
+                        >
+                            <AlertCircle size={14} className="flex-shrink-0" style={{ color: 'var(--status-error-text)' }} />
+                            <p className="text-sm font-medium" style={{ color: 'var(--status-error-text)' }}>{error}</p>
                         </div>
                     )}
                 </div>

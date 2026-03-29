@@ -7,6 +7,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { Trash2 } from 'lucide-react';
 
 import { SortableItem } from '../../common/SortableItem';
+import { IconButton } from '../../ui/IconButton';
 import { useI18n } from '../../../i18n/i18n.tsx';
 import type { Step } from '../../../types';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
@@ -88,13 +89,13 @@ export const PreparationSection: React.FC<PreparationSectionProps> = ({
                                     />
 
                                     {/* Delete */}
-                                    <button
-                                        onClick={() => manager.removeStep(step.id)}
-                                        className="flex-shrink-0 ds-icon-button opacity-50 hover:opacity-100 hover:text-red-500"
+                                    <IconButton
+                                        size="sm"
+                                        variant="danger"
+                                        icon={<Trash2 size={13} />}
                                         title={t('common.remove')}
-                                    >
-                                        <Trash2 size={13} />
-                                    </button>
+                                        onClick={() => manager.removeStep(step.id)}
+                                    />
 
                                 </SortableItem>
                             ))}

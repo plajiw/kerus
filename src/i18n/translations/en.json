@@ -47,6 +47,7 @@
     "sheets": "Sheets",
     "quotations": "Quotations",
     "stock": "Stock",
+    "services": "Services",
     "soon": "Coming soon",
     "modules": "Modules",
     "collapse": "Collapse",
@@ -186,7 +187,8 @@
     "modules": "Modules",
     "formulasModuleDesc": "Create and manage technical sheets",
     "quotationsModuleDesc": "Generate and track quotations",
-    "stockModuleDesc": "Stock and ingredient control"
+    "stockModuleDesc": "Stock and ingredient control",
+    "servicesModuleDesc": "Service catalog for quotations"
   },
   "sheets": {
     "searchPlaceholder": "Search formula...",

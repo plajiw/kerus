@@ -83,13 +83,13 @@ export const PaymentModelsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-auto p-5 sm:p-6 bg-gray-50/50 dark:bg-black/20">
+                <div className="flex-1 overflow-auto p-5 sm:p-6" style={{ background: 'var(--surface-1)' }}>
                     <div className="flex flex-col md:flex-row gap-6 sm:gap-8">
                         {/* List */}
                         <div className="w-full md:w-[320px] shrink-0 space-y-4">
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--ink-2)]">Modelos Salvos</h3>
-                                <button onClick={handleCreateNew} className="text-xs font-bold text-blue-500 hover:text-blue-600 flex items-center gap-1">
+                                <button onClick={handleCreateNew} className="text-xs font-bold flex items-center gap-1 transition-opacity hover:opacity-70" style={{ color: 'var(--primary)' }}>
                                     <Plus size={12} /> Novo
                                 </button>
                             </div>

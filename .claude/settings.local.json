@@ -52,7 +52,9 @@
       "Bash(grep -r \"JSZip\\\\|jszip\" c:/Users/plajiw/Documents/kerus/src --include=*.ts --include=*.tsx -n)",
       "Bash(find c:UsersplajiwDocumentskerussrcpagessheets -type f -name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js)",
       "Bash(find c:UsersplajiwDocumentskerussrcpagesquotations -type f -name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(wc -l /c/Users/plajiw/Documents/kerus/src/components/features/Editor/*.tsx)",
+      "Bash(find /c/Users/plajiw/Documents/kerus/src -name \"*.tsx\" -exec wc -l {} +)"
     ]
   }
 }

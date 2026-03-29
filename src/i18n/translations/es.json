@@ -47,6 +47,7 @@
     "sheets": "Fichas Técnicas",
     "quotations": "Cotizaciones",
     "stock": "Inventario",
+    "services": "Servicios",
     "soon": "Próximamente",
     "modules": "Módulos",
     "collapse": "Colapsar",
@@ -186,7 +187,8 @@
     "modules": "Módulos",
     "formulasModuleDesc": "Crear y gestionar fichas técnicas",
     "quotationsModuleDesc": "Generar y controlar cotizaciones",
-    "stockModuleDesc": "Control de inventario e insumos"
+    "stockModuleDesc": "Control de inventario e insumos",
+    "servicesModuleDesc": "Catálogo de servicios para cotizaciones"
   },
   "sheets": {
     "searchPlaceholder": "Buscar fórmula...",

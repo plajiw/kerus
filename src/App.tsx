@@ -14,6 +14,7 @@ const SheetPreviewPage     = lazy(() => import('./pages/sheets/SheetPreviewPage'
 const QuotationsPage       = lazy(() => import('./pages/quotations/QuotationsPage').then(m => ({ default: m.QuotationsPage })));
 const QuotationEditorPage  = lazy(() => import('./pages/quotations/QuotationEditorPage').then(m => ({ default: m.QuotationEditorPage })));
 const QuotationPreviewPage = lazy(() => import('./pages/quotations/QuotationPreviewPage').then(m => ({ default: m.QuotationPreviewPage })));
+const ServicesPage         = lazy(() => import('./pages/services/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const SettingsPage         = lazy(() => import('./pages/settings/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
 // ─── Suspense wrappers ─────────────────────────────────────────
@@ -87,6 +88,13 @@ const App: React.FC = () => {
                 <Route path="orcamentos/:id/preview" element={
                     <Suspense fallback={<PageFallback />}>
                         <QuotationPreviewPage />
+                    </Suspense>
+                } />
+
+                {/* Services */}
+                <Route path="servicos" element={
+                    <Suspense fallback={<PageFallback />}>
+                        <ServicesPage />
                     </Suspense>
                 } />
 

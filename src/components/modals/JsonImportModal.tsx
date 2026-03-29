@@ -69,14 +69,14 @@ export const JsonImportModal: React.FC<JsonImportModalProps> = ({
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                 onClick={onClose}
             />
-            <div className="absolute left-1/2 top-1/2 w-[min(720px,92vw)] -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 rounded-2xl p-6">
+            <div className="absolute left-1/2 top-1/2 w-[min(720px,92vw)] -translate-x-1/2 -translate-y-1/2 rounded-2xl p-6" style={{ background: 'var(--surface-2)' }}>
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('buttons.importJson')}</h2>
+                    <h2 className="text-lg font-bold" style={{ color: 'var(--ink-0)' }}>{t('buttons.importJson')}</h2>
                     <button onClick={onClose} className="ds-icon-button">
                         <X size={14} />
                     </button>
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                <p className="text-sm mb-3" style={{ color: 'var(--ink-2)' }}>
                     {t('messages.jsonImportHelp')}
                 </p>
                 <textarea

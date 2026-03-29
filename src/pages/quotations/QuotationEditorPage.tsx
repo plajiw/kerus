@@ -21,7 +21,7 @@ import { EditorShell } from '../../components/ui/EditorShell.tsx';
 import { FormulaPickerDialog } from '../../components/modals/FormulaPickerDialog.tsx';
 import { QuotationPaymentModal } from '../../components/modals/QuotationPaymentModal.tsx';
 import { QuotationPrintable } from '../../components/QuotationPrintable.tsx';
-import { FORMULA_THEMES, FORMULA_FONTS } from '../../constants/themes.ts';
+import { FORMULA_THEMES, SHEET_FONTS } from '../../constants/themes.ts';
 import { QuotationItem, QuotationStatus, PAYMENT_METHOD_LABELS } from '../../types/index.ts';
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; border: string }> = {
@@ -527,10 +527,10 @@ export const QuotationEditorPage: React.FC = () => {
                         <div className="p-5">
                             <select
                                 className="ds-select w-full text-sm"
-                                value={q.fontFamily || FORMULA_FONTS[0].value}
+                                value={q.fontFamily || SHEET_FONTS[0].value}
                                 onChange={e => handleFieldChange('fontFamily', e.target.value)}
                             >
-                                {FORMULA_FONTS.map(f => (
+                                {SHEET_FONTS.map(f => (
                                     <option key={f.value} value={f.value}>{f.name}</option>
                                 ))}
                             </select>

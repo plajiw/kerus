@@ -23,6 +23,8 @@ export const ObservationsSection: React.FC<ObservationsSectionProps> = ({
       onChange={html => manager.handleFieldChange('observacoes', html)}
       placeholder={t('placeholders.observations')}
       helperText={t('editor.optionalHint')}
+      collapsible={true}
+      defaultOpen={true}
       actions={(
         <label
           className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest cursor-pointer"

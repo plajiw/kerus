@@ -101,14 +101,15 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         <div
             className="rounded-xl overflow-hidden transition-all"
             style={{
-                border: `1px solid ${focused ? 'var(--primary)' : 'var(--border)'}`,
-                background: 'var(--surface-1)',
+                outline: focused ? `2px solid var(--primary)` : '2px solid transparent',
+                outlineOffset: '-1px',
+                background: 'var(--surface-3)',
             }}
         >
             {/* ── Toolbar ─────────────────────────────────────── */}
             <div
                 className="flex items-center gap-0.5 px-2 py-1.5 flex-wrap"
-                style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface-2)' }}
+                style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface-3)' }}
                 onMouseDown={e => e.preventDefault()}
             >
                 {TOOLBAR.map(({ cmd, icon, title }) => (
@@ -153,10 +154,10 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             </div>
 
             {/* ── Editable area ───────────────────────────────── */}
-            <div className="relative">
+            <div className="relative" style={{ background: 'var(--surface-2)' }}>
                 {isRichTextEmpty(value) && !focused && (
                     <div
-                        className="absolute inset-0 p-3 text-sm pointer-events-none select-none"
+                        className="absolute inset-0 p-4 text-sm pointer-events-none select-none"
                         style={{ color: 'var(--ink-2)' }}
                     >
                         {placeholder}
@@ -166,8 +167,8 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
                     ref={editorRef}
                     contentEditable
                     suppressContentEditableWarning
-                    className="rte-editor outline-none text-sm p-3 overflow-auto"
-                    style={{ minHeight, color: 'var(--ink-0)', lineHeight: '1.65' }}
+                    className="rte-editor outline-none text-sm p-4 overflow-auto"
+                    style={{ minHeight, color: 'var(--ink-0)', lineHeight: '1.75' }}
                     onInput={syncState}
                     onKeyUp={syncState}
                     onMouseUp={syncState}

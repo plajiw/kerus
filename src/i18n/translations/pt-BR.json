@@ -47,6 +47,7 @@
     "sheets": "Fichas Técnicas",
     "quotations": "Orçamentos",
     "stock": "Estoque",
+    "services": "Serviços",
     "soon": "Em breve",
     "modules": "Módulos",
     "collapse": "Recolher",
@@ -186,7 +187,8 @@
     "modules": "Módulos",
     "formulasModuleDesc": "Criar e gerenciar fichas técnicas",
     "quotationsModuleDesc": "Gerar e controlar orçamentos",
-    "stockModuleDesc": "Controle de estoque e insumos"
+    "stockModuleDesc": "Controle de estoque e insumos",
+    "servicesModuleDesc": "Catálogo de serviços para orçamentos"
   },
   "sheets": {
     "searchPlaceholder": "Buscar fórmula...",

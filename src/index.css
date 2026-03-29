@@ -9,6 +9,10 @@
      3b. Theme: Dark
      3c. Theme: Monokai
      3d. Theme: Ocean
+     3e. Theme: Sepia
+     3f. Theme: Amoled
+     3g. Theme: Dracula
+     3h. Theme: High-Contrast
      4.  Base / Reset
      5.  Design System (.ds-*)
          Buttons:   .ds-button-primary · .ds-button · .ds-button-ghost · .ds-button-danger
@@ -23,7 +27,7 @@
 
    ── THEME CONTRACT ────────────────────────────────────────────────
    Every theme block MUST define exactly these 24 variables in order.
-   Adding or removing one requires updating ALL 4 theme blocks.
+   Adding or removing one requires updating ALL 8 theme blocks.
 
    SURFACES      --surface-0  --surface-1  --surface-2  --surface-3
    GRADIENTS     --surface-bg-gradient  --surface-card-gradient
@@ -40,7 +44,7 @@
    1. FONTS
    ───────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Lato:wght@400;700&family=DM+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Josefin+Sans:wght@400;600;700&family=Source+Code+Pro:wght@400;500&display=swap');
 
 
 /* ─────────────────────────────────────────────────────────────────

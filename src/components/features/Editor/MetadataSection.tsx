@@ -47,7 +47,8 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
         <SectionCard
             title={t('editor.mainData')}
             icon={<FileText size={14} />}
-            collapsible={false}
+            collapsible={true}
+            defaultOpen={true}
         >
             {/* Basic fields */}
             <div className="p-5 space-y-4">
@@ -209,7 +210,7 @@ export const MetadataSection: React.FC<MetadataSectionProps> = ({
 
                         {/* pH visual indicator */}
                         {(r.ph_min || r.ph_max) && (
-                            <div className="rounded-lg px-3 py-2.5" style={{ background: 'var(--surface-2)' }}>
+                            <div className="rounded-lg px-3 py-2.5" style={{ background: 'var(--surface-3)' }}>
                                 <div className="flex items-center justify-between mb-1.5">
                                     <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
                                         Faixa de pH alvo

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-    FlaskConical, LayoutDashboard, Receipt, Package,
+    FlaskConical, LayoutDashboard, Receipt, Package, Wrench,
     Settings, ChevronLeft, ChevronRight,
     X, BookOpen,
 } from 'lucide-react';
@@ -125,6 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
         { to: '/', icon: <LayoutDashboard size={18} />, label: t('nav.dashboard') },
         { to: '/fichas-tecnicas', icon: <FlaskConical size={18} />, label: t('nav.sheets') },
         { to: '/orcamentos', icon: <Receipt size={18} />, label: t('nav.quotations') },
+        { to: '/servicos', icon: <Wrench size={18} />, label: t('nav.services') },
         { to: '/estoque', icon: <Package size={18} />, label: t('nav.stock'), disabled: true },
     ];
 

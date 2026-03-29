@@ -188,7 +188,7 @@ export const SettingsPage: React.FC = () => {
                                     callout="icon"
                                     calloutText="Procure por este ícone na interface."
                                     docsLink="/docs/guide/help-mode"
-                                    mediaUrl="/assets/demos/help-mode-demo.gif"
+                                    mediaUrl="/assets/demos/help-mode-demo.mp4"
                                     feedbackId="help-mode-setting"
                                     forceVisible
                                 />

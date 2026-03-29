@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    FlaskConical, Receipt, Package, CheckCircle2, FileEdit,
+    FlaskConical, Receipt, Package, Wrench, CheckCircle2, FileEdit,
     Clock, ArrowRight, TrendingUp,
 } from 'lucide-react';
 import { useI18n } from '../../i18n/i18n.tsx';
 import { useApp } from '../../context/AppContext';
-import { useTheme } from '../../context/ThemeContext';
 import { HubHeader } from '../../components/ui/hub/HubHeader';
 import { HubStatsGrid } from '../../components/ui/hub/HubStatsGrid';
 import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../../components/ui/hub/HubDateFilter';
-import { StatCard } from '../../components/ui/StatCard';
-import { getCoverGradient } from '../../utils/coverGradient';
+import { StatCard, StatCardVariant, ICON_STYLES } from '../../components/ui/StatCard';
+import { getCoverGradient, buildAccentGradient, getAvatarTextColor } from '../../utils/coverGradient';
 
 export const DashboardPage: React.FC = () => {
     const { t, locale } = useI18n();
     const { history, quotations } = useApp();
-    const { isDark } = useTheme();
     const navigate = useNavigate();
 
     const [dateRange, setDateRange] = useState<DateRange>('all');
@@ -63,11 +61,11 @@ export const DashboardPage: React.FC = () => {
         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
     });
 
-    const modules = [
+    const modules: { to: string; icon: React.ReactNode; variant: StatCardVariant; label: string; desc: string; count?: number; badge?: string }[] = [
         {
             to: '/fichas-tecnicas',
             icon: <FlaskConical size={20} />,
-            color: 'var(--primary)',
+            variant: 'primary',
             label: t('nav.sheets'),
             desc: t('dashboard.sheetsModuleDesc'),
             count: totalSheets,
@@ -75,15 +73,22 @@ export const DashboardPage: React.FC = () => {
         {
             to: '/orcamentos',
             icon: <Receipt size={20} />,
-            color: '#6366f1',
+            variant: 'info',
             label: t('nav.quotations'),
             desc: t('dashboard.quotationsModuleDesc'),
             count: quotations.length,
         },
         {
+            to: '/servicos',
+            icon: <Wrench size={20} />,
+            variant: 'warning',
+            label: t('nav.services'),
+            desc: t('dashboard.servicesModuleDesc'),
+        },
+        {
             to: '/estoque',
             icon: <Package size={20} />,
-            color: '#10b981',
+            variant: 'success',
             label: t('nav.stock'),
             desc: t('dashboard.stockModuleDesc'),
             badge: t('nav.soon'),
@@ -104,24 +109,28 @@ export const DashboardPage: React.FC = () => {
                 <StatCard
                     title={t('dashboard.totalFormulas')}
                     value={totalSheets}
+                    variant="primary"
                     icon={<FlaskConical size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
                 <StatCard
                     title={t('dashboard.finalFormulas')}
                     value={finalSheets}
+                    variant="success"
                     icon={<CheckCircle2 size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
                 <StatCard
                     title={t('dashboard.drafts')}
                     value={draftSheets}
+                    variant="warning"
                     icon={<FileEdit size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
                 <StatCard
                     title={t('dashboard.quotations')}
                     value={quotationsInRange.length}
+                    variant="info"
                     icon={<Receipt size={20} />}
                     dateRangeLabel={dateRange !== 'all' ? dateRangeLabel : undefined}
                 />
@@ -146,13 +155,6 @@ export const DashboardPage: React.FC = () => {
                                 {t('dashboard.recentActivity')}
                             </h2>
                         </div>
-                        <button
-                            onClick={() => navigate('/fichas-tecnicas')}
-                            className="text-xs font-bold transition-colors hover:underline"
-                            style={{ color: 'var(--primary)' }}
-                        >
-                            {t('hub.viewAll')} →
-                        </button>
                     </div>
 
                     {/* List */}
@@ -169,9 +171,9 @@ export const DashboardPage: React.FC = () => {
                                         className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-black select-none relative overflow-hidden"
                                         style={{
                                             background: act.accentColor
-                                                ? `linear-gradient(135deg, ${act.accentColor}${isDark ? 'cc' : '99'}, ${act.accentColor}${isDark ? '88' : '55'})`
-                                                : getCoverGradient(act.title, isDark),
-                                            color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)'
+                                                ? buildAccentGradient(act.accentColor)
+                                                : getCoverGradient(act.title),
+                                            color: getAvatarTextColor()
                                         }}
                                     >
                                         {act.type === 'sheet' ? (
@@ -260,7 +262,7 @@ export const DashboardPage: React.FC = () => {
                         >
                             <div
                                 className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                                style={{ background: mod.color, color: '#ffffff' }}
+                                style={ICON_STYLES[mod.variant]}
                             >
                                 {mod.icon}
                             </div>

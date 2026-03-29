@@ -9,18 +9,11 @@ const ICONS: Record<ToastType, React.FC<{ size: number; className: string }>> = 
     info: Info,
 };
 
-const STYLES: Record<ToastType, string> = {
-    success: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200',
-    error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200',
-    warning: 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200',
-    info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200',
-};
-
-const ICON_COLORS: Record<ToastType, string> = {
-    success: 'text-emerald-500',
-    error: 'text-red-500',
-    warning: 'text-amber-500',
-    info: 'text-blue-500',
+const STYLES: Record<ToastType, React.CSSProperties> = {
+    success: { background: 'var(--status-success-bg)', color: 'var(--status-success-text)' },
+    error:   { background: 'var(--status-error-bg)',   color: 'var(--status-error-text)'   },
+    warning: { background: 'var(--status-warning-bg)', color: 'var(--status-warning-text)' },
+    info:    { background: 'var(--status-info-bg)',    color: 'var(--status-info-text)'    },
 };
 
 interface ToastContainerProps {
@@ -38,9 +31,10 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove
                 return (
                     <div
                         key={toast.id}
-                        className={`flex items-start gap-3 p-4 rounded-xl border pointer-events-auto animate-in slide-in-from-right-4 duration-300 ${STYLES[toast.type]}`}
+                        className="flex items-start gap-3 p-4 rounded-xl pointer-events-auto animate-in slide-in-from-right-4 duration-300"
+                        style={STYLES[toast.type]}
                     >
-                        <Icon size={16} className={`mt-0.5 flex-shrink-0 ${ICON_COLORS[toast.type]}`} />
+                        <Icon size={16} className="mt-0.5 flex-shrink-0" />
                         <p className="text-sm font-medium flex-1 leading-snug">{toast.message}</p>
                         <button
                             onClick={() => onRemove(toast.id)}

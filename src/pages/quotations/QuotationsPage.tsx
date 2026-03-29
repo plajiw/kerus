@@ -14,6 +14,7 @@ import { HubToolbar } from '../../components/ui/hub/HubToolbar';
 import { HubViewToggle, ViewMode } from '../../components/ui/hub/HubViewToggle';
 import { usePreferences } from '../../hooks/usePreferences';
 import { HubButton } from '../../components/ui/hub/HubButton';
+import { buildAccentGradient } from '../../utils/coverGradient';
 import { HubGridCard, CoverStatusVariant } from '../../components/ui/hub/HubGridCard';
 import { HubStatusFilter } from '../../components/ui/hub/HubStatusFilter';
 import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../../components/ui/hub/HubDateFilter';
@@ -219,13 +220,13 @@ export const QuotationsPage: React.FC = () => {
             {/* Content */}
             {filtered.length > 0 ? (
                 view === 'grid' ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                         {sortedFiltered.map(q => (
                             <HubGridCard
                                 key={q.id}
                                 name={q.title}
-                                coverAspectRatio="4/3"
-                                coverColor={q.accentColor}
+                                coverAspectRatio="16/9"
+                                coverColor={q.accentColor ? buildAccentGradient(q.accentColor) : undefined}
                                 statusText={statusLabel(q)}
                                 statusVariant={quotationStatusVariant(q.status)}
                                 onEdit={() => navigate(`/orcamentos/${q.id}/editar`)}

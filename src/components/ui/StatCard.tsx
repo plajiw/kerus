@@ -1,10 +1,23 @@
 import React from 'react';
 
+export type StatCardVariant = 'primary' | 'success' | 'warning' | 'info' | 'neutral' | 'error';
+
+export const ICON_STYLES: Record<StatCardVariant, React.CSSProperties> = {
+    primary: { background: 'var(--primary)',            color: '#fff'                        },
+    success: { background: 'var(--status-success-bg)',  color: 'var(--status-success-text)'  },
+    warning: { background: 'var(--status-warning-bg)',  color: 'var(--status-warning-text)'  },
+    info:    { background: 'var(--status-info-bg)',     color: 'var(--status-info-text)'     },
+    neutral: { background: 'var(--status-neutral-bg)',  color: 'var(--status-neutral-text)'  },
+    error:   { background: 'var(--status-error-bg)',    color: 'var(--status-error-text)'    },
+};
+
 interface StatCardProps {
     title: string;
     value: string | number;
     subtitle?: string;
     icon?: React.ReactNode;
+    /** Semantic color for the icon container. Defaults to 'primary'. */
+    variant?: StatCardVariant;
     trend?: {
         value: string;
         positive?: boolean;
@@ -13,7 +26,7 @@ interface StatCardProps {
     dateRangeLabel?: string;
 }
 
-export const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, trend, dateRangeLabel }) => (
+export const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, variant = 'primary', trend, dateRangeLabel }) => (
     <div
         className="p-6 rounded-2xl flex flex-col gap-4 transition-transform duration-200 hover:-translate-y-0.5 cursor-default"
         style={{ background: 'var(--surface-2)' }}
@@ -22,7 +35,7 @@ export const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon
         <div className="flex items-start justify-between">
             <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'var(--primary)', color: '#ffffff' }}
+                style={ICON_STYLES[variant]}
             >
                 {icon}
             </div>
@@ -30,8 +43,8 @@ export const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon
                 <span
                     className="text-[10px] font-bold px-2 py-1 rounded-lg"
                     style={{
-                        background: trend.positive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-                        color: trend.positive ? '#34d399' : '#f87171',
+                        background: trend.positive ? 'var(--status-success-bg)' : 'var(--status-error-bg)',
+                        color: trend.positive ? 'var(--status-success-text)' : 'var(--status-error-text)',
                     }}
                 >
                     {trend.positive ? '↑' : '↓'} {trend.value}

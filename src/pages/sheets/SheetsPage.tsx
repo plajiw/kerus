@@ -18,6 +18,7 @@ import { HubViewToggle, ViewMode } from '../../components/ui/hub/HubViewToggle.t
 import { usePreferences } from '../../hooks/usePreferences.ts';
 import { HubButton } from '../../components/ui/hub/HubButton.tsx';
 import { HubGridCard, CoverStatusVariant } from '../../components/ui/hub/HubGridCard.tsx';
+import { buildAccentGradient } from '../../utils/coverGradient';
 import { HubStatusFilter } from '../../components/ui/hub/HubStatusFilter.tsx';
 import { HubDateFilter, DateRange, DATE_RANGE_OPTIONS, isWithinDateRange } from '../../components/ui/hub/HubDateFilter.tsx';
 import { Recipe } from '../../types/index.ts';
@@ -263,13 +264,13 @@ export const SheetsPage: React.FC = () => {
             {/* Content */}
             {filtered.length > 0 ? (
                 view === 'grid' ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                         {sortedFiltered.map((recipe) => (
                             <HubGridCard
                                 key={recipe.id}
                                 name={recipe.nome_formula}
-                                coverAspectRatio="4/3"
-                                coverColor={recipe.accentColor}
+                                coverAspectRatio="16/9"
+                                coverColor={recipe.accentColor ? buildAccentGradient(recipe.accentColor) : undefined}
                                 statusText={recipe.status === 'FINAL' ? t('status.final') : t('status.draft')}
                                 statusVariant={sheetStatusVariant(recipe.status)}
                                 onEdit={() => navigate(`/fichas-tecnicas/${recipe.id}/editar`)}

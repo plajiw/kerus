@@ -2,8 +2,9 @@ import React from 'react';
 import { Eye, Edit3, Trash2, Check, Star } from 'lucide-react';
 import { Recipe } from '../../../types/index';
 import { StatusToggle, FORMULA_STATUS_CONFIGS } from '../../ui/StatusToggle';
-import { getCoverGradient } from '../../../utils/coverGradient';
+import { getCoverGradient, buildAccentGradient, getAvatarTextColor } from '../../../utils/coverGradient';
 import { useTheme } from '../../../context/ThemeContext';
+import { IconButton } from '../../ui/IconButton';
 
 export interface SheetTableProps {
     recipes: Recipe[];
@@ -24,7 +25,7 @@ export const SheetTable: React.FC<SheetTableProps> = ({
     recipes, locale, statusConfigs, selectedIds, onToggleSelect,
     onEdit, onPreview, onDelete, onStatusChange, isFavorite, onTogglePin, t,
 }) => {
-    const { isDark } = useTheme();
+    const { isDark } = useTheme(); // usado apenas no checkbox
 
     return (
         <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--surface-2)' }}>
@@ -62,9 +63,8 @@ export const SheetTable: React.FC<SheetTableProps> = ({
                                 <td className="w-10 pl-4 pr-0">
                                     <button
                                         onClick={() => onToggleSelect(recipe.id)}
-                                        className={`w-6 h-6 flex items-center justify-center rounded-lg transition-all ${
-                                            selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                                        }`}
+                                        className={`w-6 h-6 flex items-center justify-center rounded-lg transition-all ${selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                                            }`}
                                         style={selected ? {
                                             background: 'var(--primary)',
                                             color: isDark ? '#180800' : '#ffffff',
@@ -86,9 +86,9 @@ export const SheetTable: React.FC<SheetTableProps> = ({
                                             className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none"
                                             style={{
                                                 background: recipe.accentColor
-                                                    ? `linear-gradient(135deg, ${recipe.accentColor}${isDark ? 'cc' : '99'}, ${recipe.accentColor}${isDark ? '88' : '55'})`
-                                                    : getCoverGradient(recipe.nome_formula, isDark),
-                                                color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)',
+                                                    ? buildAccentGradient(recipe.accentColor)
+                                                    : getCoverGradient(recipe.nome_formula),
+                                                color: getAvatarTextColor(),
                                             }}
                                         >
                                             {recipe.nome_formula.charAt(0).toUpperCase()}
@@ -126,25 +126,46 @@ export const SheetTable: React.FC<SheetTableProps> = ({
                                 {/* Actions */}
                                 <td className="px-5 py-4">
                                     <div className="flex items-center justify-end gap-1">
-                                        <button
-                                            onClick={() => onTogglePin(recipe.id)}
-                                            className={`ds-icon-button transition-all duration-150 ${
-                                                isFavorite(recipe.id) ? 'opacity-100' : ''
-                                            }`}
-                                            style={{ color: isFavorite(recipe.id) ? '#ffe393' : 'var(--ink-2)' }}
+
+                                        {/* Botão de Favoritar (Toggle) */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Star strokeWidth={2} fill={isFavorite(recipe.id) ? '#ffe393' : 'none'} />}
                                             title={isFavorite(recipe.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-                                        >
-                                            <Star size={14} strokeWidth={2} fill={isFavorite(recipe.id) ? '#ffe393' : 'none'} />
-                                        </button>
-                                        <button onClick={() => onEdit(recipe.id)} className="ds-icon-button" title={t('common.edit')}>
-                                            <Edit3 size={14} />
-                                        </button>
-                                        <button onClick={() => onPreview(recipe.id)} className="ds-icon-button" style={{ color: 'var(--primary)' }} title={t('common.preview')}>
-                                            <Eye size={14} />
-                                        </button>
-                                        <button onClick={() => onDelete(recipe.id)} className="ds-icon-button-danger" title="Excluir">
-                                            <Trash2 size={14} />
-                                        </button>
+                                            variant="transparent"
+                                            isActive={isFavorite(recipe.id)}
+                                            onClick={() => onTogglePin(recipe.id)}
+                                            style={{ color: isFavorite(recipe.id) ? '#ffe393' : 'var(--ink-2)' }}
+                                            className={!isFavorite(recipe.id) ? 'opacity-50 hover:opacity-100' : ''}
+                                        />
+
+                                        {/* Botão de Editar */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Edit3 />}
+                                            title={t('common.edit')}
+                                            variant="ghost"
+                                            onClick={() => onEdit(recipe.id)}
+                                        />
+
+                                        {/* Botão de Preview */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Eye />}
+                                            title={t('common.preview')}
+                                            variant="ghost"
+                                            onClick={() => onPreview(recipe.id)}
+                                        />
+
+                                        {/* Botão de Excluir */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Trash2 />}
+                                            title="Excluir"
+                                            variant="danger"
+                                            onClick={() => onDelete(recipe.id)}
+                                        />
+
                                     </div>
                                 </td>
                             </tr>

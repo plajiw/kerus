@@ -2,8 +2,9 @@ import React from 'react';
 import { Eye, Edit3, Trash2, Check, Star } from 'lucide-react';
 import { Quotation } from '../../../types';
 import { StatusToggle, QUOTATION_STATUS_CONFIGS } from '../../ui/StatusToggle';
-import { getCoverGradient } from '../../../utils/coverGradient';
+import { getCoverGradient, buildAccentGradient, getAvatarTextColor } from '../../../utils/coverGradient';
 import { useTheme } from '../../../context/ThemeContext';
+import { IconButton } from '../../ui/IconButton';
 
 export interface QuotationTableProps {
     quotations: Quotation[];
@@ -24,7 +25,7 @@ export const QuotationTable: React.FC<QuotationTableProps> = ({
     quotations, locale, statusConfigs, selectedIds, onToggleSelect,
     onEdit, onPreview, onDelete, onStatusChange, isFavorite, onTogglePin, t,
 }) => {
-    const { isDark } = useTheme();
+    const { isDark } = useTheme(); // usado apenas no checkbox
 
     const formatCurrency = (v: number) =>
         new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(v);
@@ -92,9 +93,9 @@ export const QuotationTable: React.FC<QuotationTableProps> = ({
                                             className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-black select-none"
                                             style={{
                                                 background: q.accentColor
-                                                    ? `linear-gradient(135deg, ${q.accentColor}${isDark ? 'cc' : '99'}, ${q.accentColor}${isDark ? '88' : '55'})`
-                                                    : getCoverGradient(q.title, isDark),
-                                                color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.6)',
+                                                    ? buildAccentGradient(q.accentColor)
+                                                    : getCoverGradient(q.title),
+                                                color: getAvatarTextColor(),
                                             }}
                                         >
                                             {q.title.charAt(0).toUpperCase()}
@@ -142,25 +143,46 @@ export const QuotationTable: React.FC<QuotationTableProps> = ({
                                 {/* Actions */}
                                 <td className="px-5 py-4">
                                     <div className="flex items-center justify-end gap-1">
-                                        <button
-                                            onClick={() => onTogglePin(q.id)}
-                                            className={`ds-icon-button transition-all duration-150 ${
-                                                isFavorite(q.id) ? 'opacity-100' : ''
-                                            }`}
-                                            style={{ color: isFavorite(q.id) ? '#ffe393' : 'var(--ink-2)' }}
+
+                                        {/* Favoritar */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Star strokeWidth={2} fill={isFavorite(q.id) ? '#ffe393' : 'none'} />}
                                             title={isFavorite(q.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-                                        >
-                                            <Star size={14} strokeWidth={2} fill={isFavorite(q.id) ? '#ffe393' : 'none'} />
-                                        </button>
-                                        <button onClick={() => onEdit(q.id)} className="ds-icon-button" title={t('quotations.editQuotation')}>
-                                            <Edit3 size={14} />
-                                        </button>
-                                        <button onClick={() => onPreview(q.id)} className="ds-icon-button" style={{ color: 'var(--primary)' }} title="Preview">
-                                            <Eye size={14} />
-                                        </button>
-                                        <button onClick={() => onDelete(q.id)} className="ds-icon-button-danger" title="Excluir">
-                                            <Trash2 size={14} />
-                                        </button>
+                                            variant="transparent"
+                                            isActive={isFavorite(q.id)}
+                                            onClick={() => onTogglePin(q.id)}
+                                            style={{ color: isFavorite(q.id) ? '#ffe393' : 'var(--ink-2)' }}
+                                            className={!isFavorite(q.id) ? 'opacity-50 hover:opacity-100' : ''}
+                                        />
+
+                                        {/* Editar */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Edit3 />}
+                                            title={t('quotations.editQuotation')}
+                                            variant="ghost"
+                                            onClick={() => onEdit(q.id)}
+                                        />
+
+                                        {/* Preview */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Eye />}
+                                            title="Preview"
+                                            variant="ghost"
+                                            onClick={() => onPreview(q.id)}
+                                        />
+
+                                        {/* Excluir */}
+                                        <IconButton
+                                            size="sm"
+                                            icon={<Trash2 />}
+                                            title="Excluir"
+                                            variant="danger"
+                                            onClick={() => onDelete(q.id)}
+                                        />
+
                                     </div>
                                 </td>
                             </tr>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useI18n } from '../../../i18n/i18n.tsx';
-import { FORMULA_THEMES, FORMULA_FONTS } from '../../../constants/themes';
+import { FORMULA_THEMES, SHEET_FONTS } from '../../../constants/themes';
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
+import { SectionCard } from '../../ui/SectionCard';
 
 interface StyleSectionProps {
   accentColor: string;
@@ -9,15 +10,6 @@ interface StyleSectionProps {
   stripedRows: boolean;
   manager: ReturnType<typeof useRecipeManager>;
 }
-
-const SectionBlock: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-    <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface-0)' }}>
-        <div className="px-5 py-3.5" style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border)' }}>
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ink-1)' }}>{title}</span>
-        </div>
-        <div className="p-5">{children}</div>
-    </div>
-);
 
 export const StyleSection: React.FC<StyleSectionProps> = ({
   accentColor,
@@ -28,58 +20,98 @@ export const StyleSection: React.FC<StyleSectionProps> = ({
   const { t } = useI18n();
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
 
       {/* Color themes */}
-      <SectionBlock title={t('editor.themes')}>
-        <div className="grid grid-cols-2 gap-3">
-          {FORMULA_THEMES.map(theme => (
-            <button
-              key={theme.nameKey}
-              onClick={() => manager.handleFieldChange('accentColor', theme.color)}
-              className="h-11 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-all"
-              style={{
-                border: `2px solid ${accentColor === theme.color ? theme.color : 'var(--border)'}`,
-                background: accentColor === theme.color ? `${theme.color}18` : 'var(--surface-1)',
-                color: accentColor === theme.color ? theme.color : 'var(--ink-1)',
-              }}
-            >
-              <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: theme.color }} />
-              {t(theme.nameKey)}
-            </button>
-          ))}
+      <SectionCard title={t('editor.themes')} collapsible={false}>
+        <div className="p-4">
+          <div className="grid grid-cols-2 gap-3">
+            {FORMULA_THEMES.map(theme => {
+              const isSelected = accentColor === theme.color;
+              return (
+                <button
+                  key={theme.nameKey}
+                  onClick={() => manager.handleFieldChange('accentColor', theme.color)}
+                  className="h-11 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-all"
+                  style={{
+                    background: isSelected ? `${theme.color}15` : 'var(--surface-3)',
+                    color: isSelected ? theme.color : 'var(--ink-1)',
+                    border: 'none',
+                    // Design System v3.0: Outline ao invés de border para seleção
+                    outline: isSelected ? `2px solid ${theme.color}` : 'none',
+                    outlineOffset: '2px'
+                  }}
+                >
+                  <div className="w-3 h-3 rounded-full flex-shrink-0 shadow-sm" style={{ background: theme.color }} />
+                  {t(theme.nameKey)}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </SectionBlock>
+      </SectionCard>
 
-      {/* Typography */}
-      <SectionBlock title={t('editor.typography')}>
-        <select
-          className="ds-select w-full text-sm"
-          value={fontFamily || FORMULA_FONTS[0].value}
-          onChange={e => manager.handleFieldChange('fontFamily', e.target.value)}
-        >
-          {FORMULA_FONTS.map(font => (
-            <option key={font.value} value={font.value}>{font.name}</option>
-          ))}
-        </select>
-      </SectionBlock>
+      {/* Typography (Novo Padrão Visual "Grid de Cards") */}
+      <SectionCard title={t('editor.typography')} collapsible={false}>
+        <div className="p-4">
+          {/* Responsive: 2 colunas no celular, 3 em telas maiores */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {SHEET_FONTS.map(font => {
+              const selected = (fontFamily || SHEET_FONTS[0].value) === font.value;
+              return (
+                <button
+                  key={font.value}
+                  onClick={() => manager.handleFieldChange('fontFamily', font.value)}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all duration-200 ${
+                    selected ? 'outline outline-2 outline-[var(--primary)] outline-offset-2' : 'hover:-translate-y-0.5 hover:brightness-95'
+                  }`}
+                  style={{
+                    background: selected ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--surface-3)',
+                    border: 'none',
+                  }}
+                >
+                  {/* Prévia Visual da Fonte (Grande) */}
+                  <span
+                    className="text-2xl mb-1.5 leading-none"
+                    style={{ fontFamily: font.value, color: selected ? 'var(--primary)' : 'var(--ink-0)' }}
+                  >
+                    Ag
+                  </span>
+                  
+                  {/* Nome da Fonte (Pequeno e em caixa alta para contraste) */}
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-widest truncate w-full text-center"
+                    style={{ color: selected ? 'var(--primary)' : 'var(--ink-2)' }}
+                  >
+                    {font.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </SectionCard>
 
       {/* Options */}
-      <SectionBlock title={t('editor.options')}>
-        <label className="flex items-center gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            id="striped"
-            checked={stripedRows}
-            onChange={e => manager.handleFieldChange('stripedRows', e.target.checked)}
-            className="w-4 h-4 rounded"
-            style={{ accentColor: 'var(--primary)' }}
-          />
-          <span className="text-sm font-medium" style={{ color: 'var(--ink-0)' }}>
-            {t('editor.stripedRows')}
-          </span>
-        </label>
-      </SectionBlock>
+      <SectionCard title={t('editor.options')} collapsible={false}>
+        <div className="p-4">
+          <label className="flex items-center gap-3 cursor-pointer group">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="checkbox"
+                id="striped"
+                checked={stripedRows}
+                onChange={e => manager.handleFieldChange('stripedRows', e.target.checked)}
+                className="w-4 h-4 rounded cursor-pointer transition-all"
+                style={{ accentColor: 'var(--primary)' }}
+              />
+            </div>
+            <span className="text-sm font-medium transition-colors group-hover:text-[var(--primary)]" style={{ color: 'var(--ink-0)' }}>
+              {t('editor.stripedRows')}
+            </span>
+          </label>
+        </div>
+      </SectionCard>
 
     </div>
   );

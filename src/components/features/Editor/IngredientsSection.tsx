@@ -8,6 +8,7 @@ import { Trash2, AlertTriangle } from 'lucide-react';
 
 import { SortableItem } from '../../common/SortableItem';
 import { HintButton } from '../../ui/HintButton';
+import { IconButton } from '../../ui/IconButton';
 import { useI18n } from '../../../i18n/i18n.tsx';
 import { useAdvancedMode } from '../../../hooks/useAdvancedMode';
 import type { Ingredient, IngredientPhase } from '../../../types';
@@ -89,7 +90,7 @@ const PhaseStats: React.FC<{
     if (withPhase === 0 && !batchGrams) return null;
 
     return (
-        <div className="mt-3 rounded-xl p-4 space-y-3" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+        <div className="mt-3 rounded-xl p-4 space-y-3" style={{ background: 'var(--surface-2)' }}>
             <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
                     Distribuição por Fases
@@ -131,15 +132,15 @@ const PhaseStats: React.FC<{
 
             {/* Quick metrics */}
             <div className="grid grid-cols-3 gap-2 pt-1">
-                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-0)' }}>
+                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-3)' }}>
                     <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>Aquosa</p>
-                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: '#3b82f6' }}>{waterPct.toFixed(1)}%</p>
+                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: 'var(--status-info-text)' }}>{waterPct.toFixed(1)}%</p>
                 </div>
-                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-0)' }}>
+                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-3)' }}>
                     <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>Custo/kg</p>
-                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: '#059669' }}>{costPerKg.toFixed(2)}</p>
+                    <p className="text-sm font-mono font-bold mt-0.5" style={{ color: 'var(--status-success-text)' }}>{costPerKg.toFixed(2)}</p>
                 </div>
-                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-0)' }}>
+                <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'var(--surface-3)' }}>
                     <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>Ingredientes</p>
                     <p className="text-sm font-mono font-bold mt-0.5" style={{ color: 'var(--ink-0)' }}>{ingredientes.length}</p>
                 </div>
@@ -200,7 +201,7 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
             {/* Warning: total weight zero */}
             {hasFilledIngredients && totalWeight === 0 && (
                 <div className="mx-3 mt-3 flex items-center gap-2 rounded-lg px-3 py-2 text-xs"
-                    style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', color: '#b45309' }}
+                    style={{ background: 'var(--status-warning-bg)', color: 'var(--status-warning-text)' }}
                 >
                     <AlertTriangle size={13} />
                     {t('validation.totalWeightZero')}
@@ -288,8 +289,7 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
                                                     style={{
                                                         width: 'auto',
                                                         maxWidth: 76,
-                                                        borderColor: ing.quantidade === 0 ? 'rgba(245,158,11,0.6)' : undefined,
-                                                        background: ing.quantidade === 0 ? 'rgba(245,158,11,0.06)' : undefined,
+                                                        background: ing.quantidade === 0 ? 'var(--status-warning-bg)' : undefined,
                                                     }}
                                                     value={ing.quantidade}
                                                     onChange={e => manager.updateIngredient(ing.id, 'quantidade', parseFloat(e.target.value) || 0)}
@@ -320,14 +320,13 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
                                                 />
 
                                                 {/* Delete (always at the end) */}
-                                                <button
-                                                    onClick={() => manager.removeIngredient(ing.id)}
-                                                    className="flex-shrink-0 ds-icon-button opacity-50 hover:opacity-100 hover:text-red-500"
+                                                <IconButton
+                                                    size="sm"
+                                                    variant="danger"
+                                                    icon={<Trash2 size={13} />}
                                                     title={t('common.remove')}
-                                                    style={{ width: 32, height: 32 }}
-                                                >
-                                                    <Trash2 size={13} />
-                                                </button>
+                                                    onClick={() => manager.removeIngredient(ing.id)}
+                                                />
                                             </div>
                                         </div>
                                     </SortableItem>
@@ -357,7 +356,7 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
             {/* Footer totals */}
             <div
                 className="flex items-center justify-between px-5 py-3"
-                style={{ background: 'var(--surface-1)', borderTop: '1px solid var(--border)' }}
+                style={{ background: 'var(--surface-3)', borderTop: '1px solid var(--border)' }}
             >
                 <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
@@ -371,7 +370,7 @@ export const IngredientsSection: React.FC<IngredientsSectionProps> = ({
                     <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-2)' }}>
                         {t('editor.estimatedCost')}
                     </p>
-                    <p className="text-base font-mono font-bold" style={{ color: '#059669' }}>
+                    <p className="text-base font-mono font-bold" style={{ color: 'var(--status-success-text)' }}>
                         {t('common.currency')} {totalCost.toFixed(2)}
                     </p>
                 </div>

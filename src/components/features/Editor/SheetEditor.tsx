@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DragEndEvent } from '@dnd-kit/core';
-import { AlertCircle, Calculator, Settings2, ArrowLeft } from 'lucide-react';
+import { AlertCircle, Calculator, Settings2, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { IconButton } from '../../ui/IconButton';
 
 import { useRecipeManager } from '../../../hooks/useRecipeManager';
 import { SheetPrintable } from '../../SheetPrintable';
@@ -21,9 +22,11 @@ interface SheetEditorProps {
     animationsEnabled: boolean;
 }
 
-const FORMULA_STATUS_STYLES: Record<string, { color: string; bg: string; border: string }> = {
-    RASCUNHO: { color: '#b45309', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.4)' },
-    FINAL:    { color: '#047857', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.4)' },
+// DESIGN SYSTEM: Utilizando estritamente os tokens de status da v3.0
+// Rascunho = Warning (Atenção/Em andamento) | Final = Success (Concluído)
+const SHEET_STATUS_STYLES: Record<string, { color: string; bg: string }> = {
+    RASCUNHO: { color: 'var(--status-warning-text)', bg: 'var(--status-warning-bg)' },
+    FINAL:    { color: 'var(--status-success-text)', bg: 'var(--status-success-bg)' },
 };
 
 export const SheetEditor: React.FC<SheetEditorProps> = ({
@@ -46,56 +49,74 @@ export const SheetEditor: React.FC<SheetEditorProps> = ({
     };
 
     const status = currentRecipe.status || 'RASCUNHO';
-    const statusStyle = FORMULA_STATUS_STYLES[status] ?? FORMULA_STATUS_STYLES.RASCUNHO;
+    const statusStyle = SHEET_STATUS_STYLES[status] ?? SHEET_STATUS_STYLES.RASCUNHO;
 
-    const FORMULA_STATUS_OPTIONS = [
+    const SHEET_STATUS_OPTIONS = [
         { value: 'RASCUNHO', label: t('status.draft') },
         { value: 'FINAL',    label: t('status.final') },
     ];
 
     const formContent = (
-        <div className="w-full px-6 py-6 space-y-5">
+        <div className="w-full px-6 py-6 space-y-6">
 
             {/* ── Page header ──────────────────────────────────── */}
-            <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center justify-between gap-4 flex-wrap pb-2 border-b" style={{ borderColor: 'var(--border)' }}>
                 <div className="flex items-center gap-3">
-                    <button onClick={onCancel} className="ds-icon-button flex-shrink-0" title={t('common.back')}>
-                        <ArrowLeft size={14} />
-                    </button>
-                    <h1 className="text-lg font-black uppercase tracking-tight" style={{ color: 'var(--ink-0)' }}>
+                    <IconButton
+                        variant="ghost"
+                        icon={<ArrowLeft size={18} />}
+                        title={t('common.back')}
+                        onClick={onCancel}
+                    />
+                    <h1 className="text-xl font-black uppercase tracking-tight" style={{ color: 'var(--ink-0)' }}>
                         {currentRecipe.id ? t('editor.editTitle') : t('editor.newTitle')}
                     </h1>
                 </div>
-                <div className="flex items-center gap-2 flex-wrap">
+                
+                <div className="flex items-center gap-3 flex-wrap">
+                    {/* Select transformado visualmente em um Badge dinâmico */}
                     <select
-                        className="ds-select text-xs font-bold uppercase tracking-wide"
+                        className="text-xs font-bold uppercase tracking-wide cursor-pointer outline-none transition-colors"
                         value={status}
                         onChange={e => manager.handleFieldChange('status', e.target.value as 'RASCUNHO' | 'FINAL')}
-                        style={{ color: statusStyle.color, background: statusStyle.bg, borderColor: statusStyle.border }}
+                        style={{ 
+                            height: 'var(--h-control-sm)',
+                            padding: '0 12px',
+                            borderRadius: 'var(--radius-sm)',
+                            color: statusStyle.color, 
+                            background: statusStyle.bg,
+                            border: 'none',
+                            appearance: 'none', // Remove a setinha nativa pesada
+                            textAlign: 'center'
+                        }}
                     >
-                        {FORMULA_STATUS_OPTIONS.map(o => (
+                        {SHEET_STATUS_OPTIONS.map(o => (
                             <option key={o.value} value={o.value}>{o.label}</option>
                         ))}
                     </select>
-                    <button onClick={onCancel} className="ds-button">
-                        {t('common.cancel')}
-                    </button>
-                    <button onClick={onFinalize} className="ds-button-primary">
-                        {t('buttons.saveSheet')}
-                    </button>
+
+                    <div className="flex items-center gap-2">
+                        <button onClick={onCancel} className="ds-button ds-button-ghost">
+                            {t('common.cancel')}
+                        </button>
+                        <button onClick={onFinalize} className="ds-button-primary">
+                            <CheckCircle2 size={14} />
+                            {t('buttons.saveSheet')}
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* ── Validation errors ─────────────────────────────── */}
             {validationErrors.length > 0 && (
                 <div
-                    className="flex items-start gap-2 px-4 py-3 rounded-xl"
-                    style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}
+                    className="flex items-start gap-3 px-4 py-3 rounded-xl animate-in fade-in slide-in-from-top-2 duration-300"
+                    style={{ background: 'var(--status-error-bg)', color: 'var(--status-error-text)' }}
                 >
-                    <AlertCircle size={14} className="text-red-500 mt-0.5 flex-shrink-0" />
-                    <ul className="space-y-0.5">
+                    <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+                    <ul className="space-y-1">
                         {validationErrors.map((err, i) => (
-                            <li key={i} className="text-sm text-red-600">{err}</li>
+                            <li key={i} className="text-xs font-bold uppercase tracking-wide">{err}</li>
                         ))}
                     </ul>
                 </div>
@@ -111,19 +132,21 @@ export const SheetEditor: React.FC<SheetEditorProps> = ({
                 manager={manager}
             />
 
-            {/* ── Tab switcher ──────────────────────────────────── */}
-            <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'var(--surface-2)' }}>
+            {/* ── Tab switcher (Estilo iOS/macOS Toggle) ────────── */}
+            <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'var(--surface-3)' }}>
                 {[
-                    { key: 'content', icon: <Calculator size={13} />, label: t('editor.composition') },
-                    { key: 'style',   icon: <Settings2  size={13} />, label: t('editor.appearance') },
+                    { key: 'content', icon: <Calculator size={14} />, label: t('editor.composition') },
+                    { key: 'style',   icon: <Settings2  size={14} />, label: t('editor.appearance') },
                 ].map(tab => (
                     <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key as 'content' | 'style')}
-                        className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all outline-none"
                         style={{
                             background: activeTab === tab.key ? 'var(--surface-2)' : 'transparent',
                             color:      activeTab === tab.key ? 'var(--primary)'   : 'var(--ink-2)',
+                            // Exceção de sombra apenas para o toggle ativo simular o relevo de botão físico (muito comum em switches)
+                            boxShadow:  activeTab === tab.key ? '0 2px 4px rgba(0,0,0,0.05)' : 'none'
                         }}
                     >
                         {tab.icon} {tab.label}
@@ -133,7 +156,7 @@ export const SheetEditor: React.FC<SheetEditorProps> = ({
 
             {/* ── Composition tab ───────────────────────────────── */}
             {activeTab === 'content' && (
-                <div className="space-y-5">
+                <div className="space-y-6 animate-in fade-in duration-300">
                     <IngredientsSection
                         ingredientes={currentRecipe.ingredientes}
                         manager={manager}
@@ -158,12 +181,14 @@ export const SheetEditor: React.FC<SheetEditorProps> = ({
 
             {/* ── Appearance tab ────────────────────────────────── */}
             {activeTab === 'style' && (
-                <StyleSection
-                    accentColor={currentRecipe.accentColor || 'var(--primary)'}
-                    fontFamily={currentRecipe.fontFamily || ''}
-                    stripedRows={currentRecipe.stripedRows ?? true}
-                    manager={manager}
-                />
+                <div className="animate-in fade-in duration-300">
+                    <StyleSection
+                        accentColor={currentRecipe.accentColor || 'var(--primary)'}
+                        fontFamily={currentRecipe.fontFamily || ''}
+                        stripedRows={currentRecipe.stripedRows ?? true}
+                        manager={manager}
+                    />
+                </div>
             )}
         </div>
     );
