@@ -3,5 +3,5 @@
  * Centralized place for versioning and other environment-wide constants.
  */
 export const APP_CONFIG = {
-    VERSION: 'alpha-1.0.8',
+    VERSION: 'alpha-1.0.9',
 };
